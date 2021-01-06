@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: ['@babel/polyfill', './src/index'],
-  target: 'node',
 
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -41,6 +40,14 @@ module.exports = {
           loader: 'file-loader',
           options: { outputPath: 'static/images' },
         },
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot)$/,
+        use: 'file-loader?name=fonts/[name].[ext]!static',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
