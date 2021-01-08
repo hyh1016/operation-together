@@ -66,5 +66,10 @@ module.exports = {
     publicPath: '/',
   },
 
-  plugins: [new HtmlWebpackPlugin({ template: './public/index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      favicon: './src/favicon.ico',
+    }),
+  ],
 };
