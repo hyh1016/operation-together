@@ -35,15 +35,12 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpg|svg)$/,
-        use: {
-          loader: 'file-loader',
-          options: { outputPath: 'static/images' },
-        },
+        test: /\.(png|jpe?g|svg)$/,
+        use: 'file-loader?name=images/[name].[ext]',
       },
       {
         test: /\.(woff|woff2|ttf|eot)$/,
-        use: 'file-loader?name=fonts/[name].[ext]!static',
+        use: 'file-loader?name=fonts/[name].[ext]',
       },
       {
         test: /\.css$/,
