@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../style/theme';
 import Button from './Button';
+import logo from '../images/logo.png';
 
 const TitleWrapper = styled.div`
   width: 35%;
@@ -10,20 +11,27 @@ const TitleWrapper = styled.div`
   text-align: center;
 `;
 
-const Logo = styled.div`
+const LogoWrapper = styled.div`
   width: 250px;
   height: 250px;
   margin: 2rem auto;
-  padding: 120px 0;
-  border-radius: 100%;
+  border-radius: 50%;
   background-color: #fff;
   color: ${(props) => props.theme.mainColor};
+`;
+
+const LogoImage = styled.img`
+  width: 90%;
+  height: 90%;
+  background: none;
 `;
 
 const Title: React.FC = () => {
   return (
     <TitleWrapper>
-      <Logo>여기에 로고 넣기</Logo>
+      <LogoWrapper>
+        <LogoImage src={logo} alt="logo" />
+      </LogoWrapper>
       <Button value="회원가입" color={theme.mainColor} />
       <Button value="로그인" color={theme.highlightColor} />
     </TitleWrapper>
