@@ -14,8 +14,8 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'prettier/prettier': ['error'],
-    '@typescript-eslint/no-explicit-any': 'off',
-    'prefer-const': 'off',
+    'import/no-unresolved': 0,
+    'import/extensions': 0,
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
