@@ -7,4 +7,6 @@ export default {
   username: config.DB.USERNAME,
   password: config.DB.PASSWORD,
   database: config.DB.NAME,
+  synchronize: true,
+  entities: ['src/entity/**/*.ts'],
 };
