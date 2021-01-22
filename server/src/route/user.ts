@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Container from '@/container';
-import { WRONG_KEY } from '@/util/error';
+import { WRONG_KEY } from '@/util/errorMessage';
 
 const router = Router();
 
