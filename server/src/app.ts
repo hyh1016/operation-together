@@ -6,7 +6,7 @@ import config from './config';
 import Router from './route';
 import Container from './container';
 import UserService from '@/service/UserService';
-import { User } from './entity/User';
+import User from './entity/User';
 
 const startServer = async () => {
   await createConnection()
