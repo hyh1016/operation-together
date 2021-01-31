@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../style/theme';
 import Button from './Button';
+import Modal from './Modal';
 import logo from '../images/logo.png';
+import JoinForm from './JoinForm';
+import LoginForm from './LoginForm';
 
 const TitleWrapper = styled.div`
   width: 35%;
@@ -27,14 +30,36 @@ const LogoImage = styled.img`
 `;
 
 const Title: React.FC = () => {
+  const [visible, setVisible] = useState(false);
+  const [isJoin, setIsJoin] = useState(true);
+
   return (
-    <TitleWrapper>
-      <LogoWrapper>
-        <LogoImage src={logo} alt="logo" />
-      </LogoWrapper>
-      <Button value="회원가입" color={theme.mainColor} />
-      <Button value="로그인" color={theme.highlightColor} />
-    </TitleWrapper>
+    <>
+      <TitleWrapper>
+        <LogoWrapper>
+          <LogoImage src={logo} alt="logo" />
+        </LogoWrapper>
+        <Button
+          value="회원가입"
+          color={theme.mainColor}
+          onClick={() => {
+            setVisible(!visible);
+            setIsJoin(true);
+          }}
+        />
+        <Button
+          value="로그인"
+          color={theme.highlightColor}
+          onClick={() => {
+            setVisible(!visible);
+            setIsJoin(false);
+          }}
+        />
+      </TitleWrapper>
+      <Modal visible={visible} setVisible={setVisible}>
+        {isJoin ? <JoinForm /> : <LoginForm />}
+      </Modal>
+    </>
   );
 };
 
