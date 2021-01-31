@@ -25,12 +25,15 @@ const ButtonWrapper = styled.button`
 interface Props {
   value: string;
   color: string;
+  onClick?: () => void;
 }
 
-const Button: React.FC<Props> = ({ value, color }) => {
+const Button: React.FC<Props> = ({ value, color, onClick }) => {
   return (
     <div>
-      <ButtonWrapper color={color}>{value}</ButtonWrapper>
+      <ButtonWrapper onClick={onClick} color={color}>
+        {value}
+      </ButtonWrapper>
     </div>
   );
 };
