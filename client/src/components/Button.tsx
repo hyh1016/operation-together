@@ -25,7 +25,7 @@ const ButtonWrapper = styled.button`
 interface Props {
   value: string;
   color: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const Button: React.FC<Props> = ({ value, color, onClick }) => {
