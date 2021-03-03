@@ -1,1 +1,2 @@
 export const WRONG_KEY = 'KEY ERROR: WRONG KEY';
+export const WRONG_DATA = 'FORM ERROR: WRONG DATA';
