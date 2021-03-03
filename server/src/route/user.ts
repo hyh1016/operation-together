@@ -9,7 +9,7 @@ const router = Router();
 export default (indexRouter: Router): void => {
   indexRouter.use('/users', router);
 
-  router.post('/register', async (req, res, next) => {
+  router.post('/register', async (req, res) => {
     const serviceInstance = Container.get('UserService');
     if (!serviceInstance) throw new Error(WRONG_KEY);
     const { id, name, password } = req.body;
