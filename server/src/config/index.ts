@@ -13,4 +13,6 @@ export default {
     USERNAME: process.env.DB_USERNAME,
     PASSWORD: process.env.DB_PASSWORD,
   },
+  SECRET_KEY: process.env.SECRET_KEY,
+  SALT_ROUND: process.env.SORT_ROUND,
 };
