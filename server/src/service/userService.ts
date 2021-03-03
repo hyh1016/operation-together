@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { compare } from 'bcrypt';
 import User from '@/entity/User';
 import CreateHashPassword from '@/util/encryption';
 
@@ -30,8 +31,10 @@ export default class UserService {
   }
 
   async login({ id, password }: LoginForm): Promise<boolean | User> {
-    const user = await this.userRepository.findOne({ id, password });
+    const user = await this.userRepository.findOne({ id });
     if (!user) return false;
+    const compareResult = await compare(password, user.password);
+    if (!compareResult) return false;
     return user;
   }
 
