@@ -2,6 +2,8 @@ import express from 'express';
 import { createConnection, getRepository } from 'typeorm';
 import cors from 'cors';
 import createError from 'http-errors';
+import passport from 'passport';
+import passportConfig from '@/util/passport';
 import config from './config';
 import Router from './route';
 import Container from './container';
@@ -21,6 +23,8 @@ const startServer = async () => {
 
   const PORT = config.PORT || 4000;
 
+  app.use(passport.initialize());
+  passportConfig();
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(
