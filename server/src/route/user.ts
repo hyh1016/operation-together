@@ -1,7 +1,6 @@
-import { Router, Response } from 'express';
+import { Router } from 'express';
 import Container from '@/container';
 import { WRONG_KEY } from '@/util/errorMessage';
-import passport from 'passport';
 import { createUserToken } from '@/util/token';
 
 const router = Router();
@@ -19,15 +18,15 @@ export default (indexRouter: Router): void => {
     return res.status(200).json({ success: true });
   });
 
-  router.post(
-    '/login',
-    passport.authenticate('local', { failureRedirect: '/login' }),
-    (req: any, res: Response) => {
-      if (!req.user) return res.status(400).json({ message: 'fail login' });
-      const token = createUserToken(req.user.id);
-      return res.status(200).json({ token });
-    },
-  );
+  router.post('/login', async (req, res) => {
+    const serviceInstance = Container.get('UserService');
+    if (!serviceInstance) throw new Error(WRONG_KEY);
+    const { id, password } = req.body;
+    const user: any = await serviceInstance.login({ id, password });
+    if (!user) return res.status(400).json({ message: 'failed login' });
+    const token = createUserToken(user.id);
+    return res.status(200).json({ token });
+  });
 
   router.get('/exist/:id', async (req, res) => {
     const serviceInstance = Container.get('UserService');
