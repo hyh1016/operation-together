@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '@/style/theme';
-import { sendGetRequest } from '@/utils/request';
+import { sendGetRequest, sendPostRequest } from '@/utils/request';
 import { ERROR } from '@/utils/message';
+import { useHistory } from 'react-router-dom';
 import Button from './Button';
 
 const JoinFormWrapper = styled.form`
@@ -35,6 +36,7 @@ const Message = styled.p`
 `;
 
 const JoinForm: React.FC = () => {
+  const history = useHistory();
   const [id, setId] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -48,8 +50,8 @@ const JoinForm: React.FC = () => {
   };
 
   const isNotExistId = async () => {
-    const result = await sendGetRequest(`/users/exist/${id}`);
-    if (result.data.exist) {
+    const { result } = await sendGetRequest(`/users/exist/${id}`);
+    if (result.exist) {
       return false;
     }
     return true;
@@ -94,11 +96,38 @@ const JoinForm: React.FC = () => {
   };
 
   const isValidForm = async () => {
-    if (!checkData(isValidId, ERROR.NOT_VALID_ID)) return;
-    if (!(await checkAsyncData(isNotExistId, ERROR.IS_EXIST_ID))) return;
-    if (!checkData(isValidNickname, ERROR.NOT_VALID_NICKNAME)) return;
-    if (!checkData(isValidPassword, ERROR.NOT_VALID_PASSWORD)) return;
-    checkData(isEqualPassword, ERROR.NOT_EQUAL_PASSWORD);
+    if (!checkData(isValidId, ERROR.NOT_VALID_ID)) return false;
+    if (!(await checkAsyncData(isNotExistId, ERROR.IS_EXIST_ID))) return false;
+    if (!checkData(isValidNickname, ERROR.NOT_VALID_NICKNAME)) return false;
+    if (!checkData(isValidPassword, ERROR.NOT_VALID_PASSWORD)) return false;
+    if (!checkData(isEqualPassword, ERROR.NOT_EQUAL_PASSWORD)) return false;
+    return true;
+  };
+
+  const joinEvent = async () => {
+    if (!isValidForm()) return;
+    const { result, error } = await sendPostRequest('/users/register', {
+      id,
+      nickname,
+      password,
+    });
+    if (error) {
+      setMessage(ERROR.JOIN_FAILED);
+      return;
+    }
+    await loginEvent();
+  };
+
+  const loginEvent = async () => {
+    const { result, error } = await sendPostRequest('/users/login', {
+      id,
+      password,
+    });
+    if (error) {
+      setMessage(ERROR.LOGIN_FAILED);
+      return;
+    }
+    history.push('/main');
   };
 
   return (
@@ -147,7 +176,7 @@ const JoinForm: React.FC = () => {
           value="가입하기"
           onClick={async (e) => {
             e.preventDefault();
-            await isValidForm();
+            await joinEvent();
           }}
         />
         <Message>{message}</Message>
