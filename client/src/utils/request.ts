@@ -2,28 +2,39 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:4000';
 
-const sendGetRequest = async (path: string, params = {}): Promise<any> => {
+interface returnObject {
+  result?: any;
+  error?: any;
+}
+
+const sendGetRequest = async (
+  path: string,
+  params = {},
+): Promise<returnObject> => {
   try {
-    const res = await axios.get(BASE_URL + path, {
+    const result = await axios.get(BASE_URL + path, {
       params,
       withCredentials: true,
     });
-    return res;
+    if (result.status !== 200) throw new Error(result.data.message);
+    return { result: result.data };
   } catch (error) {
-    console.log(`error: ${error}`);
-    return error;
+    return { error };
   }
 };
 
-const sendPostRequest = async (path: string, body = {}): Promise<any> => {
+const sendPostRequest = async (
+  path: string,
+  body = {},
+): Promise<returnObject> => {
   try {
-    const res = await axios.post(BASE_URL + path, body, {
+    const result = await axios.post(BASE_URL + path, body, {
       withCredentials: true,
     });
-    return res;
+    if (result.status !== 200) throw new Error(result.data.message);
+    return { result: result.data };
   } catch (error) {
-    console.log(`error: ${error}`);
-    return error;
+    return { error };
   }
 };
 
