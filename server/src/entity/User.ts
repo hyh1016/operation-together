@@ -15,7 +15,7 @@ export default class User {
   id!: string;
 
   @Column()
-  name!: string;
+  nickname!: string;
 
   @Column()
   password!: string;

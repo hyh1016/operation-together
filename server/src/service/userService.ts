@@ -5,7 +5,7 @@ import CreateHashPassword from '@/util/encryption';
 
 interface RegisterForm {
   id: string;
-  name: string;
+  nickname: string;
   password: string;
 }
 
@@ -17,13 +17,13 @@ interface LoginForm {
 export default class UserService {
   constructor(private userRepository: Repository<User>) {}
 
-  async register({ id, name, password }: RegisterForm): Promise<boolean> {
+  async register({ id, nickname, password }: RegisterForm): Promise<boolean> {
     const isExistUser = await this.validateUser(id);
     if (isExistUser) return false;
     const hashPassword = await CreateHashPassword(password);
     const newUser = this.userRepository.create({
       id,
-      name,
+      nickname,
       password: hashPassword,
     });
     await this.userRepository.save(newUser);
