@@ -11,8 +11,12 @@ export default (indexRouter: Router): void => {
   router.post('/register', async (req, res) => {
     const serviceInstance = Container.get('UserService');
     if (!serviceInstance) throw new Error(WRONG_KEY);
-    const { id, name, password } = req.body;
-    const registResult = await serviceInstance.register({ id, name, password });
+    const { id, nickname, password } = req.body;
+    const registResult = await serviceInstance.register({
+      id,
+      nickname,
+      password,
+    });
     if (!registResult)
       return res.status(400).json({ message: 'This ID already exists.' });
     return res.status(200).json({ success: true });
@@ -34,6 +38,6 @@ export default (indexRouter: Router): void => {
     const { id } = req.params;
     const isExistUser = await serviceInstance.validateUser(id);
     if (isExistUser) return res.status(200).json({ exist: true });
-    return res.status(204).json({ exist: false });
+    return res.status(200).json({ exist: false });
   });
 };
