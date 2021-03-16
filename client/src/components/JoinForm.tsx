@@ -105,7 +105,7 @@ const JoinForm: React.FC = () => {
   };
 
   const joinEvent = async () => {
-    if (!isValidForm()) return;
+    if (!(await isValidForm())) return;
     const { result, error } = await sendPostRequest('/users/register', {
       id,
       nickname,
@@ -127,6 +127,7 @@ const JoinForm: React.FC = () => {
       setMessage(ERROR.LOGIN_FAILED);
       return;
     }
+    localStorage.setItem('authorization', result.token);
     history.push('/main');
   };
 

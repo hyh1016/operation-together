@@ -50,6 +50,7 @@ const LoginForm: React.FC = () => {
       setMessage(ERROR.NOT_VALID_USER);
       return;
     }
+    localStorage.setItem('authorization', result.token);
     history.push('/main');
   };
 
