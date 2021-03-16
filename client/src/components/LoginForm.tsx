@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '@/style/theme';
+import { sendPostRequest } from '@/utils/request';
+import { useHistory } from 'react-router-dom';
+import { ERROR } from '@/utils/message';
 import Button from './Button';
 
 const LoginFormWrapper = styled.div`
@@ -33,19 +36,21 @@ const Message = styled.p`
 `;
 
 const LoginForm: React.FC = () => {
+  const history = useHistory();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const loginEvent = () => {
-    if (!isValidForm()) return false;
-    // TODO: ajax - login
-  };
-
-  const isValidForm = (): boolean => {
-    // TODO: 아이디/비밀번호 불일치시 '잘못된 정보입니다.' 메시지
-    setMessage('');
-    return true;
+  const loginEvent = async () => {
+    const { result, error } = await sendPostRequest('/users/login', {
+      id,
+      password,
+    });
+    if (error) {
+      setMessage(ERROR.NOT_VALID_USER);
+      return;
+    }
+    history.push('/main');
   };
 
   return (
@@ -67,7 +72,10 @@ const LoginForm: React.FC = () => {
         <Button
           color={theme.mainColor}
           value="로그인하기"
-          onClick={loginEvent}
+          onClick={async (e) => {
+            e.preventDefault();
+            await loginEvent();
+          }}
         />
         <Message>{message}</Message>
       </LoginFormWrapper>
