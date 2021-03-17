@@ -1,7 +1,3 @@
-import UserService from '@/service/UserService';
-
-type Instance = UserService;
-
-const Container = new Map<string, Instance>();
+const Container = new Map<string, any>();
 
 export default Container;
