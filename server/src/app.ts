@@ -15,8 +15,11 @@ import Operation from './entity/Operation';
 const startServer = async () => {
   await createConnection()
     .then(() => {
-      Container.set('UserService', new UserService(getRepository(User)));
-      Container.set(
+      Container.setInstance(
+        'UserService',
+        new UserService(getRepository(User)),
+      );
+      Container.setInstance(
         'OperationService',
         new OperationService(getRepository(Operation)),
       );
