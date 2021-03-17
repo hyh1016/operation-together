@@ -11,7 +11,7 @@ const jwtConfig = {
 export default (): void => {
   passport.use(
     new JwtStrategy(jwtConfig, async (payload, done) => {
-      const serviceInstance = Container.get('UserService');
+      const serviceInstance = Container.getUserService();
       const user = await serviceInstance.getUser(payload.id);
       if (!user) return done(null, false);
       return done(null, user);
