@@ -3,17 +3,23 @@ import { createConnection, getRepository } from 'typeorm';
 import cors from 'cors';
 import createError from 'http-errors';
 import passport from 'passport';
-import passportConfig from '@/util/passport';
+import passportConfig from './util/passport';
 import config from './config';
 import Router from './route';
 import Container from './container';
-import UserService from '@/service/UserService';
+import UserService from './service/UserService';
+import OperationService from './service/operationService';
 import User from './entity/User';
+import Operation from './entity/Operation';
 
 const startServer = async () => {
   await createConnection()
     .then(() => {
       Container.set('UserService', new UserService(getRepository(User)));
+      Container.set(
+        'OperationService',
+        new OperationService(getRepository(Operation)),
+      );
     })
     .catch((err) => {
       console.error(err);
