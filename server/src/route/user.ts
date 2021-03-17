@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import Container from '@/container';
-import { WRONG_KEY } from '@/util/errorMessage';
 import { createUserToken } from '@/util/token';
 
 const router = Router();
@@ -10,7 +9,6 @@ export default (indexRouter: Router): void => {
 
   router.post('/register', async (req, res) => {
     const serviceInstance = Container.get('UserService');
-    if (!serviceInstance) throw new Error(WRONG_KEY);
     const { id, nickname, password } = req.body;
     const registResult = await serviceInstance.register({
       id,
@@ -24,9 +22,8 @@ export default (indexRouter: Router): void => {
 
   router.post('/login', async (req, res) => {
     const serviceInstance = Container.get('UserService');
-    if (!serviceInstance) throw new Error(WRONG_KEY);
     const { id, password } = req.body;
-    const user: any = await serviceInstance.login({ id, password });
+    const user = await serviceInstance.login({ id, password });
     if (!user) return res.status(400).json({ message: 'failed login' });
     const token = createUserToken(user.id);
     return res.status(200).json({ token });
@@ -34,10 +31,9 @@ export default (indexRouter: Router): void => {
 
   router.get('/exist/:id', async (req, res) => {
     const serviceInstance = Container.get('UserService');
-    if (!serviceInstance) throw new Error(WRONG_KEY);
     const { id } = req.params;
-    const isExistUser = await serviceInstance.validateUser(id);
-    if (isExistUser) return res.status(200).json({ exist: true });
+    const user = await serviceInstance.getUser(id);
+    if (user) return res.status(200).json({ exist: true });
     return res.status(200).json({ exist: false });
   });
 };
