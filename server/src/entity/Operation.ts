@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -29,6 +30,7 @@ export default class Operation {
   adminId!: string;
 
   @ManyToMany(() => User)
+  @JoinTable()
   users: User[] | undefined;
 
   @OneToMany(() => Chart, (chart) => chart.operation)
