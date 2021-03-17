@@ -17,14 +17,13 @@ export default (indexRouter: Router): void => {
   router.post('/', async (req, res) => {
     const serviceInstance = Container.get('OperationService');
     const { title, startDate, endDate, color } = req.body;
-    if (!title || !startDate || !endDate || !color)
-      return res.status(400).json({ message: 'create failed.' });
     const operationId = await serviceInstance.createOperation(req.user, {
       title,
       startDate,
       endDate,
       color,
     });
+    if (!operationId) return res.status(400).json({ message: 'create failed' });
     res.status(200).json({ operationId });
   });
 };
