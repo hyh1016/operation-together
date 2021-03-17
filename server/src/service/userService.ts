@@ -30,12 +30,12 @@ export default class UserService {
     return true;
   }
 
-  async login(info: LoginForm): Promise<boolean | User> {
-    if (Object.values(info).filter((v) => !v).length > 0) return false;
+  async login(info: LoginForm): Promise<User | undefined> {
+    if (Object.values(info).filter((v) => !v).length > 0) return undefined;
     const user = await this.userRepository.findOne({ id: info.id });
-    if (!user) return false;
+    if (!user) return undefined;
     const compareResult = await compare(info.password, user.password);
-    if (!compareResult) return false;
+    if (!compareResult) return undefined;
     return user;
   }
 

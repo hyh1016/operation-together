@@ -15,13 +15,13 @@ export default class OperationService {
   async createOperation(
     user: User,
     info: OperationForm,
-  ): Promise<number | boolean> {
-    if (Object.values(info).filter((v) => !v).length > 0) return false;
+  ): Promise<number | undefined> {
+    if (Object.values(info).filter((v) => !v).length > 0) return undefined;
     const newOperation = this.operationRepository.create({
       ...info,
       adminId: user.id,
     });
-    if (!newOperation) return false;
+    if (!newOperation) return undefined;
     newOperation.users = [user];
     await this.operationRepository.save(newOperation);
     return newOperation.id;
