@@ -12,11 +12,16 @@ interface OperationForm {
 export default class OperationService {
   constructor(private operationRepository: Repository<Operation>) {}
 
-  async createOperation(user: User, info: OperationForm): Promise<number> {
+  async createOperation(
+    user: User,
+    info: OperationForm,
+  ): Promise<number | boolean> {
+    if (Object.values(info).filter((v) => !v).length > 0) return false;
     const newOperation = this.operationRepository.create({
       ...info,
       adminId: user.id,
     });
+    if (!newOperation) return false;
     newOperation.users = [user];
     await this.operationRepository.save(newOperation);
     return newOperation.id;

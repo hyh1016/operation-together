@@ -18,6 +18,7 @@ export default class UserService {
   constructor(private userRepository: Repository<User>) {}
 
   async register(info: RegisterForm): Promise<boolean> {
+    if (Object.values(info).filter((v) => !v).length > 0) return false;
     const isExistUser = await this.getUser(info.id);
     if (isExistUser) return false;
     const hashPassword = await CreateHashPassword(info.password);
@@ -30,6 +31,7 @@ export default class UserService {
   }
 
   async login(info: LoginForm): Promise<boolean | User> {
+    if (Object.values(info).filter((v) => !v).length > 0) return false;
     const user = await this.userRepository.findOne({ id: info.id });
     if (!user) return false;
     const compareResult = await compare(info.password, user.password);
@@ -38,6 +40,7 @@ export default class UserService {
   }
 
   async getUser(id: string): Promise<User | undefined> {
+    if (!id) return undefined;
     const user = await this.userRepository.findOne({ id });
     return user;
   }
