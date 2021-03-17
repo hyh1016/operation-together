@@ -23,11 +23,12 @@ export default class OperationService {
   }
 
   async getOperations(user: User): Promise<Operation[]> {
-    // TODO: column을 선택적으로 불러와야 함
-    const operations = await this.operationRepository.find({
-      relations: ['users'],
-      where: { adminId: user.id },
-    });
+    const operations = await this.operationRepository
+      .createQueryBuilder('operation')
+      .where('operation.adminId = :id', { id: user.id })
+      .leftJoin('operation.users', 'users')
+      .addSelect(['users.id', 'users.nickname'])
+      .getMany();
     return operations;
   }
 }
