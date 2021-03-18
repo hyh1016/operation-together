@@ -11,6 +11,11 @@ interface OperationForm {
   adminId?: string;
 }
 
+interface JoinForm {
+  id: number;
+  password?: string;
+}
+
 export default class OperationService {
   constructor(private operationRepository: Repository<Operation>) {}
 
@@ -79,6 +84,45 @@ export default class OperationService {
     });
     if (!operation) return false;
     if (userId !== operation.adminId) return false;
+    return true;
+  }
+
+  async isValidUser(userId: string, operationId: number): Promise<boolean> {
+    const operation = await this.operationRepository.findOne(
+      {
+        id: operationId,
+      },
+      { relations: ['users'] },
+    );
+    if (!operation) return false;
+    if (operation.users?.filter((v) => v.id === userId).length === 0)
+      return false;
+    return true;
+  }
+
+  async joinOperation(user: User, info: JoinForm): Promise<boolean> {
+    const operation = await this.operationRepository.findOne({
+      where: info,
+      relations: ['users'],
+    });
+    if (!operation) return false;
+    operation.users?.push(user);
+    await this.operationRepository.save(operation);
+    return true;
+  }
+
+  async leaveOperation(userId: string, operationId: number): Promise<boolean> {
+    const operation = await this.operationRepository.findOne({
+      where: { id: operationId },
+      relations: ['users'],
+    });
+    if (!operation) return false;
+    operation.users = operation.users?.filter((v) => v.id !== userId);
+    if (operation.users?.length === 0) {
+      this.deleteOperation(operationId);
+      return true;
+    }
+    await this.operationRepository.save(operation);
     return true;
   }
 }
