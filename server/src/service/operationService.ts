@@ -4,6 +4,7 @@ import User from '@/entity/User';
 
 interface OperationForm {
   title: string;
+  password?: string;
   startDate: Date;
   endDate: Date;
   color: string;

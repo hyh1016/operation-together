@@ -5,21 +5,25 @@ import User from '@/entity/User';
 
 const router = Router();
 
+interface OperationForm {
+  title: string;
+  password?: string;
+  startDate: Date;
+  endDate: Date;
+  color: string;
+  adminId?: string;
+}
+
 export default (indexRouter: Router): void => {
   indexRouter.use('/operations', router);
   router.use('/', passport.authenticate('jwt', { session: false }));
 
   router.post('/', async (req, res) => {
     const serviceInstance = Container.getOperationService();
-    const { title, startDate, endDate, color } = req.body;
+    const operationDTO: OperationForm = req.body;
     const operationId = await serviceInstance.createOperation(
       req.user as User,
-      {
-        title,
-        startDate,
-        endDate,
-        color,
-      },
+      operationDTO,
     );
     if (!operationId) return res.status(400).json({ message: 'create failed' });
     res.status(200).json({ operationId });
@@ -42,7 +46,7 @@ export default (indexRouter: Router): void => {
   router.put('/:id', async (req, res) => {
     const { id: operationId } = req.params;
     const { id: userId } = req.user as User;
-    const { title, startDate, endDate, color, adminId } = req.body;
+    const operationDTO: OperationForm = req.body;
     const serviceInstance = Container.getOperationService();
     const isAuthenticated = await serviceInstance.isAdminUser(
       userId,
@@ -51,13 +55,7 @@ export default (indexRouter: Router): void => {
     if (!isAuthenticated) return res.status(401).json();
     const isUpdated = await serviceInstance.updateOperation(
       Number(operationId),
-      {
-        title,
-        startDate,
-        endDate,
-        color,
-        adminId,
-      },
+      operationDTO,
     );
     if (!isUpdated) return res.status(400).json({ message: 'update failed' });
     return res.status(200).json();
