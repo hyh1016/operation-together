@@ -7,6 +7,7 @@ interface OperationForm {
   startDate: Date;
   endDate: Date;
   color: string;
+  adminId?: string;
 }
 
 export default class OperationService {
@@ -35,5 +36,48 @@ export default class OperationService {
       .addSelect(['users.id', 'users.nickname'])
       .getMany();
     return operations;
+  }
+
+  async getOperationById(id: number): Promise<Operation | undefined> {
+    if (!id) return undefined;
+    const operation = await this.operationRepository
+      .createQueryBuilder('operation')
+      .where('operation.id = :id', { id })
+      .leftJoin('operation.users', 'users')
+      .addSelect(['users.id', 'users.nickname'])
+      .getOne();
+    if (!operation) return undefined;
+    return operation;
+  }
+
+  async updateOperation(id: number, info: OperationForm): Promise<boolean> {
+    if (Object.values(info).filter((v) => !v).length > 0) return false;
+    try {
+      await this.operationRepository.update({ id }, { ...info });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  async deleteOperation(id: number): Promise<boolean> {
+    if (!id) return false;
+    try {
+      await this.operationRepository.delete({ id });
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  async isAdminUser(userId: string, operationId: number): Promise<boolean> {
+    const operation = await this.operationRepository.findOne({
+      id: operationId,
+    });
+    if (!operation) return false;
+    if (userId !== operation.adminId) return false;
+    return true;
   }
 }
