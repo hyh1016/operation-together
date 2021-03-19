@@ -10,8 +10,8 @@ const verifyUserToken = (token: string, id: string): boolean => {
   try {
     const decoded: any = verify(token, config.SECRET_KEY as string);
     if (decoded.id === id) return true;
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   }
   return false;
 };
