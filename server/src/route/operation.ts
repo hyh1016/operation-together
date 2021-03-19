@@ -1,18 +1,11 @@
 import { Router } from 'express';
-import Container from '@/container';
 import passport from 'passport';
+import Container from '@/container';
 import User from '@/entity/User';
+import { OperationForm } from '@/service/operationService';
+import { isNumber } from '@/util/util';
 
 const router = Router();
-
-interface OperationForm {
-  title: string;
-  password?: string;
-  startDate: Date;
-  endDate: Date;
-  color: string;
-  adminId?: string;
-}
 
 export default (indexRouter: Router): void => {
   indexRouter.use('/operations', router);
@@ -32,14 +25,16 @@ export default (indexRouter: Router): void => {
   router.get('/', async (req, res) => {
     const serviceInstance = Container.getOperationService();
     const operations = await serviceInstance.getOperations(req.user as User);
+    if (!operations) return res.status(400).json();
     res.status(200).json({ operations });
   });
 
-  router.get('/:id', async (req, res) => {
+  router.get('/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
     const { id: userId } = req.user as User;
     const serviceInstance = Container.getOperationService();
-    const isValidUser = await serviceInstance.isValidUser(
+    const isValidUser = await serviceInstance.isJoinedUser(
       userId,
       Number(operationId),
     );
@@ -49,6 +44,10 @@ export default (indexRouter: Router): void => {
     );
     if (!operation) return res.status(204).json();
     return res.status(200).json({ operation });
+  });
+
+  router.get('/hello', (req, res) => {
+    return res.send('hello~');
   });
 
   router.put('/join', async (req, res) => {
@@ -62,8 +61,9 @@ export default (indexRouter: Router): void => {
     return res.status(200).json();
   });
 
-  router.put('/leave/:id', async (req, res) => {
+  router.put('/leave/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
     const { id: userId } = req.user as User;
     const serviceInstance = Container.getOperationService();
     const isLeave = await serviceInstance.leaveOperation(
@@ -74,8 +74,9 @@ export default (indexRouter: Router): void => {
     return res.status(200).json();
   });
 
-  router.put('/:id', async (req, res) => {
+  router.put('/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
     const { id: userId } = req.user as User;
     const operationDTO: OperationForm = req.body;
     const serviceInstance = Container.getOperationService();
@@ -92,8 +93,9 @@ export default (indexRouter: Router): void => {
     return res.status(200).json();
   });
 
-  router.delete('/:id', async (req, res) => {
+  router.delete('/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
     const { id: userId } = req.user as User;
     const serviceInstance = Container.getOperationService();
     const isAuthenticated = await serviceInstance.isAdminUser(
