@@ -1,16 +1,14 @@
+import theme from '@/style/theme';
 import React from 'react';
 import styled from 'styled-components';
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.button<Props>`
   width: 80%;
   margin: 0.5rem;
   padding: 0.3rem;
-  border: 1px solid ${(props) => props.color};
+  border: ${(props) => (props.border ? `1px solid ${props.color}` : 'none')};
   border-radius: ${(props) => props.theme.borderRadius};
-  background-color: ${(props) =>
-    props.color === props.theme.mainColor
-      ? props.theme.highlightColor
-      : props.theme.mainColor};
+  background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.color};
   font-size: 1.5rem;
   outline: none;
@@ -23,19 +21,38 @@ const ButtonWrapper = styled.button`
 `;
 
 interface Props {
-  value: string;
-  color: string;
+  backgroundColor?: string;
+  color?: string;
+  border?: boolean;
+  value?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const Button: React.FC<Props> = ({ value, color, onClick }) => {
+const Button: React.FC<Props> = ({
+  backgroundColor,
+  color,
+  border,
+  value,
+  onClick,
+}) => {
   return (
     <div>
-      <ButtonWrapper onClick={onClick} color={color}>
+      <ButtonWrapper
+        onClick={onClick}
+        backgroundColor={backgroundColor}
+        color={color}
+        border={border}
+      >
         {value}
       </ButtonWrapper>
     </div>
   );
+};
+
+Button.defaultProps = {
+  backgroundColor: theme.highlightColor,
+  color: theme.mainColor,
+  border: true,
 };
 
 export default Button;
