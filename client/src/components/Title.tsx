@@ -41,18 +41,20 @@ const Title: React.FC = () => {
         </LogoWrapper>
         <Button
           value="회원가입"
+          backgroundColor={theme.highlightColor}
           color={theme.mainColor}
           onClick={() => {
-            setVisible(!visible);
             setIsJoin(true);
+            setVisible(!visible);
           }}
         />
         <Button
           value="로그인"
+          backgroundColor={theme.mainColor}
           color={theme.highlightColor}
           onClick={() => {
-            setVisible(!visible);
             setIsJoin(false);
+            setVisible(!visible);
           }}
         />
       </TitleWrapper>
