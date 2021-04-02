@@ -15,6 +15,9 @@ const sendGetRequest = async (
     const result = await axios.get(BASE_URL + path, {
       params,
       withCredentials: true,
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
     });
     if (result.status !== 200) throw new Error(result.data.message);
     return { result: result.data };
@@ -30,6 +33,9 @@ const sendPostRequest = async (
   try {
     const result = await axios.post(BASE_URL + path, body, {
       withCredentials: true,
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
     });
     if (result.status !== 200) throw new Error(result.data.message);
     return { result: result.data };

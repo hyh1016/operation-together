@@ -127,7 +127,7 @@ const JoinForm: React.FC = () => {
       setMessage(ERROR.LOGIN_FAILED);
       return;
     }
-    localStorage.setItem('authorization', result.token);
+    localStorage.setItem('token', result.token);
     history.push('/main');
   };
 
@@ -173,6 +173,7 @@ const JoinForm: React.FC = () => {
           placeholder="비밀번호 확인"
         />
         <Button
+          backgroundColor={theme.highlightColor}
           color={theme.mainColor}
           value="가입하기"
           onClick={async (e) => {

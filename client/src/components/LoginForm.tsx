@@ -50,7 +50,7 @@ const LoginForm: React.FC = () => {
       setMessage(ERROR.NOT_VALID_USER);
       return;
     }
-    localStorage.setItem('authorization', result.token);
+    localStorage.setItem('token', result.token);
     history.push('/main');
   };
 
@@ -71,6 +71,7 @@ const LoginForm: React.FC = () => {
           placeholder="비밀번호를 입력하세요."
         />
         <Button
+          backgroundColor={theme.highlightColor}
           color={theme.mainColor}
           value="로그인하기"
           onClick={async (e) => {
