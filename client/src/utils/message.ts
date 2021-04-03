@@ -7,6 +7,11 @@ const ERROR = {
   NOT_VALID_USER: '아이디 또는 비밀번호가 일치하지 않습니다.',
   JOIN_FAILED: '회원가입에 실패하였습니다.',
   LOGIN_FAILED: '로그인에 실패하였습니다.',
+  NOT_VALID_TITLE: '잘못된 형식의 작전명입니다.',
+  NOT_VALID_CODE: '잘못된 형식의 암호입니다.',
+  NOT_VALID_DATE: '날짜 설정이 잘못되었습니다.',
+  NOT_VALID_COLOR: '색상을 선택해주세요.',
+  NOT_VALID_OPERATION: '작전 코드 또는 암호가 잘못되었습니다.',
 };
 
 export { ERROR };
