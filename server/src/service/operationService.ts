@@ -4,7 +4,7 @@ import User from '@/entity/User';
 
 export interface OperationForm {
   title: string;
-  password?: string;
+  code?: string;
   startDate: Date;
   endDate: Date;
   color: string;
@@ -13,7 +13,7 @@ export interface OperationForm {
 
 export interface JoinForm {
   id: number;
-  password?: string;
+  code?: string;
 }
 
 export default class OperationService {

@@ -46,16 +46,12 @@ export default (indexRouter: Router): void => {
     return res.status(200).json({ operation });
   });
 
-  router.get('/hello', (req, res) => {
-    return res.send('hello~');
-  });
-
   router.put('/join', async (req, res) => {
-    const { id, password } = req.body;
+    const { id, code } = req.body;
     const serviceInstance = Container.getOperationService();
     const isJoin = await serviceInstance.joinOperation(req.user as User, {
       id: Number(id),
-      password,
+      code,
     });
     if (!isJoin) return res.status(400).json({ message: 'join failed' });
     return res.status(200).json();

@@ -18,7 +18,7 @@ export default class Operation {
   title!: string;
 
   @Column({ type: 'varchar', default: '' })
-  password: string | undefined;
+  code: string | undefined;
 
   @Column()
   startDate!: Date;
