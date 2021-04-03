@@ -58,12 +58,14 @@ const JoinForm: React.FC = () => {
   };
 
   const isValidNickname = () => {
+    if (nickname[0] === ' ') return false;
     if (nickname.length < 1 || nickname.length > 10) return false;
     return true;
   };
 
   const isValidPassword = () => {
     if (password.length < 8 || password.length > 12) return false;
+    if (/[^\w]/.test(password)) return false;
     return true;
   };
 
@@ -128,7 +130,7 @@ const JoinForm: React.FC = () => {
       return;
     }
     localStorage.setItem('token', result.token);
-    history.push('/main');
+    history.push('/');
   };
 
   return (
@@ -144,6 +146,7 @@ const JoinForm: React.FC = () => {
             await checkAsyncData(isNotExistId, ERROR.IS_EXIST_ID);
           }}
           placeholder="아이디 (영문, 숫자 6~12자)"
+          maxLength={12}
         />
         <Input
           type="text"
@@ -153,6 +156,7 @@ const JoinForm: React.FC = () => {
             checkData(isValidNickname, ERROR.NOT_VALID_NICKNAME);
           }}
           placeholder="닉네임 (1~10자)"
+          maxLength={10}
         />
         <Input
           type="password"
@@ -162,6 +166,7 @@ const JoinForm: React.FC = () => {
             checkData(isValidPassword, ERROR.NOT_VALID_PASSWORD);
           }}
           placeholder="비밀번호 (8~12자)"
+          maxLength={12}
         />
         <Input
           type="password"
@@ -171,6 +176,7 @@ const JoinForm: React.FC = () => {
             checkData(isEqualPassword, ERROR.NOT_EQUAL_PASSWORD);
           }}
           placeholder="비밀번호 확인"
+          maxLength={12}
         />
         <Button
           backgroundColor={theme.highlightColor}

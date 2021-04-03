@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
       return;
     }
     localStorage.setItem('token', result.token);
-    history.push('/main');
+    history.push('/');
   };
 
   return (
