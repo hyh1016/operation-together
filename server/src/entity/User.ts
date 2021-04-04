@@ -13,7 +13,7 @@ export default class User {
   @Column()
   password!: string;
 
-  @ManyToMany(() => Operation)
+  @ManyToMany((type) => Operation, (role) => role.users)
   operations: Operation[] | undefined;
 
   @OneToMany(() => Chart, (chart) => chart.user)

@@ -32,7 +32,7 @@ export default class Operation {
   @Column()
   adminId!: string;
 
-  @ManyToMany(() => User)
+  @ManyToMany((type) => User, (role) => role.operations)
   @JoinTable()
   users: User[] | undefined;
 
