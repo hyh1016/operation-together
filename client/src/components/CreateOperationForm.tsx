@@ -95,6 +95,11 @@ const CreateOperationForm: React.FC = () => {
 
   const createOperationEvent = async () => {
     if (!isValidForm()) return;
+    if (!localStorage.getItem('token')) {
+      alert(ERROR.NOT_VALID_TOKEN);
+      history.push('/login');
+      return;
+    }
     const { result, error } = await sendPostRequest('/operations', {
       title,
       code,
@@ -103,8 +108,7 @@ const CreateOperationForm: React.FC = () => {
       color,
     });
     if (error) {
-      alert('로그인 정보가 없습니다. 로그인 페이지로 이동합니다.');
-      history.push('/login');
+      setMessage(ERROR.OPERATION_CREATE_FAILED);
       return;
     }
     const { operationId } = result;
