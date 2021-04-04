@@ -2,6 +2,7 @@ import { Repository } from 'typeorm';
 import { compare } from 'bcrypt';
 import User from '@/entity/User';
 import CreateHashPassword from '@/util/encryption';
+import Operation from '@/entity/Operation';
 
 export interface RegisterForm {
   id: string;
@@ -58,5 +59,14 @@ export default class UserService {
       console.error(error);
       return undefined;
     }
+  }
+
+  async getOperations(userId: string): Promise<Operation[] | undefined> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['operations'],
+    });
+    if (!user) return undefined;
+    return user.operations;
   }
 }

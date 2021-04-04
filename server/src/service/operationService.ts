@@ -4,7 +4,7 @@ import User from '@/entity/User';
 
 export interface OperationForm {
   title: string;
-  code?: string;
+  code: string;
   startDate: Date;
   endDate: Date;
   color: string;
@@ -23,7 +23,11 @@ export default class OperationService {
     user: User,
     info: OperationForm,
   ): Promise<number | undefined> {
-    if (Object.values(info).filter((v) => !v).length > 0) return undefined;
+    if (
+      Object.entries(info).filter(([key, value]) => key !== 'code' && !value)
+        .length > 0
+    )
+      return undefined;
     try {
       const newOperation = this.operationRepository.create({
         ...info,
@@ -33,21 +37,6 @@ export default class OperationService {
       newOperation.users = [user];
       await this.operationRepository.save(newOperation);
       return newOperation.id;
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
-  }
-
-  async getOperations(user: User): Promise<Operation[] | undefined> {
-    try {
-      const operations = await this.operationRepository
-        .createQueryBuilder('operation')
-        .where('operation.adminId = :id', { id: user.id })
-        .leftJoin('operation.users', 'users')
-        .addSelect(['users.id', 'users.nickname'])
-        .getMany();
-      return operations;
     } catch (error) {
       console.error(error);
       return undefined;
