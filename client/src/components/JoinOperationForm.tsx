@@ -1,4 +1,7 @@
+import { ERROR } from '@/utils/message';
+import { sendPutRequest } from '@/utils/request';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Button';
 
@@ -27,9 +30,32 @@ const Input = styled.input`
   }
 `;
 
+const Message = styled.p`
+  color: red;
+`;
+
 const JoinOperationForm: React.FC = () => {
-  const [roomId, setRoomId] = useState('');
-  const [password, setPassword] = useState('');
+  const history = useHistory();
+  const [id, setId] = useState('');
+  const [code, setCode] = useState('');
+  const [message, setMessage] = useState('');
+
+  const joinOperationEvent = async () => {
+    if (!localStorage.getItem('token')) {
+      alert(ERROR.NOT_VALID_TOKEN);
+      history.push('/login');
+      return;
+    }
+    const { result, error } = await sendPutRequest('/operations/join', {
+      id,
+      code,
+    });
+    if (error) {
+      setMessage(ERROR.NOT_VALID_OPERATION);
+      return;
+    }
+    history.push(`/operations/${id}`);
+  };
 
   return (
     <>
@@ -37,17 +63,24 @@ const JoinOperationForm: React.FC = () => {
       <JoinOperationFormWrapper>
         <Input
           type="text"
-          value={roomId}
+          value={id}
           placeholder="작전 코드를 입력해주세요."
-          onChange={(e) => setRoomId(e.target.value)}
+          onChange={(e) => setId(e.target.value)}
         />
         <Input
           type="text"
-          value={password}
+          value={code}
           placeholder="암호를 입력해주세요."
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setCode(e.target.value)}
         />
-        <Button value="참여하기" />
+        <Button
+          value="참여하기"
+          onClick={async (e) => {
+            e.preventDefault();
+            await joinOperationEvent();
+          }}
+        />
+        <Message>{message}</Message>
       </JoinOperationFormWrapper>
     </>
   );
