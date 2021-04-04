@@ -44,4 +44,22 @@ const sendPostRequest = async (
   }
 };
 
-export { sendGetRequest, sendPostRequest };
+const sendPutRequest = async (
+  path: string,
+  body = {},
+): Promise<returnObject> => {
+  try {
+    const result = await axios.put(BASE_URL + path, body, {
+      withCredentials: true,
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    });
+    if (result.status !== 200) throw new Error(result.data.message);
+    return { result: result.data };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export { sendGetRequest, sendPostRequest, sendPutRequest };
