@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { ERROR } from '@/utils/message';
 import Button from './Button';
 
-const LoginFormWrapper = styled.div`
+const LoginFormWrapper = styled.form`
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid ${(props) => props.theme.highlightColor};
@@ -69,6 +69,7 @@ const LoginForm: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호를 입력하세요."
+          autoComplete="on"
         />
         <Button
           backgroundColor={theme.highlightColor}
