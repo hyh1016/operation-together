@@ -5,8 +5,8 @@ import User from '@/entity/User';
 export interface OperationForm {
   title: string;
   code: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   color: string;
   adminId?: string;
 }
@@ -61,7 +61,11 @@ export default class OperationService {
   }
 
   async updateOperation(id: number, info: OperationForm): Promise<boolean> {
-    if (Object.values(info).filter((v) => !v).length > 0) return false;
+    if (
+      Object.entries(info).filter(([key, value]) => key !== 'code' && !value)
+        .length > 0
+    )
+      return false;
     try {
       await this.operationRepository.update({ id }, info);
       return true;

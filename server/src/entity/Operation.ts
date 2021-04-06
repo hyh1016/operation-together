@@ -20,11 +20,11 @@ export default class Operation {
   @Column({ type: 'varchar', default: '' })
   code: string | undefined;
 
-  @Column()
-  startDate!: Date;
+  @Column({ type: 'date' })
+  startDate!: string;
 
-  @Column()
-  endDate!: Date;
+  @Column({ type: 'date' })
+  endDate!: string;
 
   @Column()
   color!: string;
