@@ -14,6 +14,8 @@ const Operation: React.FC<OperationProps> = ({ id, title, color }) => {
   return (
     <Button
       backgroundColor={color}
+      color={'black'}
+      border={false}
       value={`#${id} ${title}`}
       onClick={() => {
         history.push(`/operations/${id}`);
