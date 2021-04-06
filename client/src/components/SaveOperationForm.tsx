@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { CirclePicker } from 'react-color';
 import Select from 'react-select';
 import { ERROR } from '@/utils/message';
-import { sendGetRequest, sendPostRequest } from '@/utils/request';
+import { sendPostRequest, sendPutRequest } from '@/utils/request';
 import { useHistory } from 'react-router-dom';
-import { User } from '@/interfaces';
+import { Operation, User } from '@/interfaces';
 import Button from './Button';
 
 const SaveOperationFormWrapper = styled.form`
@@ -36,6 +36,7 @@ const Input = styled.input`
 const SelectWrapper = styled.div`
   width: 80%;
   margin: 0.5rem auto;
+  color: ${(props) => props.theme.mainColor};
 `;
 
 const ColorPickerWrapper = styled.div`
@@ -51,7 +52,7 @@ const Message = styled.p`
 
 interface Props {
   isCreate: boolean;
-  id?: number;
+  operation?: Operation;
 }
 
 interface Option {
@@ -59,7 +60,7 @@ interface Option {
   label: string;
 }
 
-const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
+const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
   const today = new Date().toISOString().split('T')[0];
   const history = useHistory();
 
@@ -70,21 +71,28 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
   const [color, setColor] = useState('');
   const [message, setMessage] = useState('');
 
-  const [admin, setAdmin] = useState<Option | undefined>();
-  const [options, setOptions] = useState<Option[] | undefined>();
+  const [selected, setSelected] = useState<Option | undefined>(
+    operation
+      ? {
+          value: operation.adminId,
+          label: operation.adminId,
+        }
+      : undefined,
+  );
+  const options = operation
+    ? operation.users?.map((user: User) => ({
+        value: user.id,
+        label: user.nickname,
+      }))
+    : undefined;
 
   useEffect(() => {
-    if (isCreate) return;
-    const fetch = async () => {
-      const { result } = await sendGetRequest(`operations/${id}`);
-      if (!result) return;
-      const { adminId, users } = result.operation;
-      setAdmin({ value: adminId, label: adminId });
-      setOptions(
-        users.map((user: User) => ({ value: user.id, label: user.nickname })),
-      );
-    };
-    fetch();
+    if (!operation) return;
+    setTitle(operation?.title);
+    setCode(operation.code);
+    setStartDate(operation.startDate);
+    setEndDate(operation.endDate);
+    setColor(operation.color);
   }, []);
 
   const isValidTitle = () => {
@@ -149,9 +157,34 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
     history.push(`/operations/${operationId}`);
   };
 
+  const updateOperationEvent = async () => {
+    if (!isValidForm()) return;
+    if (!localStorage.getItem('token')) {
+      alert(ERROR.NOT_VALID_TOKEN);
+      history.push('/login');
+      return;
+    }
+    const { result, error } = await sendPutRequest(
+      `/operations/${operation?.id}`,
+      {
+        title,
+        code,
+        startDate,
+        endDate,
+        color,
+        adminId: selected?.value,
+      },
+    );
+    if (error) {
+      setMessage(ERROR.OPERATION_UPDATE_FAILED);
+      return;
+    }
+    window.location.reload();
+  };
+
   return (
     <>
-      <h1>작전 생성</h1>
+      <h1>작전 {isCreate ? '생성' : '수정'}</h1>
       <SaveOperationFormWrapper>
         <Input
           type="text"
@@ -197,8 +230,8 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
             <SelectWrapper>
               <Select
                 options={options}
-                value={admin}
-                onChange={(value) => setAdmin(value as Option)}
+                value={selected}
+                onChange={(value) => setSelected(value as Option)}
               />
             </SelectWrapper>
           </>
@@ -211,10 +244,11 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
           />
         </ColorPickerWrapper>
         <Button
-          value="생성하기"
+          value={isCreate ? '생성하기' : '수정하기'}
           onClick={async (e) => {
             e.preventDefault();
-            await createOperationEvent();
+            if (isCreate) await createOperationEvent();
+            else await updateOperationEvent();
           }}
         />
         <Message>{message}</Message>
