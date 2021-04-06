@@ -7,7 +7,7 @@ import Button from '@/components/Button';
 import theme from '@/style/theme';
 import Modal from '@/components/Modal';
 import JoinOperationForm from '@/components/JoinOperationForm';
-import CreateOperationForm from '@/components/CreateOperationForm';
+import SaveOperationForm from '@/components/SaveOperationForm';
 import { useHistory } from 'react-router-dom';
 
 const ContentWrapper = styled.div`
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
         </RightWrapper>
       </ContentWrapper>
       <Modal visible={visible} setVisible={setVisible}>
-        {isJoin ? <JoinOperationForm /> : <CreateOperationForm />}
+        {isJoin ? <JoinOperationForm /> : <SaveOperationForm isCreate={true} />}
       </Modal>
     </>
   );

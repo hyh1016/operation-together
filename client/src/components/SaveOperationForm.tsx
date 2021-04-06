@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CirclePicker } from 'react-color';
+import Select from 'react-select';
 import { ERROR } from '@/utils/message';
-import { sendPostRequest } from '@/utils/request';
+import { sendGetRequest, sendPostRequest } from '@/utils/request';
 import { useHistory } from 'react-router-dom';
+import { User } from '@/interfaces';
 import Button from './Button';
 
-const CreateOperationFormWrapper = styled.form`
+const SaveOperationFormWrapper = styled.form`
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid ${(props) => props.theme.highlightColor};
@@ -31,6 +33,11 @@ const Input = styled.input`
   }
 `;
 
+const SelectWrapper = styled.div`
+  width: 80%;
+  margin: 0.5rem auto;
+`;
+
 const ColorPickerWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -42,7 +49,17 @@ const Message = styled.p`
   color: red;
 `;
 
-const CreateOperationForm: React.FC = () => {
+interface Props {
+  isCreate: boolean;
+  id?: number;
+}
+
+interface Option {
+  value: string;
+  label: string;
+}
+
+const SaveOperationForm: React.FC<Props> = ({ isCreate, id }) => {
   const today = new Date().toISOString().split('T')[0];
   const history = useHistory();
 
@@ -52,6 +69,23 @@ const CreateOperationForm: React.FC = () => {
   const [endDate, setEndDate] = useState(today);
   const [color, setColor] = useState('');
   const [message, setMessage] = useState('');
+
+  const [admin, setAdmin] = useState<Option | undefined>();
+  const [options, setOptions] = useState<Option[] | undefined>();
+
+  useEffect(() => {
+    if (isCreate) return;
+    const fetch = async () => {
+      const { result } = await sendGetRequest(`operations/${id}`);
+      if (!result) return;
+      const { adminId, users } = result.operation;
+      setAdmin({ value: adminId, label: adminId });
+      setOptions(
+        users.map((user: User) => ({ value: user.id, label: user.nickname })),
+      );
+    };
+    fetch();
+  }, []);
 
   const isValidTitle = () => {
     if (title.length < 1) return false;
@@ -118,7 +152,7 @@ const CreateOperationForm: React.FC = () => {
   return (
     <>
       <h1>작전 생성</h1>
-      <CreateOperationFormWrapper>
+      <SaveOperationFormWrapper>
         <Input
           type="text"
           value={title}
@@ -157,6 +191,18 @@ const CreateOperationForm: React.FC = () => {
             checkData(isValidDate, ERROR.NOT_VALID_DATE);
           }}
         />
+        {!isCreate ? (
+          <>
+            <h3>관리자 변경</h3>
+            <SelectWrapper>
+              <Select
+                options={options}
+                value={admin}
+                onChange={(value) => setAdmin(value as Option)}
+              />
+            </SelectWrapper>
+          </>
+        ) : undefined}
         <h3>색상 선택</h3>
         <ColorPickerWrapper>
           <CirclePicker
@@ -172,9 +218,9 @@ const CreateOperationForm: React.FC = () => {
           }}
         />
         <Message>{message}</Message>
-      </CreateOperationFormWrapper>
+      </SaveOperationFormWrapper>
     </>
   );
 };
 
-export default CreateOperationForm;
+export default SaveOperationForm;
