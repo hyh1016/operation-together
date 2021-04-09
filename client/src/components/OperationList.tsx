@@ -1,7 +1,7 @@
-import { sendGetRequest } from '@/utils/request';
-import React, { useEffect, useState } from 'react';
+import { Operation } from '@/interfaces';
+import React from 'react';
 import styled from 'styled-components';
-import Operation from './Operation';
+import OperationButton from './OperationButton';
 
 const ListWrapper = styled.div`
   width: 80%;
@@ -18,35 +18,24 @@ const Title = styled.div`
   font-size: 2rem;
 `;
 
-interface OperaitonProps {
-  id: number;
-  title: string;
-  color: string;
+interface Props {
+  operations: Operation[] | undefined;
 }
 
-const OperationList: React.FC = () => {
-  const [operations, setOperations] = useState<OperaitonProps[] | undefined>(
-    undefined,
-  );
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (!operations) {
-        const { result } = await sendGetRequest('/operations');
-        if (!result) return;
-        setOperations(result.operations);
-      }
-    };
-    fetch();
-  }, []);
-
+const OperationList: React.FC<Props> = ({ operations }) => {
   return (
     <ListWrapper>
       <Title>작전 목록</Title>
-      {operations &&
-        operations.map((v) => (
-          <Operation key={v.id} id={v.id} title={v.title} color={v.color} />
-        ))}
+      {operations
+        ? operations.map((v) => (
+            <OperationButton
+              key={v.id}
+              id={v.id}
+              title={v.title}
+              color={v.color}
+            />
+          ))
+        : undefined}
     </ListWrapper>
   );
 };
