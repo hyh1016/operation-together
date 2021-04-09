@@ -1,5 +1,7 @@
+import theme from '@/style/theme';
 import React from 'react';
 import styled from 'styled-components';
+import Button from './Button';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -21,6 +23,13 @@ const ModalWrapper = styled.div`
   border-radius: 16px;
   background-color: #333;
   text-align: center;
+
+  #close {
+    width: 10%;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 `;
 
 interface Props {
@@ -33,7 +42,18 @@ const Modal: React.FC<Props> = ({ visible, setVisible, children }) => {
   return (
     <>
       <ModalOverlay onClick={() => setVisible(!visible)} />
-      <ModalWrapper>{children}</ModalWrapper>
+
+      <ModalWrapper>
+        <Button
+          id="close"
+          value="X"
+          backgroundColor="inherit"
+          color={theme.highlightColor}
+          border={false}
+          onClick={() => setVisible(!visible)}
+        />
+        {children}
+      </ModalWrapper>
     </>
   );
 };
