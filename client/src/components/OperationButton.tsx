@@ -2,13 +2,13 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from './Button';
 
-interface OperationProps {
+interface Props {
   id: number;
   title: string;
   color: string;
 }
 
-const Operation: React.FC<OperationProps> = ({ id, title, color }) => {
+const OperationButton: React.FC<Props> = ({ id, title, color }) => {
   const history = useHistory();
 
   return (
@@ -24,4 +24,4 @@ const Operation: React.FC<OperationProps> = ({ id, title, color }) => {
   );
 };
 
-export default Operation;
+export default OperationButton;
