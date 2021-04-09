@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CirclePicker } from 'react-color';
 import Select from 'react-select';
@@ -61,39 +61,24 @@ interface Option {
 }
 
 const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
-  const today = new Date().toISOString().split('T')[0];
+  if (!operation) return <></>;
   const history = useHistory();
 
-  const [title, setTitle] = useState('');
-  const [code, setCode] = useState('');
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(today);
-  const [color, setColor] = useState('');
+  const [title, setTitle] = useState(operation.title);
+  const [code, setCode] = useState(operation.code);
+  const [startDate, setStartDate] = useState(operation.startDate);
+  const [endDate, setEndDate] = useState(operation.endDate);
+  const [color, setColor] = useState(operation.color);
   const [message, setMessage] = useState('');
 
-  const [selected, setSelected] = useState<Option | undefined>(
-    operation
-      ? {
-          value: operation.adminId,
-          label: operation.adminId,
-        }
-      : undefined,
-  );
-  const options = operation
-    ? operation.users?.map((user: User) => ({
-        value: user.id,
-        label: user.nickname,
-      }))
-    : undefined;
-
-  useEffect(() => {
-    if (!operation) return;
-    setTitle(operation?.title);
-    setCode(operation.code);
-    setStartDate(operation.startDate);
-    setEndDate(operation.endDate);
-    setColor(operation.color);
-  }, []);
+  const options = operation.users?.map((user: User) => ({
+    value: user.id,
+    label: user.nickname,
+  }));
+  const admin = options?.filter(
+    (option) => option.value === operation.adminId,
+  )[0];
+  const [selected, setSelected] = useState<Option | undefined>(admin);
 
   const isValidTitle = () => {
     if (title.length < 1) return false;
@@ -107,6 +92,7 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
   };
 
   const isValidDate = () => {
+    const today = new Date().toISOString().split('T')[0];
     if (today > startDate || today > endDate) return false;
     if (startDate > endDate) return false;
     return true;
