@@ -3,6 +3,7 @@ import { compare } from 'bcrypt';
 import User from '@/entity/User';
 import CreateHashPassword from '@/util/encryption';
 import Operation from '@/entity/Operation';
+import user from '@/route/user';
 
 export interface RegisterForm {
   id: string;
@@ -58,6 +59,31 @@ export default class UserService {
     } catch (error) {
       console.error(error);
       return undefined;
+    }
+  }
+
+  async getMe(user: User): Promise<User | undefined> {
+    if (!user) return undefined;
+    try {
+      const me = await this.userRepository.findOne({
+        select: ['id', 'nickname'],
+        where: { id: user.id },
+        relations: ['operations'],
+      });
+      return me;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  }
+
+  async updateUser(id: string, nickname: string): Promise<boolean> {
+    if (!id || !nickname) return false;
+    try {
+      await this.userRepository.update({ id }, { nickname });
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
