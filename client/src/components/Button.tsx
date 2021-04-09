@@ -21,6 +21,7 @@ const ButtonWrapper = styled.button<Props>`
 `;
 
 interface Props {
+  id?: string;
   backgroundColor?: string;
   color?: string;
   border?: boolean;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const Button: React.FC<Props> = ({
+  id,
   backgroundColor,
   color,
   border,
@@ -38,6 +40,7 @@ const Button: React.FC<Props> = ({
   return (
     <div>
       <ButtonWrapper
+        id={id}
         onClick={onClick}
         backgroundColor={backgroundColor}
         color={color}
