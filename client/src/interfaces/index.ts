@@ -2,6 +2,7 @@ export interface User {
   id: string;
   nickname: string;
   password?: string;
+  operations?: Operation[];
 }
 
 export interface Operation {
