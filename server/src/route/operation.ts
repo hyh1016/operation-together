@@ -22,14 +22,6 @@ export default (indexRouter: Router): void => {
     res.status(200).json({ operationId });
   });
 
-  router.get('/', async (req, res) => {
-    const serviceInstance = Container.getUserService();
-    const { id } = req.user as User;
-    const operations = await serviceInstance.getOperations(id);
-    if (!operations) return res.status(400).json();
-    res.status(200).json({ operations });
-  });
-
   router.get('/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
     if (!isNumber(operationId)) return next();

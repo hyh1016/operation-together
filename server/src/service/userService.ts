@@ -86,13 +86,4 @@ export default class UserService {
       return false;
     }
   }
-
-  async getOperations(userId: string): Promise<Operation[] | undefined> {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: ['operations'],
-    });
-    if (!user) return undefined;
-    return user.operations;
-  }
 }
