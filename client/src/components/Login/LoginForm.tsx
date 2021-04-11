@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import theme from '@/style/theme';
 import { sendPostRequest } from '@/utils/request';
-import { useHistory } from 'react-router-dom';
 import { ERROR } from '@/utils/message';
-import Button from './Button';
+import Button from '@/components/Common/Button';
 
 const LoginFormWrapper = styled.form`
   margin-top: 1rem;

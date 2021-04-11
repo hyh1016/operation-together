@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import theme from '../style/theme';
-import Button from './Button';
-import Modal from './Modal';
-import logo from '../images/logo.png';
+import theme from '@/style/theme';
+import Button from '@/components/Common/Button';
+import Modal from '@/components/Common/Modal';
+import logo from '@/images/logo.png';
 import JoinForm from './JoinForm';
 import LoginForm from './LoginForm';
 

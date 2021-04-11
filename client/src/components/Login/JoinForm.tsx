@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '@/style/theme';
 import { sendGetRequest, sendPostRequest } from '@/utils/request';
 import { ERROR } from '@/utils/message';
-import { useHistory } from 'react-router-dom';
-import Button from './Button';
+import Button from '@/components/Common/Button';
 
 const JoinFormWrapper = styled.form`
   margin-top: 1rem;

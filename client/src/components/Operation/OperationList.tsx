@@ -1,6 +1,6 @@
-import { Operation } from '@/interfaces';
 import React from 'react';
 import styled from 'styled-components';
+import { Operation } from '@/interfaces';
 import OperationButton from './OperationButton';
 
 const ListWrapper = styled.div`

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { User } from '@/interfaces';
 import { sendPutRequest } from '@/utils/request';
-import Button from './Button';
+import Button from '@/components/Common/Button';
 
 const CardWrapper = styled.div`
   width: 80%;

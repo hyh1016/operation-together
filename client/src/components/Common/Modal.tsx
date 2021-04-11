@@ -18,11 +18,12 @@ const ModalWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400px;
-  height: fit-content;
+  max-height: 500px;
   padding: 2rem;
   border-radius: 16px;
   background-color: #333;
   text-align: center;
+  overflow: auto;
 
   #close {
     width: 10%;

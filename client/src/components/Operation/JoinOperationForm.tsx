@@ -1,9 +1,9 @@
-import { ERROR } from '@/utils/message';
-import { sendPutRequest } from '@/utils/request';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from './Button';
+import { ERROR } from '@/utils/message';
+import { sendPutRequest } from '@/utils/request';
+import Button from '@/components/Common/Button';
 
 const JoinOperationFormWrapper = styled.form`
   margin-top: 1rem;

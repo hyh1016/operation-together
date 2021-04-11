@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '@/components/Header';
-import Title from '@/components/Title';
+import Header from '@/components/Common/Header';
+import Title from '@/components/Login/Title';
 
 const Login: React.FC = () => {
   return (

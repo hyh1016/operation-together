@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Header from '@/components/Header';
-import UserCard from '@/components/UserCard';
-import OperationList from '@/components/OperationList';
-import Button from '@/components/Button';
-import theme from '@/style/theme';
-import Modal from '@/components/Modal';
-import JoinOperationForm from '@/components/JoinOperationForm';
-import SaveOperationForm from '@/components/SaveOperationForm';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import theme from '@/style/theme';
 import { User } from '@/interfaces';
 import { sendGetRequest } from '@/utils/request';
+import Header from '@/components/Common/Header';
+import Button from '@/components/Common/Button';
+import Modal from '@/components/Common/Modal';
+import UserCard from '@/components/Operation/UserCard';
+import OperationList from '@/components/Operation/OperationList';
+import JoinOperationForm from '@/components/Operation/JoinOperationForm';
+import SaveOperationForm from '@/components/Operation/SaveOperationForm';
 
 const ContentWrapper = styled.div`
   display: flex;
