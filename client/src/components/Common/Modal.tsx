@@ -17,7 +17,8 @@ const ModalWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
+  width: 30%;
+  min-width: 350px;
   max-height: 500px;
   padding: 2rem;
   border-radius: 16px;
