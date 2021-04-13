@@ -26,6 +26,8 @@ const ColorPickerWrapper = styled.div`
 interface Props {
   isCreate: boolean;
   operation?: Operation;
+  setOperation?: React.Dispatch<React.SetStateAction<Operation | undefined>>;
+  setVisible?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface Option {
@@ -33,7 +35,12 @@ interface Option {
   label: string;
 }
 
-const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
+const SaveOperationForm: React.FC<Props> = ({
+  isCreate,
+  operation,
+  setOperation,
+  setVisible,
+}) => {
   const today = new Date().toISOString().split('T')[0];
   const history = useHistory();
 
@@ -132,6 +139,7 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
 
   const updateOperationEvent = async () => {
     if (!isValidForm()) return;
+    if (!operation || !setOperation) return;
     if (!localStorage.getItem('token')) {
       alert(ERROR.NOT_VALID_TOKEN);
       history.push('/login');
@@ -152,7 +160,16 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
       setMessage(ERROR.OPERATION_UPDATE_FAILED);
       return;
     }
-    window.location.reload();
+    setOperation({
+      ...operation,
+      title,
+      code,
+      startDate,
+      endDate,
+      color,
+      adminId: selected?.value as string,
+    });
+    if (setVisible) setVisible(false);
   };
 
   return (
