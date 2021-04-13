@@ -10,7 +10,7 @@ import Modal from '@/components/Common/Modal';
 import UserCard from '@/components/Operation/UserCard';
 import OperationList from '@/components/Operation/OperationList';
 import JoinOperationForm from '@/components/Operation/JoinOperationForm';
-import SaveOperationForm from '@/components/Operation/SaveOperationForm';
+import SaveOperationForm from '@/components/Common/SaveOperationForm';
 
 const ContentWrapper = styled.div`
   display: flex;
