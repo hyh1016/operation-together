@@ -7,8 +7,8 @@ export default class Chart {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  checkedDate!: Date;
+  @Column({ type: 'date' })
+  checkedDate!: string;
 
   @ManyToOne(() => User, (user) => user.charts)
   user!: User;
