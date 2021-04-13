@@ -2,8 +2,6 @@ import { Repository } from 'typeorm';
 import { compare } from 'bcrypt';
 import User from '@/entity/User';
 import CreateHashPassword from '@/util/encryption';
-import Operation from '@/entity/Operation';
-import user from '@/route/user';
 
 export interface RegisterForm {
   id: string;
