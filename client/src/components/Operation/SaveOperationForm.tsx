@@ -1,37 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { CirclePicker } from 'react-color';
-import Select from 'react-select';
 import styled from 'styled-components';
+import Select from 'react-select';
+import { CirclePicker } from 'react-color';
 import { ERROR } from '@/utils/message';
 import { sendPostRequest, sendPutRequest } from '@/utils/request';
 import { Operation, User } from '@/interfaces';
+import Form from '@/components/Common/Form';
+import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
-
-const SaveOperationFormWrapper = styled.form`
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid ${(props) => props.theme.highlightColor};
-`;
-
-const Input = styled.input`
-  width: 80%;
-  margin: 0.5rem;
-  padding: 0.5rem;
-  border: 3px solid #fff;
-  border-radius: 16px;
-  font-size: 1rem;
-  outline: none;
-  &:focus {
-    border: 3px solid ${(props) => props.theme.highlightColor};
-  }
-  &[type='password'] {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  &::placeholder {
-    font-family: 'BMDOHYEON';
-  }
-`;
 
 const SelectWrapper = styled.div`
   width: 80%;
@@ -44,10 +21,6 @@ const ColorPickerWrapper = styled.div`
   justify-content: center;
   width: 100%;
   margin: 0.5rem auto;
-`;
-
-const Message = styled.p`
-  color: red;
 `;
 
 interface Props {
@@ -183,77 +156,70 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, operation }) => {
   };
 
   return (
-    <>
-      <h1>작전 {isCreate ? '생성' : '수정'}</h1>
-      <SaveOperationFormWrapper>
-        <Input
-          type="text"
-          value={title}
-          placeholder="작전명을 입력해주세요."
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={() => {
-            checkData(isValidTitle, ERROR.NOT_VALID_TITLE);
-          }}
-          maxLength={20}
-        />
-        <Input
-          type="text"
-          value={code}
-          placeholder="(선택) 암호를 설정해주세요."
-          onChange={(e) => setCode(e.target.value)}
-          onBlur={() => {
-            checkData(isValidCode, ERROR.NOT_VALID_CODE);
-          }}
-          maxLength={8}
-        />
-        <h3>시작 날짜</h3>
-        <Input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          onBlur={() => {
-            checkData(isValidDate, ERROR.NOT_VALID_DATE);
-          }}
-        />
-        <h3>종료 날짜</h3>
-        <Input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          onBlur={() => {
-            checkData(isValidDate, ERROR.NOT_VALID_DATE);
-          }}
-        />
-        {!isCreate ? (
-          <>
-            <h3>관리자 변경</h3>
-            <SelectWrapper>
-              <Select
-                options={options}
-                value={selected}
-                onChange={(value) => setSelected(value as Option)}
-              />
-            </SelectWrapper>
-          </>
-        ) : undefined}
-        <h3>색상 선택</h3>
-        <ColorPickerWrapper>
-          <CirclePicker
-            color={color}
-            onChange={(value) => setColor(value.hex)}
-          />
-        </ColorPickerWrapper>
-        <Button
-          value={isCreate ? '생성하기' : '수정하기'}
-          onClick={async (e) => {
-            e.preventDefault();
-            if (isCreate) await createOperationEvent();
-            else await updateOperationEvent();
-          }}
-        />
-        <Message>{message}</Message>
-      </SaveOperationFormWrapper>
-    </>
+    <Form title={`작전 ${isCreate ? '생성' : '수정'}`} message={message}>
+      <Input
+        type="text"
+        value={title}
+        placeholder="작전명을 입력해주세요."
+        onChange={(e) => setTitle(e.target.value)}
+        onBlur={() => {
+          checkData(isValidTitle, ERROR.NOT_VALID_TITLE);
+        }}
+        maxLength={20}
+      />
+      <Input
+        type="text"
+        value={code}
+        placeholder="(선택) 암호를 설정해주세요."
+        onChange={(e) => setCode(e.target.value)}
+        onBlur={() => {
+          checkData(isValidCode, ERROR.NOT_VALID_CODE);
+        }}
+        maxLength={8}
+      />
+      <h3>시작 날짜</h3>
+      <Input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        onBlur={() => {
+          checkData(isValidDate, ERROR.NOT_VALID_DATE);
+        }}
+      />
+      <h3>종료 날짜</h3>
+      <Input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        onBlur={() => {
+          checkData(isValidDate, ERROR.NOT_VALID_DATE);
+        }}
+      />
+      {!isCreate ? (
+        <>
+          <h3>관리자 변경</h3>
+          <SelectWrapper>
+            <Select
+              options={options}
+              value={selected}
+              onChange={(value) => setSelected(value as Option)}
+            />
+          </SelectWrapper>
+        </>
+      ) : undefined}
+      <h3>색상 선택</h3>
+      <ColorPickerWrapper>
+        <CirclePicker color={color} onChange={(value) => setColor(value.hex)} />
+      </ColorPickerWrapper>
+      <Button
+        value={isCreate ? '생성하기' : '수정하기'}
+        onClick={async (e) => {
+          e.preventDefault();
+          if (isCreate) await createOperationEvent();
+          else await updateOperationEvent();
+        }}
+      />
+    </Form>
   );
 };
 

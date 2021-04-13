@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { User } from '@/interfaces';
 import { sendPutRequest } from '@/utils/request';
 import Button from '@/components/Common/Button';
+import Input from '@/components/Common/Input';
 
 const CardWrapper = styled.div`
   width: 80%;
@@ -30,29 +31,18 @@ const NameWrapper = styled.div`
   padding: 0 2rem;
   background-color: #fff;
   border-radius: 12px;
+  Input {
+    width: 60%;
+    margin: 0;
+    padding: 0;
+    font-size: 2rem;
+  }
   Button {
     width: fit-content;
     border: none;
     border-bottom: 1px solid black;
     border-radius: 0%;
     background-color: inherit;
-  }
-`;
-
-const Input = styled.input`
-  width: 60%;
-  border: 3px solid #fff;
-  border-radius: 16px;
-  font-size: 2rem;
-  outline: none;
-  &:focus {
-    border: 3px solid ${(props) => props.theme.highlightColor};
-  }
-  &[type='password'] {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  &::placeholder {
-    font-family: 'BMDOHYEON';
   }
 `;
 
