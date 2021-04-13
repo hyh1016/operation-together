@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Operation } from '@/interfaces';
+import { Operation, User } from '@/interfaces';
 import Header from '@/components/Common/Header';
 import Title from '@/components/Chart/Titlte';
 import { sendGetRequest } from '@/utils/request';
@@ -21,26 +21,33 @@ const Chart: React.FC = () => {
   const { id } = match.params;
 
   const [operation, setOperation] = useState<Operation | undefined>();
+  const [me, setMe] = useState<User | undefined>();
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       history.replace('/login');
       return;
     }
-    const fetch = async () => {
+    const fetchOperation = async () => {
       const { result, error } = await sendGetRequest(`/operations/${id}`);
       if (!result) return;
       setOperation(result.operation);
     };
-    fetch();
+    const fetchMe = async () => {
+      const { result, error } = await sendGetRequest('/users/me');
+      if (!result) return;
+      setMe(result.me);
+    };
+    fetchOperation();
+    fetchMe();
   }, []);
 
   return (
     <>
       <Header />
       <ChartWrapper>
-        {operation ? (
-          <Title operation={operation} setOperation={setOperation} />
+        {operation && me ? (
+          <Title operation={operation} setOperation={setOperation} me={me} />
         ) : undefined}
       </ChartWrapper>
     </>
