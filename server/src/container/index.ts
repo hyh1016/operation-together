@@ -1,5 +1,6 @@
-import OperationService from '@/service/operationService';
 import UserService from '@/service/UserService';
+import OperationService from '@/service/operationService';
+import ChartService from '@/service/chartService';
 
 class Container {
   container: Map<string, any>;
@@ -17,6 +18,10 @@ class Container {
 
   getOperationService(): OperationService {
     return this.container.get('OperationService');
+  }
+
+  getChartService(): ChartService {
+    return this.container.get('ChartService');
   }
 }
 
