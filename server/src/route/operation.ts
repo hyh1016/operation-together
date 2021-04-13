@@ -22,23 +22,6 @@ export default (indexRouter: Router): void => {
     res.status(200).json({ operationId });
   });
 
-  router.get('/:id', async (req, res, next) => {
-    const { id: operationId } = req.params;
-    if (!isNumber(operationId)) return next();
-    const { id: userId } = req.user as User;
-    const serviceInstance = Container.getOperationService();
-    const isValidUser = await serviceInstance.isJoinedUser(
-      userId,
-      Number(operationId),
-    );
-    if (!isValidUser) return res.status(401).json();
-    const operation = await serviceInstance.getOperationById(
-      Number(operationId),
-    );
-    if (!operation) return res.status(204).json();
-    return res.status(200).json({ operation });
-  });
-
   router.put('/join', async (req, res) => {
     const { id, code } = req.body;
     const serviceInstance = Container.getOperationService();
@@ -50,7 +33,31 @@ export default (indexRouter: Router): void => {
     return res.status(200).json();
   });
 
-  router.put('/leave/:id', async (req, res, next) => {
+  router.use('/:id', async (req, res, next) => {
+    const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
+    const { id: userId } = req.user as User;
+    const serviceInstance = Container.getOperationService();
+    const isValidUser = await serviceInstance.isJoinedUser(
+      userId,
+      Number(operationId),
+    );
+    if (!isValidUser) return res.status(401).json();
+    return next();
+  });
+
+  router.get('/:id', async (req, res, next) => {
+    const { id: operationId } = req.params;
+    if (!isNumber(operationId)) return next();
+    const serviceInstance = Container.getOperationService();
+    const operation = await serviceInstance.getOperationById(
+      Number(operationId),
+    );
+    if (!operation) return res.status(204).json();
+    return res.status(200).json({ operation });
+  });
+
+  router.put('/:id/leave', async (req, res, next) => {
     const { id: operationId } = req.params;
     if (!isNumber(operationId)) return next();
     const { id: userId } = req.user as User;
