@@ -56,6 +56,9 @@ Button.defaultProps = {
   backgroundColor: theme.highlightColor,
   color: theme.mainColor,
   border: true,
+  onClick: (e) => {
+    e.preventDefault();
+  },
 };
 
 export default Button;
