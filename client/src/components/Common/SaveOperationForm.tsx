@@ -230,8 +230,7 @@ const SaveOperationForm: React.FC<Props> = ({
       </ColorPickerWrapper>
       <Button
         value={isCreate ? '생성하기' : '수정하기'}
-        onClick={async (e) => {
-          e.preventDefault();
+        onClick={async () => {
           if (isCreate) await createOperationEvent();
           else await updateOperationEvent();
         }}

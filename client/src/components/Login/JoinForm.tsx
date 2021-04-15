@@ -149,8 +149,7 @@ const JoinForm: React.FC = () => {
       />
       <Button
         value="가입하기"
-        onClick={async (e) => {
-          e.preventDefault();
+        onClick={async () => {
           await joinEvent();
         }}
       />

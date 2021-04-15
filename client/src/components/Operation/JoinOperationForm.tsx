@@ -45,8 +45,7 @@ const JoinOperationForm: React.FC = () => {
       />
       <Button
         value="참여하기"
-        onClick={async (e) => {
-          e.preventDefault();
+        onClick={async () => {
           await joinOperationEvent();
         }}
       />

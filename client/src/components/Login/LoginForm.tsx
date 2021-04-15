@@ -42,8 +42,7 @@ const LoginForm: React.FC = () => {
       />
       <Button
         value="로그인하기"
-        onClick={async (e) => {
-          e.preventDefault();
+        onClick={async () => {
           await loginEvent();
         }}
       />
