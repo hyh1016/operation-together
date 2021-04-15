@@ -41,7 +41,10 @@ const Button: React.FC<Props> = ({
     <div>
       <ButtonWrapper
         id={id}
-        onClick={onClick}
+        onClick={(e) => {
+          e.preventDefault();
+          if (onClick) onClick(e);
+        }}
         backgroundColor={backgroundColor}
         color={color}
         border={border}
@@ -56,9 +59,6 @@ Button.defaultProps = {
   backgroundColor: theme.highlightColor,
   color: theme.mainColor,
   border: true,
-  onClick: (e) => {
-    e.preventDefault();
-  },
 };
 
 export default Button;
