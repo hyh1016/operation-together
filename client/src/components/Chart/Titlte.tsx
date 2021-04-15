@@ -4,6 +4,7 @@ import { Operation, User } from '@/interfaces';
 import Button from '@/components/Common/Button';
 import Modal from '@/components/Common/Modal';
 import SaveOperationForm from '@/components/Common/SaveOperationForm';
+import LeaveOperationForm from './LeaveOperationForm';
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -32,19 +33,20 @@ interface Props {
 }
 
 const Title: React.FC<Props> = ({ operation, setOperation, me }) => {
-  const [visible, setVisible] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [modifyOn, setModifyOn] = useState(false);
+  const [leaveOn, setLeaveOn] = useState(false);
 
   useEffect(() => {
     setIsAdmin(me.id === operation.adminId);
   }, [operation]);
 
-  const modifyEvent = () => {
+  const modifyModalEvent = () => {
     if (!isAdmin) {
       alert('관리자만 수정이 가능합니다.\n 관리자에게 문의하세요.');
       return;
     }
-    setVisible(!visible);
+    setModifyOn(!modifyOn);
   };
 
   return (
@@ -52,16 +54,27 @@ const Title: React.FC<Props> = ({ operation, setOperation, me }) => {
       <TitleWrapper>
         <h1>{`#${operation.id} ${operation.title}`}</h1>
         <ButtonWrapper>
-          <Button value="작전 수정" border={false} onClick={modifyEvent} />
-          <Button value="작전 탈퇴" border={false} backgroundColor="#FF92AC" />
+          <Button value="작전 수정" border={false} onClick={modifyModalEvent} />
+          <Button
+            value="작전 탈퇴"
+            border={false}
+            backgroundColor="#FF92AC"
+            onClick={() => setLeaveOn(!leaveOn)}
+          />
         </ButtonWrapper>
       </TitleWrapper>
-      <Modal visible={visible} setVisible={setVisible}>
+      <Modal visible={modifyOn} setVisible={setModifyOn}>
         <SaveOperationForm
           isCreate={false}
           operation={operation}
           setOperation={setOperation}
-          setVisible={setVisible}
+          setVisible={setModifyOn}
+        />
+      </Modal>
+      <Modal visible={leaveOn} setVisible={setLeaveOn}>
+        <LeaveOperationForm
+          operationId={operation.id}
+          setVisible={setLeaveOn}
         />
       </Modal>
     </>
