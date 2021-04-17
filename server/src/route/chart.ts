@@ -29,11 +29,11 @@ export default (indexRouter: Router): void => {
   router.get('/', async (req, res) => {
     const { operationId, checkedDate } = req.body;
     const serviceInstance = Container.getChartService();
-    const charts = await serviceInstance.getCheckedUsers(
+    const users = await serviceInstance.getCheckedUsers(
       operationId,
       checkedDate,
     );
-    if (!charts) return res.status(400).json({ message: 'get charts failed' });
-    return res.status(200).json(Object.fromEntries(charts));
+    if (!users) return res.status(400).json({ message: 'get failed' });
+    return res.status(200).json({ users });
   });
 };

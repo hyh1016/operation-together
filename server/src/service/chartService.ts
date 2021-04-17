@@ -30,7 +30,7 @@ export default class ChartService {
   async getCheckedUsers(
     operationId: number,
     checkedDate: string,
-  ): Promise<ChartData | undefined> {
+  ): Promise<string[] | undefined> {
     if (!checkedDate || !operationId) return undefined;
     try {
       const charts = await this.chartRepository
@@ -45,21 +45,12 @@ export default class ChartService {
             operationId,
           },
         )
+        .orderBy('chart.id')
         .getMany();
-      return sortByDate(charts);
+      return charts.map((chart) => chart.user.nickname);
     } catch (error) {
       console.error(error);
       return undefined;
     }
   }
 }
-
-const sortByDate = (charts: Chart[]) => {
-  const sortedChart: ChartData = new Map();
-  charts.forEach((chart) => {
-    if (sortedChart.has(chart.checkedDate))
-      sortedChart.get(chart.checkedDate)?.push(chart.user.nickname);
-    else sortedChart.set(chart.checkedDate, [chart.user.nickname]);
-  });
-  return sortedChart;
-};
