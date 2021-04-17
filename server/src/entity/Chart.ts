@@ -10,9 +10,11 @@ export default class Chart {
   @Column({ type: 'date' })
   checkedDate!: string;
 
-  @ManyToOne(() => User, (user) => user.charts)
+  @ManyToOne(() => User, (user) => user.charts, { onDelete: 'CASCADE' })
   user!: User;
 
-  @ManyToOne(() => Operation, (operation) => operation.charts)
+  @ManyToOne(() => Operation, (operation) => operation.charts, {
+    onDelete: 'CASCADE',
+  })
   operation!: Operation;
 }
