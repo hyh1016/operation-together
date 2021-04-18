@@ -5,9 +5,11 @@ import { ERROR } from '@/utils/message';
 import Form from '@/components/Common/Form';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import { useUserDispatch } from '@/contexts/UserContext';
 
 const JoinForm: React.FC = () => {
   const history = useHistory();
+  const dispatch = useUserDispatch();
   const [id, setId] = useState('');
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -101,7 +103,14 @@ const JoinForm: React.FC = () => {
       return;
     }
     localStorage.setItem('token', result.token);
+    await setUser();
     history.push('/');
+  };
+
+  const setUser = async () => {
+    const { result, error } = await sendGetRequest('/users/me');
+    if (error) return;
+    dispatch({ type: 'SET_USER', user: result.me });
   };
 
   return (
