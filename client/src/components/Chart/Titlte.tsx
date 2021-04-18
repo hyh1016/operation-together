@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Operation, User } from '@/interfaces';
+import { Operation } from '@/interfaces';
 import Button from '@/components/Common/Button';
 import Modal from '@/components/Common/Modal';
 import SaveOperationForm from '@/components/Common/SaveOperationForm';
+import { useUser } from '@/contexts/UserContext';
 import LeaveOperationForm from './LeaveOperationForm';
 
 const TitleWrapper = styled.div`
@@ -29,16 +30,16 @@ const ButtonWrapper = styled.div`
 interface Props {
   operation: Operation;
   setOperation: React.Dispatch<React.SetStateAction<Operation | undefined>>;
-  me: User;
 }
 
-const Title: React.FC<Props> = ({ operation, setOperation, me }) => {
+const Title: React.FC<Props> = ({ operation, setOperation }) => {
+  const user = useUser();
   const [isAdmin, setIsAdmin] = useState(false);
   const [modifyOn, setModifyOn] = useState(false);
   const [leaveOn, setLeaveOn] = useState(false);
 
   useEffect(() => {
-    setIsAdmin(me.id === operation.adminId);
+    setIsAdmin(user.id === operation.adminId);
   }, [operation]);
 
   const modifyModalEvent = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { Operation, User } from '@/interfaces';
+import { Operation } from '@/interfaces';
 import Header from '@/components/Common/Header';
 import Title from '@/components/Chart/Titlte';
 import { sendGetRequest } from '@/utils/request';
@@ -16,38 +16,26 @@ interface MatchParameter {
 }
 
 const Chart: React.FC = () => {
-  const history = useHistory();
   const match = useRouteMatch<MatchParameter>();
   const { id } = match.params;
 
   const [operation, setOperation] = useState<Operation | undefined>();
-  const [me, setMe] = useState<User | undefined>();
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      history.replace('/login');
-      return;
-    }
-    const fetchOperation = async () => {
+    const fetch = async () => {
       const { result, error } = await sendGetRequest(`/operations/${id}`);
-      if (!result) return;
+      if (error) return;
       setOperation(result.operation);
     };
-    const fetchMe = async () => {
-      const { result, error } = await sendGetRequest('/users/me');
-      if (!result) return;
-      setMe(result.me);
-    };
-    fetchOperation();
-    fetchMe();
+    fetch();
   }, []);
 
   return (
     <>
       <Header />
       <ChartWrapper>
-        {operation && me ? (
-          <Title operation={operation} setOperation={setOperation} me={me} />
+        {operation ? (
+          <Title operation={operation} setOperation={setOperation} />
         ) : undefined}
       </ChartWrapper>
     </>

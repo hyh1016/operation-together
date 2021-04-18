@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '@/style/theme';
-import { User } from '@/interfaces';
-import { sendGetRequest } from '@/utils/request';
 import Header from '@/components/Common/Header';
 import Button from '@/components/Common/Button';
 import Modal from '@/components/Common/Modal';
@@ -42,30 +39,15 @@ const RightWrapper = styled.div`
 `;
 
 const Home: React.FC = () => {
-  const history = useHistory();
   const [visible, setVisible] = useState(false);
   const [isJoin, setIsJoin] = useState(false);
-  const [me, setMe] = useState<User | undefined>();
-
-  useEffect(() => {
-    if (!localStorage.getItem('token')) history.replace('/login');
-    const fetch = async () => {
-      const { result, error } = await sendGetRequest('/users/me');
-      if (error) {
-        console.log(error);
-        return;
-      }
-      setMe(result.me);
-    };
-    fetch();
-  }, []);
 
   return (
     <>
       <Header />
       <ContentWrapper>
         <LeftWrapper>
-          <UserCard me={me} setMe={setMe} />
+          <UserCard />
           <ButtonWrapper>
             <Button
               value="새 작전 만들기"
@@ -86,7 +68,7 @@ const Home: React.FC = () => {
           </ButtonWrapper>
         </LeftWrapper>
         <RightWrapper>
-          <OperationList operations={me?.operations} />
+          <OperationList />
         </RightWrapper>
       </ContentWrapper>
       <Modal visible={visible} setVisible={setVisible}>

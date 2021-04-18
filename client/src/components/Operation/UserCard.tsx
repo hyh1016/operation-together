@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { User } from '@/interfaces';
 import { sendPutRequest } from '@/utils/request';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
+import { useUser, useUserDispatch } from '@/contexts/UserContext';
 
 const CardWrapper = styled.div`
   width: 80%;
@@ -46,15 +46,15 @@ const NameWrapper = styled.div`
   }
 `;
 
-interface Props {
-  me: User | undefined;
-  setMe: React.Dispatch<React.SetStateAction<User | undefined>>;
-}
-
-const UserCard: React.FC<Props> = ({ me, setMe }) => {
-  if (!me) return <></>;
+const UserCard: React.FC = () => {
+  const user = useUser();
+  const userDispatch = useUserDispatch();
   const [isModify, setIsModify] = useState(false);
-  const [nickname, setNickname] = useState<string>(me.nickname);
+  const [nickname, setNickname] = useState<string>(user.nickname);
+
+  useEffect(() => {
+    setNickname(user.nickname);
+  }, [user]);
 
   const isValidNickname = () => {
     if (nickname[0] === ' ') return false;
@@ -64,11 +64,8 @@ const UserCard: React.FC<Props> = ({ me, setMe }) => {
 
   const changeNickname = async () => {
     const { result, error } = await sendPutRequest('/users', { nickname });
-    if (error) {
-      console.error(error);
-      return;
-    }
-    setMe({ ...me, nickname });
+    if (error) return;
+    userDispatch({ type: 'SET_NICKNAME', nickname });
     setIsModify(false);
   };
 
@@ -90,7 +87,7 @@ const UserCard: React.FC<Props> = ({ me, setMe }) => {
                 value="취소"
                 onClick={() => {
                   setIsModify(false);
-                  setNickname(me.nickname);
+                  setNickname(user.nickname);
                 }}
               />
               <Button
@@ -103,13 +100,13 @@ const UserCard: React.FC<Props> = ({ me, setMe }) => {
             </>
           ) : (
             <>
-              <p>{me.nickname}</p>
+              <p>{user.nickname}</p>
               <Button value="변경하기" onClick={() => setIsModify(true)} />
             </>
           )}
         </NameWrapper>
-        <p>현재까지 참여한 작전 수: {me.operations?.length}</p>
-        <p>Rank: {getRank(me.operations?.length)}</p>
+        <p>현재까지 참여한 작전 수: {user.operations?.length}</p>
+        <p>Rank: {getRank(user.operations?.length)}</p>
       </InformationWrapper>
     </CardWrapper>
   );

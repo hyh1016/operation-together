@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Operation } from '@/interfaces';
+import { useUser } from '@/contexts/UserContext';
 import OperationButton from './OperationButton';
 
 const ListWrapper = styled.div`
@@ -18,11 +18,9 @@ const Title = styled.div`
   font-size: 2rem;
 `;
 
-interface Props {
-  operations: Operation[] | undefined;
-}
+const OperationList: React.FC = () => {
+  const { operations } = useUser();
 
-const OperationList: React.FC<Props> = ({ operations }) => {
   return (
     <ListWrapper>
       <Title>작전 목록</Title>
