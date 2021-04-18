@@ -22,7 +22,7 @@ export default class OperationService {
   async createOperation(
     user: User,
     info: OperationForm,
-  ): Promise<number | undefined> {
+  ): Promise<Operation | undefined> {
     if (
       Object.entries(info).filter(([key, value]) => key !== 'code' && !value)
         .length > 0
@@ -36,7 +36,7 @@ export default class OperationService {
       if (!newOperation) return undefined;
       newOperation.users = [user];
       await this.operationRepository.save(newOperation);
-      return newOperation.id;
+      return newOperation;
     } catch (error) {
       console.error(error);
       return undefined;
@@ -118,20 +118,23 @@ export default class OperationService {
     return true;
   }
 
-  async joinOperation(user: User, info: JoinForm): Promise<boolean> {
+  async joinOperation(
+    user: User,
+    info: JoinForm,
+  ): Promise<Operation | undefined> {
     try {
       const operation = await this.operationRepository.findOne({
         where: info,
         relations: ['users'],
       });
-      if (!operation) return false;
+      if (!operation) return undefined;
       operation.users?.push(user);
       await this.operationRepository.save(operation);
+      return operation;
     } catch (error) {
       console.error(error);
-      return false;
+      return undefined;
     }
-    return true;
   }
 
   async leaveOperation(userId: string, operationId: number): Promise<boolean> {

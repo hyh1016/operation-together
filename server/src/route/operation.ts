@@ -14,23 +14,23 @@ export default (indexRouter: Router): void => {
   router.post('/', async (req, res) => {
     const serviceInstance = Container.getOperationService();
     const operationDTO: OperationForm = req.body;
-    const operationId = await serviceInstance.createOperation(
+    const operation = await serviceInstance.createOperation(
       req.user as User,
       operationDTO,
     );
-    if (!operationId) return res.status(400).json({ message: 'create failed' });
-    res.status(200).json({ operationId });
+    if (!operation) return res.status(400).json({ message: 'create failed' });
+    res.status(200).json({ operation });
   });
 
   router.put('/join', async (req, res) => {
     const { id, code } = req.body;
     const serviceInstance = Container.getOperationService();
-    const isJoin = await serviceInstance.joinOperation(req.user as User, {
+    const operation = await serviceInstance.joinOperation(req.user as User, {
       id: Number(id),
       code,
     });
-    if (!isJoin) return res.status(400).json({ message: 'join failed' });
-    return res.status(200).json();
+    if (!operation) return res.status(400).json({ message: 'join failed' });
+    return res.status(200).json({ operation });
   });
 
   router.use('/:id', async (req, res, next) => {
