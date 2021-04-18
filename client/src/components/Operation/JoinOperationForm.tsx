@@ -5,9 +5,11 @@ import { sendPutRequest } from '@/utils/request';
 import Form from '@/components/Common/Form';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import { useUserDispatch } from '@/contexts/UserContext';
 
 const JoinOperationForm: React.FC = () => {
   const history = useHistory();
+  const dispatch = useUserDispatch();
   const [id, setId] = useState('');
   const [code, setCode] = useState('');
   const [message, setMessage] = useState('');
@@ -26,7 +28,8 @@ const JoinOperationForm: React.FC = () => {
       setMessage(ERROR.NOT_VALID_OPERATION);
       return;
     }
-    history.push(`/operations/${id}`);
+    dispatch({ type: 'ADD_OPERATION', operation: result.operation });
+    history.push(`/operations/${result.operation.id}`);
   };
 
   return (

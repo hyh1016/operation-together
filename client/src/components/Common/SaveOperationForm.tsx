@@ -9,6 +9,7 @@ import { Operation, User } from '@/interfaces';
 import Form from '@/components/Common/Form';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import { useUserDispatch } from '@/contexts/UserContext';
 
 const SelectWrapper = styled.div`
   width: 80%;
@@ -43,6 +44,7 @@ const SaveOperationForm: React.FC<Props> = ({
 }) => {
   const today = new Date().toISOString().split('T')[0];
   const history = useHistory();
+  const userDispatch = useUserDispatch();
 
   const [title, setTitle] = useState('');
   const [code, setCode] = useState('');
@@ -133,8 +135,8 @@ const SaveOperationForm: React.FC<Props> = ({
       setMessage(ERROR.OPERATION_CREATE_FAILED);
       return;
     }
-    const { operationId } = result;
-    history.push(`/operations/${operationId}`);
+    userDispatch({ type: 'ADD_OPERATION', operation: result.operation });
+    history.push(`/operations/${result.operation.id}`);
   };
 
   const updateOperationEvent = async () => {
@@ -160,14 +162,17 @@ const SaveOperationForm: React.FC<Props> = ({
       setMessage(ERROR.OPERATION_UPDATE_FAILED);
       return;
     }
-    setOperation({
-      ...operation,
-      title,
-      code,
-      startDate,
-      endDate,
-      color,
-      adminId: selected?.value as string,
+    userDispatch({
+      type: 'UPDATE_OPERATION',
+      operation: {
+        ...operation,
+        title,
+        code,
+        startDate,
+        endDate,
+        color,
+        adminId: selected?.value as string,
+      },
     });
     if (setVisible) setVisible(false);
   };

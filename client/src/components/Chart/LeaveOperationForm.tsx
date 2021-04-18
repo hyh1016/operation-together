@@ -5,6 +5,7 @@ import { sendPutRequest } from '@/utils/request';
 import { ERROR } from '@/utils/message';
 import Form from '@/components/Common/Form';
 import Button from '@/components/Common/Button';
+import { useUserDispatch } from '@/contexts/UserContext';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ interface Props {
 
 const LeaveOperationForm: React.FC<Props> = ({ operationId, setVisible }) => {
   const [message, setMessage] = useState('');
+  const userDispatch = useUserDispatch();
   const history = useHistory();
 
   const leaveOperationEvent = async () => {
@@ -33,6 +35,7 @@ const LeaveOperationForm: React.FC<Props> = ({ operationId, setVisible }) => {
       setMessage(ERROR.OPERATION_LEAVE_FAILED);
       return;
     }
+    userDispatch({ type: 'DELETE_OPERATION', operationId });
     history.push('/');
   };
 
