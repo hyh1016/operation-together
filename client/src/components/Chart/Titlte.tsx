@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Operation } from '@/interfaces';
 import Button from '@/components/Common/Button';
 import Modal from '@/components/Common/Modal';
 import SaveOperationForm from '@/components/Common/SaveOperationForm';
 import { useUser } from '@/contexts/UserContext';
+import { useOperation } from '@/contexts/OperationContext';
 import LeaveOperationForm from './LeaveOperationForm';
 
 const TitleWrapper = styled.div`
@@ -27,13 +27,9 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-interface Props {
-  operation: Operation;
-  setOperation: React.Dispatch<React.SetStateAction<Operation | undefined>>;
-}
-
-const Title: React.FC<Props> = ({ operation, setOperation }) => {
+const Title: React.FC = () => {
   const user = useUser();
+  const operation = useOperation();
   const [isAdmin, setIsAdmin] = useState(false);
   const [modifyOn, setModifyOn] = useState(false);
   const [leaveOn, setLeaveOn] = useState(false);
@@ -65,18 +61,10 @@ const Title: React.FC<Props> = ({ operation, setOperation }) => {
         </ButtonWrapper>
       </TitleWrapper>
       <Modal visible={modifyOn} setVisible={setModifyOn}>
-        <SaveOperationForm
-          isCreate={false}
-          operation={operation}
-          setOperation={setOperation}
-          setVisible={setModifyOn}
-        />
+        <SaveOperationForm isCreate={false} setVisible={setModifyOn} />
       </Modal>
       <Modal visible={leaveOn} setVisible={setLeaveOn}>
-        <LeaveOperationForm
-          operationId={operation.id}
-          setVisible={setLeaveOn}
-        />
+        <LeaveOperationForm setVisible={setLeaveOn} />
       </Modal>
     </>
   );

@@ -6,6 +6,7 @@ import { ERROR } from '@/utils/message';
 import Form from '@/components/Common/Form';
 import Button from '@/components/Common/Button';
 import { useUserDispatch } from '@/contexts/UserContext';
+import { useOperation } from '@/contexts/OperationContext';
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -18,24 +19,22 @@ const ButtonWrapper = styled.div`
 `;
 
 interface Props {
-  operationId: number;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LeaveOperationForm: React.FC<Props> = ({ operationId, setVisible }) => {
+const LeaveOperationForm: React.FC<Props> = ({ setVisible }) => {
+  const { id } = useOperation();
   const [message, setMessage] = useState('');
   const userDispatch = useUserDispatch();
   const history = useHistory();
 
   const leaveOperationEvent = async () => {
-    const { result, error } = await sendPutRequest(
-      `/operations/${operationId}/leave`,
-    );
+    const { result, error } = await sendPutRequest(`/operations/${id}/leave`);
     if (error) {
       setMessage(ERROR.OPERATION_LEAVE_FAILED);
       return;
     }
-    userDispatch({ type: 'DELETE_OPERATION', operationId });
+    userDispatch({ type: 'DELETE_OPERATION', operationId: id });
     history.push('/');
   };
 

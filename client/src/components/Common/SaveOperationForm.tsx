@@ -10,6 +10,10 @@ import Form from '@/components/Common/Form';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import { useUserDispatch } from '@/contexts/UserContext';
+import {
+  useOperation,
+  useOperationDispatch,
+} from '@/contexts/OperationContext';
 
 const SelectWrapper = styled.div`
   width: 80%;
@@ -26,8 +30,6 @@ const ColorPickerWrapper = styled.div`
 
 interface Props {
   isCreate: boolean;
-  operation?: Operation;
-  setOperation?: React.Dispatch<React.SetStateAction<Operation | undefined>>;
   setVisible?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -36,12 +38,7 @@ interface Option {
   label: string;
 }
 
-const SaveOperationForm: React.FC<Props> = ({
-  isCreate,
-  operation,
-  setOperation,
-  setVisible,
-}) => {
+const SaveOperationForm: React.FC<Props> = ({ isCreate, setVisible }) => {
   const today = new Date().toISOString().split('T')[0];
   const history = useHistory();
   const userDispatch = useUserDispatch();
@@ -52,6 +49,9 @@ const SaveOperationForm: React.FC<Props> = ({
   const [endDate, setEndDate] = useState(today);
   const [color, setColor] = useState('');
   const [message, setMessage] = useState('');
+
+  const operation = isCreate ? undefined : useOperation();
+  const operationDispatch = isCreate ? undefined : useOperationDispatch();
 
   const [options, setOptions] = useState<Option[] | undefined>();
   const [selected, setSelected] = useState<Option | undefined>();
@@ -141,7 +141,7 @@ const SaveOperationForm: React.FC<Props> = ({
 
   const updateOperationEvent = async () => {
     if (!isValidForm()) return;
-    if (!operation || !setOperation) return;
+    if (!operation || !operationDispatch) return;
     if (!localStorage.getItem('token')) {
       alert(ERROR.NOT_VALID_TOKEN);
       history.push('/login');
@@ -162,17 +162,22 @@ const SaveOperationForm: React.FC<Props> = ({
       setMessage(ERROR.OPERATION_UPDATE_FAILED);
       return;
     }
+    const newOperation: Operation = {
+      ...operation,
+      title,
+      code,
+      startDate,
+      endDate,
+      color,
+      adminId: selected?.value as string,
+    };
     userDispatch({
       type: 'UPDATE_OPERATION',
-      operation: {
-        ...operation,
-        title,
-        code,
-        startDate,
-        endDate,
-        color,
-        adminId: selected?.value as string,
-      },
+      operation: newOperation,
+    });
+    operationDispatch({
+      type: 'SET_OPERATION',
+      operation: newOperation,
     });
     if (setVisible) setVisible(false);
   };
