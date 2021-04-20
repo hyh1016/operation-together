@@ -14,6 +14,7 @@ import {
   useOperation,
   useOperationDispatch,
 } from '@/contexts/OperationContext';
+import getToday from '@/utils/getToday';
 
 const SelectWrapper = styled.div`
   width: 80%;
@@ -39,7 +40,7 @@ interface Option {
 }
 
 const SaveOperationForm: React.FC<Props> = ({ isCreate, setVisible }) => {
-  const today = new Date().toISOString().split('T')[0];
+  const today = getToday();
   const history = useHistory();
   const userDispatch = useUserDispatch();
 
