@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '@/components/Common/Header';
 import Title from '@/components/Chart/Titlte';
 import Calendar from '@/components/Chart/Calendar';
 import UserList from '@/components/Chart/UserList';
 import { OperationContextProvider } from '@/contexts/OperationContext';
+import getToday from '@/utils/getToday';
+import DayInfo from '@/components/Chart/DayInfo';
 
 const ChartWrapper = styled.div`
   width: 90%;
@@ -16,13 +18,18 @@ const ContentWrapper = styled.div`
   justify-content: center;
 
   & > * {
+    max-height: 80vh;
+    overflow: auto;
     padding: 1rem;
     text-align: center;
-    /* color: ${(props) => props.theme.mainColor}; */
   }
 `;
 
 const Chart: React.FC = () => {
+  const [selectedDay, setSelectedDay] = useState<string | undefined>(
+    getToday(),
+  );
+
   return (
     <>
       <OperationContextProvider>
@@ -30,7 +37,14 @@ const Chart: React.FC = () => {
         <ChartWrapper>
           <Title />
           <ContentWrapper>
-            <Calendar />
+            {selectedDay ? (
+              <DayInfo
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
+              />
+            ) : (
+              <Calendar setSelectedDay={setSelectedDay} />
+            )}
             <UserList />
           </ContentWrapper>
         </ChartWrapper>
