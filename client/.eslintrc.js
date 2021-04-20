@@ -16,6 +16,7 @@ module.exports = {
     'react/prop-types': 0,
     'react/jsx-filename-extension': 0,
     'no-use-before-define': 0,
+    'no-nested-ternary': 0,
   },
   settings: {
     'import/resolver': {
