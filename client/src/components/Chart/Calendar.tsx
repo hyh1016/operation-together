@@ -10,7 +10,7 @@ const CalendarWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   width: 80%;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(30, 30, 30, 0.7);
   color: ${(props) => props.theme.mainColor};
 `;
 
