@@ -25,7 +25,7 @@ interface Props {
   backgroundColor?: string;
   color?: string;
   border?: boolean;
-  value?: string;
+  value?: string | number | JSX.Element;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
