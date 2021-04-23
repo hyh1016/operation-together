@@ -3,13 +3,17 @@ import Chart from '@/entity/Chart';
 import getToday from '@/util/getToday';
 import Container from '@/container';
 
-type ChartData = Map<string, string[]>;
+export interface ChartData {
+  id: string;
+  nickname: string;
+}
 
 export default class ChartService {
   constructor(private chartRepository: Repository<Chart>) {}
 
   async createChart(userId: string, operationId: number): Promise<boolean> {
     if (!userId || !operationId) return false;
+    if (await this.isCheckedUser(userId, operationId)) return false;
     try {
       const newChart = new Chart();
       const user = await Container.getUserService().getUser(userId);
@@ -30,27 +34,50 @@ export default class ChartService {
   async getCheckedUsers(
     operationId: number,
     checkedDate: string,
-  ): Promise<string[] | undefined> {
+  ): Promise<ChartData[] | undefined> {
     if (!checkedDate || !operationId) return undefined;
     try {
       const charts = await this.chartRepository
         .createQueryBuilder('chart')
         .leftJoin('chart.user', 'user')
         .leftJoin('chart.operation', 'operation')
-        .addSelect(['user.nickname'])
+        .addSelect(['user.nickname', 'user.id'])
         .where(
-          'chart.checkedDate= :checkedDate and operation.id= :operationId',
+          'operation.id= :operationId and chart.checkedDate= :checkedDate',
           {
-            checkedDate,
             operationId,
+            checkedDate,
           },
         )
         .orderBy('chart.id')
         .getMany();
-      return charts.map((chart) => chart.user.nickname);
+      return charts.map((v) => v.user);
     } catch (error) {
       console.error(error);
       return undefined;
+    }
+  }
+
+  async isCheckedUser(userId: string, operationId: number): Promise<boolean> {
+    try {
+      const chart = await this.chartRepository
+        .createQueryBuilder('chart')
+        .leftJoin('chart.user', 'user')
+        .leftJoin('chart.operation', 'operation')
+        .where(
+          'chart.userId= :userId and operation.id= :operationId and chart.checkedDate= :checkedDate',
+          {
+            userId,
+            operationId,
+            checkedDate: getToday(),
+          },
+        )
+        .getOne();
+      if (!chart) return false;
+      return true;
+    } catch (error) {
+      console.error(error);
+      return true;
     }
   }
 }

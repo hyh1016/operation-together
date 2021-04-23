@@ -17,7 +17,7 @@ export default (indexRouter: Router): void => {
     const operationInstance = Container.getOperationService();
     const isValidUser = await operationInstance.isJoinedUser(
       userId,
-      operationId,
+      Number(operationId),
     );
     if (!isValidUser) return res.status(401).json();
 
