@@ -67,7 +67,7 @@ const UserContextProvider: React.FC = ({ children }) => {
   const history = useHistory();
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) history.replace('/login');
+    if (history.location.pathname === '/') return;
     const fetch = async () => {
       const { result, error } = await sendGetRequest('/users/me');
       if (error) return;

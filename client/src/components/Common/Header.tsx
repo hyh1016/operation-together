@@ -39,9 +39,9 @@ const Header: React.FC = () => {
     <HeaderWrapper>
       <TitleButton
         onClick={() => {
-          if (!localStorage.getItem('token')) return;
+          if (history.location.pathname === '/main') return;
           if (history.location.pathname === '/') return;
-          history.push('/');
+          history.push('/main');
         }}
       >
         <h1>작전명 투게더</h1>
@@ -50,7 +50,7 @@ const Header: React.FC = () => {
         <LogoutButton
           onClick={() => {
             localStorage.removeItem('token');
-            history.push('/login');
+            history.push('/');
           }}
         >
           <h2>로그아웃</h2>

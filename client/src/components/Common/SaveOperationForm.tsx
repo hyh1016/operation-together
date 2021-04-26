@@ -120,11 +120,6 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, setVisible }) => {
 
   const createOperationEvent = async () => {
     if (!isValidForm()) return;
-    if (!localStorage.getItem('token')) {
-      alert(ERROR.NOT_VALID_TOKEN);
-      history.push('/login');
-      return;
-    }
     const { result, error } = await sendPostRequest('/operations', {
       title,
       code,
@@ -143,11 +138,6 @@ const SaveOperationForm: React.FC<Props> = ({ isCreate, setVisible }) => {
   const updateOperationEvent = async () => {
     if (!isValidForm()) return;
     if (!operation || !operationDispatch) return;
-    if (!localStorage.getItem('token')) {
-      alert(ERROR.NOT_VALID_TOKEN);
-      history.push('/login');
-      return;
-    }
     const { result, error } = await sendPutRequest(
       `/operations/${operation?.id}`,
       {

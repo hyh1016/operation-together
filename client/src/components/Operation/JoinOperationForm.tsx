@@ -15,11 +15,6 @@ const JoinOperationForm: React.FC = () => {
   const [message, setMessage] = useState('');
 
   const joinOperationEvent = async () => {
-    if (!localStorage.getItem('token')) {
-      alert(ERROR.NOT_VALID_TOKEN);
-      history.push('/login');
-      return;
-    }
     const { result, error } = await sendPutRequest('/operations/join', {
       id,
       code,

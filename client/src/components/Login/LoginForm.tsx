@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     }
     localStorage.setItem('token', result.token);
     await setUser();
-    history.push('/');
+    history.push('/main');
   };
 
   const setUser = async () => {

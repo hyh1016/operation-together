@@ -47,7 +47,6 @@ const OperationContextProvider: React.FC = ({ children }) => {
   const { id } = match.params;
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) history.replace('/login');
     const fetch = async () => {
       const { result, error } = await sendGetRequest(`/operations/${id}`);
       if (error) return;
