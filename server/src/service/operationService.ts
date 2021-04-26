@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import Operation from '@/entity/Operation';
 import User from '@/entity/User';
+import container from '@/container';
 
 export interface OperationForm {
   title: string;
@@ -150,6 +151,7 @@ export default class OperationService {
         return true;
       }
       await this.operationRepository.save(operation);
+      await container.getChartService().leaveOperation(userId, operationId);
     } catch (error) {
       console.error(error);
       return false;

@@ -80,4 +80,24 @@ export default class ChartService {
       return true;
     }
   }
+
+  async leaveOperation(userId: string, operationId: number): Promise<boolean> {
+    try {
+      const deletedResult = await this.chartRepository
+        .createQueryBuilder('chart')
+        .leftJoin('chart.user', 'user')
+        .leftJoin('chart.operation', 'operation')
+        .delete()
+        .where('chart.userId= :userId and operation.id= :operationId', {
+          userId,
+          operationId,
+        })
+        .execute();
+      if (!deletedResult) return false;
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
 }
