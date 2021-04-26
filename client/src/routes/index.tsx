@@ -9,8 +9,8 @@ const Routes: React.FC = () => {
   return (
     <>
       <UserContextProvider>
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Login} />
+        <Route exact path="/main" component={Home} />
         <Route exact path="/operations/:id" component={Chart} />
       </UserContextProvider>
     </>
