@@ -14,6 +14,11 @@ const CalendarWrapper = styled.ul`
   color: ${(props) => props.theme.mainColor};
 `;
 
+const DayTitle = styled.li`
+  width: 14%;
+  list-style-type: none;
+`;
+
 const DayList = styled.li`
   width: 14%;
   list-style-type: none;
@@ -21,6 +26,11 @@ const DayList = styled.li`
   Button {
     width: 100%;
     font-size: 1rem;
+    border-radius: 0;
+  }
+
+  .empty-button {
+    cursor: unset;
   }
 `;
 
@@ -52,13 +62,32 @@ const Calendar: React.FC<Props> = ({ setSelectedDay }) => {
     );
   }, [operation]);
 
+  const week = ['일', '월', '화', '수', '목', '금', '토'];
+  const emptySpace = days
+    ? Array.from(Array(week.indexOf(getKoDay(days[0].today) as string)).keys())
+    : undefined;
   return (
     <>
       <CalendarWrapper>
+        {week.map((v) => (
+          <DayTitle key={v}>{v}</DayTitle>
+        ))}
+        {emptySpace
+          ? emptySpace.map((v) => (
+              <DayList key={v} className="empty">
+                <Button
+                  className="empty-button"
+                  backgroundColor="inherit"
+                  border={false}
+                />
+              </DayList>
+            ))
+          : undefined}
         {days?.map((v) => (
           <DayList key={v.startFrom}>
             <Button
-              backgroundColor={v.today === getToday() ? undefined : '#ccc'}
+              backgroundColor={v.today === getToday() ? undefined : 'inherit'}
+              color={v.today === getToday() ? '#222' : '#aaa'}
               value={
                 <>
                   <p>{`${v.today} (${getKoDay(v.today)})`}</p>
