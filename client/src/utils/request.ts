@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ERROR } from './message';
 
 const BASE_URL = 'http://localhost:4000';
 
@@ -19,9 +20,9 @@ const sendGetRequest = async (
         Authorization: localStorage.getItem('token'),
       },
     });
-    if (result.status !== 200) throw new Error(result.data.message);
     return { result: result.data };
   } catch (error) {
+    validateToken();
     return { error };
   }
 };
@@ -37,9 +38,9 @@ const sendPostRequest = async (
         Authorization: localStorage.getItem('token'),
       },
     });
-    if (result.status !== 200) throw new Error(result.data.message);
     return { result: result.data };
   } catch (error) {
+    validateToken();
     return { error };
   }
 };
@@ -55,10 +56,17 @@ const sendPutRequest = async (
         Authorization: localStorage.getItem('token'),
       },
     });
-    if (result.status !== 200) throw new Error(result.data.message);
     return { result: result.data };
   } catch (error) {
+    validateToken();
     return { error };
+  }
+};
+
+const validateToken = () => {
+  if (!localStorage.getItem('token')) {
+    alert(ERROR.NOT_VALID_TOKEN);
+    window.location.replace('/');
   }
 };
 
