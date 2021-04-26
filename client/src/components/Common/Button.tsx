@@ -22,6 +22,7 @@ const ButtonWrapper = styled.button<Props>`
 
 interface Props {
   id?: string;
+  className?: string;
   backgroundColor?: string;
   color?: string;
   border?: boolean;
@@ -31,6 +32,7 @@ interface Props {
 
 const Button: React.FC<Props> = ({
   id,
+  className,
   backgroundColor,
   color,
   border,
@@ -41,6 +43,7 @@ const Button: React.FC<Props> = ({
     <div>
       <ButtonWrapper
         id={id}
+        className={className}
         onClick={(e) => {
           e.preventDefault();
           if (onClick) onClick(e);
