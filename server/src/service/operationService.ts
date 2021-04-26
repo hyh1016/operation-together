@@ -150,6 +150,7 @@ export default class OperationService {
         this.deleteOperation(operationId);
         return true;
       }
+      if (await this.isAdminUser(userId, operationId)) return false;
       await this.operationRepository.save(operation);
       await container.getChartService().leaveOperation(userId, operationId);
     } catch (error) {
