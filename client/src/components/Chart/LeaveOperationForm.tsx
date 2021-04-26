@@ -5,7 +5,7 @@ import { sendPutRequest } from '@/utils/request';
 import { ERROR } from '@/utils/message';
 import Form from '@/components/Common/Form';
 import Button from '@/components/Common/Button';
-import { useUserDispatch } from '@/contexts/UserContext';
+import { useUser, useUserDispatch } from '@/contexts/UserContext';
 import { useOperation } from '@/contexts/OperationContext';
 
 const ButtonWrapper = styled.div`
@@ -23,18 +23,30 @@ interface Props {
 }
 
 const LeaveOperationForm: React.FC<Props> = ({ setVisible }) => {
-  const { id } = useOperation();
-  const [message, setMessage] = useState('');
+  const operation = useOperation();
+  const user = useUser();
   const userDispatch = useUserDispatch();
+  const [message, setMessage] = useState('');
   const history = useHistory();
 
   const leaveOperationEvent = async () => {
-    const { result, error } = await sendPutRequest(`/operations/${id}/leave`);
+    if (
+      operation.users &&
+      operation.users.length > 1 &&
+      operation.adminId === user.id
+    ) {
+      alert(ERROR.ADMIN_CANT_LEAVE_OPERATION);
+      setVisible(false);
+      return;
+    }
+    const { result, error } = await sendPutRequest(
+      `/operations/${operation.id}/leave`,
+    );
     if (error) {
       setMessage(ERROR.OPERATION_LEAVE_FAILED);
       return;
     }
-    userDispatch({ type: 'DELETE_OPERATION', operationId: id });
+    userDispatch({ type: 'DELETE_OPERATION', operationId: operation.id });
     history.push('/');
   };
 

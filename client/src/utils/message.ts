@@ -16,6 +16,8 @@ const ERROR = {
   OPERATION_UPDATE_FAILED: '작전 수정에 실패하였습니다.',
   NOT_VALID_OPERATION: '작전 코드 또는 암호가 잘못되었습니다.',
   OPERATION_LEAVE_FAILED: '작전 탈퇴에 실패하였습니다.',
+  ADMIN_CANT_LEAVE_OPERATION:
+    '관리자는 관리자 권한을 양도한 후 작전에서 탈퇴할 수 있습니다.',
   ALREADY_CHECKED: '이미 해당 날짜에 체크하였습니다.',
   CHECKED_ERROR: '작전 체크에 실패하였습니다.',
 };
