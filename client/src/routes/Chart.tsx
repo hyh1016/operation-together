@@ -23,6 +23,10 @@ const ContentWrapper = styled.div`
     padding: 1rem;
     text-align: center;
   }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const Chart: React.FC = () => {

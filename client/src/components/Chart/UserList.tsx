@@ -6,6 +6,10 @@ import { useOperation } from '@/contexts/OperationContext';
 const UserListWrapper = styled.div`
   width: 20%;
   background-color: rgba(255, 255, 255, 0.4);
+
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const UserTitle = styled.h2`
