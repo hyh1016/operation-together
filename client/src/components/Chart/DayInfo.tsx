@@ -15,9 +15,19 @@ const DayInfoWrapper = styled.div`
   height: 70vh;
   background-color: rgba(30, 30, 30, 0.7);
 
+  Button {
+    width: 40%;
+  }
+
   #check-button {
     margin-top: 3rem;
-    width: 50%;
+    @media (max-width: 700px) {
+      width: 80%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    width: 100%;
   }
 `;
 
@@ -25,15 +35,15 @@ const DayInfoTitle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  Button {
-    width: 100%;
-  }
 `;
 
 const CheckedUserWrapper = styled.ul`
   text-align: center;
   color: ${(props) => props.theme.highlightColor};
+
+  p {
+    font-size: 1rem;
+  }
 `;
 
 const UserWrapper = styled.li<{ index: number }>`
@@ -51,8 +61,8 @@ const UserWrapper = styled.li<{ index: number }>`
 
 const Medal = styled.span<{ index: number }>`
   display: inline-block;
-  width: 50px;
-  height: 50px;
+  width: 3rem;
+  height: 3rem;
   padding: 0.5rem;
   border-radius: 100%;
   background-color: ${(props) =>
@@ -134,7 +144,7 @@ const DayInfo: React.FC<Props> = ({ selectedDay, setSelectedDay }) => {
     <>
       <DayInfoWrapper>
         <DayInfoTitle>
-          <h2>{`${selectedDay} (${getKoDay(selectedDay)}) 작전 현황표`}</h2>
+          <h2>{`${selectedDay} (${getKoDay(selectedDay)})`}</h2>
           <Button
             value="전체 일자 보기"
             onClick={() => setSelectedDay(undefined)}

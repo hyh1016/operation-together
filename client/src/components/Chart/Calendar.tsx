@@ -9,11 +9,17 @@ import getToday from '@/utils/getToday';
 const CalendarWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
+  align-content: flex-start;
   width: 80%;
   height: 70vh;
   background-color: rgba(30, 30, 30, 0.7);
   color: ${(props) => props.theme.mainColor};
   list-style-type: none;
+
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const DayTitle = styled.li`
@@ -22,15 +28,20 @@ const DayTitle = styled.li`
 
 const DayList = styled.li`
   width: 14%;
-
   Button {
     width: 100%;
-    font-size: 1rem;
     border-radius: 0;
+    * {
+      font-size: 1rem;
+    }
   }
 
   .empty-button {
     cursor: unset;
+  }
+
+  .day-button {
+    height: 100%;
   }
 `;
 
@@ -74,7 +85,7 @@ const Calendar: React.FC<Props> = ({ setSelectedDay }) => {
         ))}
         {emptySpace
           ? emptySpace.map((v) => (
-              <DayList key={v} className="empty">
+              <DayList key={v}>
                 <Button
                   className="empty-button"
                   backgroundColor="inherit"
@@ -86,6 +97,7 @@ const Calendar: React.FC<Props> = ({ setSelectedDay }) => {
         {days?.map((v) => (
           <DayList key={v.startFrom}>
             <Button
+              className="day-button"
               backgroundColor={v.today === getToday() ? undefined : 'inherit'}
               color={v.today === getToday() ? '#222' : '#aaa'}
               value={
