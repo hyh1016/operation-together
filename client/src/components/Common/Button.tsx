@@ -40,7 +40,7 @@ const Button: React.FC<Props> = ({
   onClick,
 }) => {
   return (
-    <div>
+    <>
       <ButtonWrapper
         id={id}
         className={className}
@@ -54,7 +54,7 @@ const Button: React.FC<Props> = ({
       >
         {value}
       </ButtonWrapper>
-    </div>
+    </>
   );
 };
 
