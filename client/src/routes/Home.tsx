@@ -13,6 +13,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -24,6 +28,15 @@ const LeftWrapper = styled.div`
   margin: 0 auto;
   border-right: 1px solid ${(props) => props.theme.highlightColor};
   text-align: center;
+
+  @media (max-width: 700px) {
+    width: 90%;
+    height: fit-content;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border: none;
+    border-bottom: 1px solid ${(props) => props.theme.highlightColor};
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -36,6 +49,10 @@ const RightWrapper = styled.div`
   height: 80vh;
   margin: 0 auto;
   text-align: center;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `;
 
 const Home: React.FC = () => {
