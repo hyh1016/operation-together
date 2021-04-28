@@ -9,13 +9,12 @@ const CardWrapper = styled.div`
   width: 80%;
   height: fit-content;
   margin: 0 auto;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding: 1rem;
   color: ${(props) => props.theme.mainColor};
   background-color: ${(props) => props.theme.highlightColor};
-  border: 20px solid ${(props) => props.theme.mainColor};
-  border-radius: 48px;
-  font-size: 2rem;
+  border-radius: 24px;
+  font-size: 1.5rem;
 `;
 
 const InformationWrapper = styled.div`
@@ -32,18 +31,32 @@ const NameWrapper = styled.div`
   background-color: #fff;
   border-radius: 12px;
   Input {
-    width: 60%;
+    width: 50%;
     margin: 0;
     padding: 0;
-    font-size: 2rem;
+    font-size: 1.5rem;
+
+    @media (max-width: 1250px) {
+      width: 100%;
+    }
   }
   Button {
     width: fit-content;
+    min-width: 60px;
     border: none;
     border-bottom: 1px solid black;
     border-radius: 0%;
     background-color: inherit;
   }
+
+  @media (max-width: 1250px) {
+    display: block;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
 
 const UserCard: React.FC = () => {
@@ -71,7 +84,7 @@ const UserCard: React.FC = () => {
 
   return (
     <CardWrapper>
-      <h3>Member Card</h3>
+      <h2>Member Card</h2>
       <InformationWrapper>
         <NameWrapper>
           {isModify ? (
@@ -83,20 +96,22 @@ const UserCard: React.FC = () => {
                 autoFocus={true}
                 maxLength={10}
               />
-              <Button
-                value="취소"
-                onClick={() => {
-                  setIsModify(false);
-                  setNickname(user.nickname);
-                }}
-              />
-              <Button
-                value="변경"
-                onClick={async () => {
-                  if (!isValidNickname()) return;
-                  await changeNickname();
-                }}
-              />
+              <ButtonWrapper>
+                <Button
+                  value="취소"
+                  onClick={() => {
+                    setIsModify(false);
+                    setNickname(user.nickname);
+                  }}
+                />
+                <Button
+                  value="변경"
+                  onClick={async () => {
+                    if (!isValidNickname()) return;
+                    await changeNickname();
+                  }}
+                />
+              </ButtonWrapper>
             </>
           ) : (
             <>
@@ -105,7 +120,7 @@ const UserCard: React.FC = () => {
             </>
           )}
         </NameWrapper>
-        <p>현재까지 참여한 작전 수: {user.operations?.length}</p>
+        <p>Participated: {user.operations?.length}</p>
         <p>Rank: {getRank(user.operations?.length)}</p>
       </InformationWrapper>
     </CardWrapper>
@@ -113,11 +128,10 @@ const UserCard: React.FC = () => {
 };
 
 const getRank = (length: number | undefined) => {
-  if (!length) return '';
+  if (!length) return 'No Rank';
   if (length > 30) return 'Master';
   if (length > 20) return 'Expert';
-  if (length > 0) return 'Junior';
-  return 'Probie';
+  return 'Junior';
 };
 
 export default UserCard;
