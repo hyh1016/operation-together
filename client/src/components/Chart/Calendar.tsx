@@ -10,18 +10,18 @@ const CalendarWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   width: 80%;
+  height: 70vh;
   background-color: rgba(30, 30, 30, 0.7);
   color: ${(props) => props.theme.mainColor};
+  list-style-type: none;
 `;
 
 const DayTitle = styled.li`
   width: 14%;
-  list-style-type: none;
 `;
 
 const DayList = styled.li`
   width: 14%;
-  list-style-type: none;
 
   Button {
     width: 100%;

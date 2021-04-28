@@ -12,6 +12,7 @@ import getToday from '@/utils/getToday';
 
 const DayInfoWrapper = styled.div`
   width: 80%;
+  height: 70vh;
   background-color: rgba(30, 30, 30, 0.7);
 
   #check-button {
