@@ -1,7 +1,6 @@
 import express from 'express';
 import { createConnection, getRepository } from 'typeorm';
 import cors from 'cors';
-import createError from 'http-errors';
 import passport from 'passport';
 import passportConfig from './util/passport';
 import config from './config';
@@ -51,9 +50,8 @@ const startServer = async () => {
 
   app.use('/', Router());
 
-  // TODO: error handling
-  app.use((_, __, next) => {
-    next(createError(404));
+  app.use((req, res) => {
+    res.status(404).json({ message: 'unhandled request' });
   });
 
   app.listen(PORT, () => {
