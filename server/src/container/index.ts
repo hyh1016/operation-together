@@ -1,6 +1,6 @@
-import UserService from '@/service/UserService';
-import OperationService from '@/service/operationService';
-import ChartService from '@/service/chartService';
+import { UserService } from '@/service/UserService';
+import { OperationService } from '@/service/operationService';
+import { ChartService } from '@/service/chartService';
 
 class Container {
   container: Map<string, any>;

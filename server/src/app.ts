@@ -6,14 +6,13 @@ import passport from 'passport';
 import passportConfig from './util/passport';
 import config from './config';
 import Router from './route';
-
 import Container from './container';
 import User from './entity/User';
-import UserService from './service/UserService';
+import { UserService } from './service/UserService';
 import Operation from './entity/Operation';
-import OperationService from './service/operationService';
+import { OperationService } from './service/operationService';
 import Chart from './entity/Chart';
-import ChartService from './service/chartService';
+import { ChartService } from './service/chartService';
 
 const startServer = async () => {
   await createConnection()
