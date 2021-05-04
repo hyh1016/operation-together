@@ -11,34 +11,31 @@ export default (indexRouter: Router): void => {
   router.use('/', passport.authenticate('jwt', { session: false }));
 
   router.post('/', async (req, res, next) => {
-    const { id: userId } = req.user as User;
     const { operationId } = req.body;
     if (!isNumber(operationId)) return next();
+    const { id: userId } = req.user as User;
     const operationInstance = Container.getOperationService();
     const isValidUser = await operationInstance.isJoinedUser(
       userId,
       Number(operationId),
     );
-    if (!isValidUser) return res.status(401).json();
-
+    if (!isValidUser) return res.status(401).end();
     const chartInstance = Container.getChartService();
     const result = await chartInstance.createChart(userId, operationId);
     if (!result) return res.status(400).json({ message: 'create failed' });
-
-    return res.status(200).json();
+    return res.status(200).end();
   });
 
   router.get('/:id/:date', async (req, res, next) => {
     const { id: operationId, date: checkedDate } = req.params;
-    const { id: userId } = req.user as User;
     if (!isNumber(operationId)) return next();
+    const { id: userId } = req.user as User;
     const operationInstance = Container.getOperationService();
     const isValidUser = await operationInstance.isJoinedUser(
       userId,
       Number(operationId),
     );
-    if (!isValidUser) return res.status(401).json();
-
+    if (!isValidUser) return res.status(401).end();
     const chartInstance = Container.getChartService();
     const users = await chartInstance.getCheckedUsers(
       Number(operationId),

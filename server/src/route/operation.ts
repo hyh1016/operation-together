@@ -12,8 +12,8 @@ export default (indexRouter: Router): void => {
   router.use('/', passport.authenticate('jwt', { session: false }));
 
   router.post('/', async (req, res) => {
-    const serviceInstance = Container.getOperationService();
     const operationDTO: OperationForm = req.body;
+    const serviceInstance = Container.getOperationService();
     const operation = await serviceInstance.createOperation(
       req.user as User,
       operationDTO,
@@ -42,7 +42,7 @@ export default (indexRouter: Router): void => {
       userId,
       Number(operationId),
     );
-    if (!isValidUser) return res.status(401).json();
+    if (!isValidUser) return res.status(401).end();
     return next();
   });
 
@@ -53,7 +53,7 @@ export default (indexRouter: Router): void => {
     const operation = await serviceInstance.getOperationById(
       Number(operationId),
     );
-    if (!operation) return res.status(204).json();
+    if (!operation) return res.status(400).json({ message: 'read failed' });
     return res.status(200).json({ operation });
   });
 
@@ -67,42 +67,25 @@ export default (indexRouter: Router): void => {
       Number(operationId),
     );
     if (!isLeave) return res.status(400).json({ message: 'leave failed' });
-    return res.status(200).json();
+    return res.status(200).end();
   });
 
   router.put('/:id', async (req, res, next) => {
     const { id: operationId } = req.params;
     if (!isNumber(operationId)) return next();
-    const { id: userId } = req.user as User;
     const operationDTO: OperationForm = req.body;
+    const { id: userId } = req.user as User;
     const serviceInstance = Container.getOperationService();
     const isAuthenticated = await serviceInstance.isAdminUser(
       userId,
       Number(operationId),
     );
-    if (!isAuthenticated) return res.status(401).json();
+    if (!isAuthenticated) return res.status(401).end();
     const isUpdated = await serviceInstance.updateOperation(
       Number(operationId),
       operationDTO,
     );
     if (!isUpdated) return res.status(400).json({ message: 'update failed' });
-    return res.status(200).json();
-  });
-
-  router.delete('/:id', async (req, res, next) => {
-    const { id: operationId } = req.params;
-    if (!isNumber(operationId)) return next();
-    const { id: userId } = req.user as User;
-    const serviceInstance = Container.getOperationService();
-    const isAuthenticated = await serviceInstance.isAdminUser(
-      userId,
-      Number(operationId),
-    );
-    if (!isAuthenticated) return res.status(401).json();
-    const isDeleted = await serviceInstance.deleteOperation(
-      Number(operationId),
-    );
-    if (!isDeleted) return res.status(400).json({ message: 'delete failed' });
-    return res.status(200).json();
+    return res.status(200).end();
   });
 };
