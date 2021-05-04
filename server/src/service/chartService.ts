@@ -8,7 +8,7 @@ export interface ChartData {
   nickname: string;
 }
 
-export default class ChartService {
+export class ChartService {
   constructor(private chartRepository: Repository<Chart>) {}
 
   async createChart(userId: string, operationId: number): Promise<boolean> {

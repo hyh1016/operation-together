@@ -14,7 +14,7 @@ export interface LoginForm {
   password: string;
 }
 
-export default class UserService {
+export class UserService {
   constructor(private userRepository: Repository<User>) {}
 
   async register(info: RegisterForm): Promise<boolean> {

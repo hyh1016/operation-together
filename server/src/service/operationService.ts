@@ -17,7 +17,7 @@ export interface JoinForm {
   code?: string;
 }
 
-export default class OperationService {
+export class OperationService {
   constructor(private operationRepository: Repository<Operation>) {}
 
   async createOperation(
