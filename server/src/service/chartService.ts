@@ -37,11 +37,11 @@ export class ChartService {
   ): Promise<ChartData[] | undefined> {
     if (!checkedDate || !operationId) return undefined;
     try {
-      const charts = await this.chartRepository
+      const users: ChartData[] = await this.chartRepository
         .createQueryBuilder('chart')
-        .leftJoin('chart.user', 'user')
-        .leftJoin('chart.operation', 'operation')
-        .addSelect(['user.nickname', 'user.id'])
+        .innerJoin('chart.user', 'user')
+        .innerJoin('chart.operation', 'operation')
+        .select(['user.id as id', 'user.nickname as nickname'])
         .where(
           'operation.id= :operationId and chart.checkedDate= :checkedDate',
           {
@@ -50,8 +50,8 @@ export class ChartService {
           },
         )
         .orderBy('chart.id')
-        .getMany();
-      return charts.map((v) => v.user);
+        .getRawMany();
+      return users;
     } catch (error) {
       console.error(error);
       return undefined;
