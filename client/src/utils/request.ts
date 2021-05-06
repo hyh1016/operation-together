@@ -63,6 +63,21 @@ const sendPutRequest = async (
   }
 };
 
+const sendDeleteRequest = async (path: string): Promise<returnObject> => {
+  try {
+    const result = await axios.delete(BASE_URL + path, {
+      withCredentials: true,
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    });
+    return { result: result.data };
+  } catch (error) {
+    validateToken();
+    return { error };
+  }
+};
+
 const validateToken = () => {
   if (!localStorage.getItem('token')) {
     alert(ERROR.NOT_VALID_TOKEN);
@@ -70,4 +85,4 @@ const validateToken = () => {
   }
 };
 
-export { sendGetRequest, sendPostRequest, sendPutRequest };
+export { sendGetRequest, sendPostRequest, sendPutRequest, sendDeleteRequest };
