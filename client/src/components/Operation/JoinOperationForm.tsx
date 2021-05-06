@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ERROR } from '@/utils/message';
-import { sendPutRequest } from '@/utils/request';
+import { sendPostRequest } from '@/utils/request';
 import Form from '@/components/Common/Form';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
@@ -15,7 +15,7 @@ const JoinOperationForm: React.FC = () => {
   const [message, setMessage] = useState('');
 
   const joinOperationEvent = async () => {
-    const { result, error } = await sendPutRequest('/operations/join', {
+    const { result, error } = await sendPostRequest('/operations/user', {
       id,
       code,
     });

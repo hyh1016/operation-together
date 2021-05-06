@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { sendPutRequest } from '@/utils/request';
+import { sendDeleteRequest } from '@/utils/request';
 import { ERROR } from '@/utils/message';
 import Form from '@/components/Common/Form';
 import Button from '@/components/Common/Button';
@@ -39,8 +39,8 @@ const LeaveOperationForm: React.FC<Props> = ({ setVisible }) => {
       setVisible(false);
       return;
     }
-    const { result, error } = await sendPutRequest(
-      `/operations/${operation.id}/leave`,
+    const { result, error } = await sendDeleteRequest(
+      `/operations/user/${operation.id}`,
     );
     if (error) {
       setMessage(ERROR.OPERATION_LEAVE_FAILED);
