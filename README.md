@@ -70,3 +70,5 @@
 📌 [개발 일지](https://github.com/hyh1016/operation-together/wiki/%EA%B0%9C%EB%B0%9C-%EC%9D%BC%EC%A7%80)
 
 📝 [API 명세서](https://github.com/hyh1016/operation-together/wiki/API-%EB%AA%85%EC%84%B8%EC%84%9C)
+
+❓ [프로젝트 실행법](https://github.com/hyh1016/operation-together/wiki/How-to-run-this-project)
