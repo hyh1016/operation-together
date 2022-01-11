@@ -2,11 +2,14 @@ package com.yhproject.operation_together.domain.input;
 
 import com.yhproject.operation_together.domain.BaseTimeEntity;
 import com.yhproject.operation_together.domain.operation.Operation;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor
 @Entity
 public class Input extends BaseTimeEntity {
 
@@ -25,4 +28,10 @@ public class Input extends BaseTimeEntity {
     @JoinColumn(name = "operation_id")
     private Operation operation;
 
+    @Builder
+    public Input(String name, int position, String content) {
+        this.name = name;
+        this.position = position;
+        this.content = content;
+    }
 }
