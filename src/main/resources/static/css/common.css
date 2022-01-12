@@ -1,5 +1,5 @@
 * {
-    font-family: 'paybooc-Bold';
+    font-family: 'GongGothicMedium';
 }
 
 html, body {
@@ -7,8 +7,8 @@ html, body {
 }
 
 @font-face {
-    font-family: 'paybooc-Bold';
-    src: url('../font/paybooc-Bold.ttf') format('truetype');
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
