@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -19,25 +19,30 @@ public class Operation extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
+    @Column(length = 20, nullable = false)
     public String name;
 
+    @Column(length = 15, nullable = false)
     public String password;
 
+    @Column(length = 16, nullable = false)
     public String link;
 
-    public LocalDateTime operationDay;
+    @Column(nullable = false)
+    public LocalDate operationDate;
 
+    @Column(nullable = false)
     public int type;
 
     @OneToMany(mappedBy = "operation")
     public List<Input> inputs;
 
     @Builder
-    public Operation(String name, String password, String link, LocalDateTime operationDay, int type) {
+    public Operation(String name, String password, String link, LocalDate operationDate, int type) {
         this.name = name;
         this.password = password;
         this.link = link;
-        this.operationDay = operationDay;
+        this.operationDate = operationDate;
         this.type = type;
     }
 }
