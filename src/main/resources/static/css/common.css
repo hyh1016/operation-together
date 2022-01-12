@@ -1,0 +1,14 @@
+* {
+    font-family: 'paybooc-Bold';
+}
+
+html, body {
+    height: 100%;
+}
+
+@font-face {
+    font-family: 'paybooc-Bold';
+    src: url('../font/paybooc-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
