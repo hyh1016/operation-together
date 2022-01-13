@@ -11,4 +11,10 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/create")
+    public String create() { return "create"; }
+
+    @GetMapping("/operations/{link}")
+    public String operation() { return "operation"; }
+
 }
