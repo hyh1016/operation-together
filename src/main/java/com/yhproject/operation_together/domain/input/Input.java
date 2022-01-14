@@ -17,13 +17,15 @@ public class Input extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
+    @Column(length = 20, nullable = false)
     public String name;
 
+    @Column(nullable = false)
     public int position;
 
+    @Column(length = 50, nullable = false)
     public String content;
 
-    // Foreign key (Operation ID)
     @ManyToOne
     @JoinColumn(name = "operation_id")
     private Operation operation;
