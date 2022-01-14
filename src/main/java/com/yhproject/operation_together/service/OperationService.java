@@ -3,6 +3,7 @@ package com.yhproject.operation_together.service;
 import com.yhproject.operation_together.domain.operation.Operation;
 import com.yhproject.operation_together.domain.operation.OperationRepository;
 import com.yhproject.operation_together.web.dto.OperationSaveRequestDto;
+import com.yhproject.operation_together.web.dto.OperationSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,10 @@ public class OperationService {
     private final OperationRepository operationRepository;
 
     @Transactional
-    public String createOperation(OperationSaveRequestDto dto) {
+    public OperationSaveResponseDto createOperation(OperationSaveRequestDto dto) {
         dto.setLink(createLink());
-        return operationRepository.save(dto.toEntity()).getLink();
+        String newOperationLink = operationRepository.save(dto.toEntity()).getLink();
+        return OperationSaveResponseDto.builder().link(newOperationLink).build();
     }
 
     private String createLink() {
