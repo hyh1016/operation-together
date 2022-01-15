@@ -2,12 +2,14 @@ package com.yhproject.operation_together.service;
 
 import com.yhproject.operation_together.domain.operation.Operation;
 import com.yhproject.operation_together.domain.operation.OperationRepository;
+import com.yhproject.operation_together.web.dto.OperationResponseDto;
 import com.yhproject.operation_together.web.dto.OperationSaveRequestDto;
 import com.yhproject.operation_together.web.dto.OperationSaveResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -23,6 +25,17 @@ public class OperationService {
         return OperationSaveResponseDto.builder().link(newOperationLink).build();
     }
 
+    public OperationResponseDto getOperation(String link) {
+        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        return OperationResponseDto.builder()
+                .id(operation.id)
+                .name(operation.name)
+                .link(operation.link)
+                .operationKoDate(getKoDate(operation.operationDate))
+                .type(operation.type)
+                .build();
+    }
+
     private String createLink() {
         // 난수 링크 생성
         String candidate = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -32,8 +45,8 @@ public class OperationService {
                 int index = (int) (Math.random() * candidate.length());
                 link.append(candidate.charAt(index));
             }
-            Optional<Operation> operaion = operationRepository.findByLink(link.toString());
-            if (operaion.isPresent()) {
+            Optional<Operation> operation = operationRepository.findByLink(link.toString());
+            if (operation.isPresent()) {
                 link = new StringBuilder();
                 continue;
             }
@@ -41,4 +54,8 @@ public class OperationService {
         }
     }
 
+    private String getKoDate(LocalDate date) {
+        String[] strings = date.toString().split("-");
+        return strings[0] + "년 " + strings[1] + "월 " + strings[2] + "일";
+    }
 }

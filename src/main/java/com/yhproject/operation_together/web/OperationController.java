@@ -18,4 +18,9 @@ public class OperationController {
         return operationService.createOperation(dto);
     }
 
+    @GetMapping("/api/operations/{link}")
+    public OperationResponseDto getOperation(@PathVariable String link) {
+        return operationService.getOperation(link);
+    }
+
 }
