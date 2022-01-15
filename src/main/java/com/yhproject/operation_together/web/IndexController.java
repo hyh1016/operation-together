@@ -1,10 +1,18 @@
 package com.yhproject.operation_together.web;
 
+import com.yhproject.operation_together.service.OperationService;
+import com.yhproject.operation_together.web.dto.OperationResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class IndexController {
+
+    private final OperationService operationService;
 
     @GetMapping("/")
     public String index() {
@@ -15,6 +23,10 @@ public class IndexController {
     public String create() { return "create"; }
 
     @GetMapping("/operations/{link}")
-    public String operation() { return "operation"; }
+    public String operation(Model model, @PathVariable String link) {
+        OperationResponseDto operation = operationService.getOperation(link);
+        model.addAttribute("operation", operation);
+        return "operation";
+    }
 
 }

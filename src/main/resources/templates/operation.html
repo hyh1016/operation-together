@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/fragments/header.html :: header-fragment"></th:block>
+    <link rel="stylesheet" href="/css/operation.css">
+</head>
+<body>
+<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="jumbotron align-self-center align-items-center" th:object="${operation}">
+            <h1 class="text-center mb-3">
+                <span class="text-primary" th:text="*{name}"></span>님은
+                <span class="text-primary" th:text="*{operationKoDate}"></span>에
+            </h1>
+            <h3 id="operation-format" class="text-center border border-secondary mb-3 p-2">
+                <th:block th:if="*{type % 2} == 1">
+                    <span class="text-primary">???</span> 와(과)
+                </th:block>
+                <span class="text-primary">???</span>
+                <th:block th:if="*{type} == 0">에 간다.</th:block>
+                <th:block th:if="*{type} == 1">에 간다.</th:block>
+                <th:block th:if="*{type} == 2">을(를) 먹는다.</th:block>
+                <th:block th:if="*{type} == 3">을(를) 먹는다.</th:block>
+                <th:block th:if="*{type} == 4">을(를) 한다.</th:block>
+                <th:block th:if="*{type} == 5">을(를) 한다.</th:block>
+            </h3>
+            <div id="btn-add" class="mb-3 text-center"><button class="btn btn-primary">작전 추가하기</button></div>
+            <div id="btn-result" class="mb-3 text-center"><button class="btn btn-danger">작전 확인하기</button></div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="/fragments/footer.html :: footer-fragment"></th:block>
+</body>
+</html>
