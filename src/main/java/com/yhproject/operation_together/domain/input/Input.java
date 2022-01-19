@@ -15,23 +15,23 @@ public class Input extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column(length = 20, nullable = false)
-    public String name;
+    private String name;
 
     @Column(nullable = false)
-    public int position;
+    private int position;
 
     @Column(length = 50, nullable = false)
-    public String content;
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "operation_id")
     private Operation operation;
 
     @Builder
-    public Input(String name, int position, String content) {
+    private Input(String name, int position, String content) {
         this.name = name;
         this.position = position;
         this.content = content;
