@@ -17,28 +17,28 @@ public class Operation extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column(length = 20, nullable = false)
-    public String name;
+    private String name;
 
     @Column(length = 15, nullable = false)
-    public String password;
+    private String password;
 
     @Column(length = 16, nullable = false)
-    public String link;
+    private String link;
 
     @Column(nullable = false)
-    public LocalDate operationDate;
+    private LocalDate operationDate;
 
     @Column(nullable = false)
-    public int type;
+    private int type;
 
     @OneToMany(mappedBy = "operation")
-    public List<Input> inputs;
+    private List<Input> inputs;
 
     @Builder
-    public Operation(String name, String password, String link, LocalDate operationDate, int type) {
+    private Operation(String name, String password, String link, LocalDate operationDate, int type) {
         this.name = name;
         this.password = password;
         this.link = link;
