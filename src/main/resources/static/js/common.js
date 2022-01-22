@@ -5,7 +5,8 @@ const fetchData = async (url, option) => {
         const res = await fetch(REQUEST_URL + url,
             {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': sessionStorage.getItem("Authorization"),
                 },
                 ...option,
             });

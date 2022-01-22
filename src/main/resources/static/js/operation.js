@@ -13,12 +13,27 @@ const addOperationEvent = () => {
 }
 
 const redirectInput = () => {
-    window.location.href = window.location.href + "/input";
+    location.href += '/input';
 }
 
-const checkPassword = () => {
+const checkPassword = async () => {
     const password = document.getElementById('operation-password').value;
-    // TODO: check password
+    const passwordDto = {
+        password,
+    };
+    const header = {
+        method: 'POST',
+        body: JSON.stringify(passwordDto),
+    };
+    const response = await fetchData("/api" + window.location.pathname, header);
+    const token = response.token;
+    if (token) {
+        sessionStorage.setItem("Authorization", `Bearer ${token}`);
+        location.href += '/result';
+    } else {
+        alert('비밀번호가 틀렸습니다.');
+        location.reload();
+    }
 }
 
 addOperationEvent();
