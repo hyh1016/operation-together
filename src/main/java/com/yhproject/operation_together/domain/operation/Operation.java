@@ -31,18 +31,14 @@ public class Operation extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate operationDate;
 
-    @Column(nullable = false)
-    private int type;
-
     @OneToMany(mappedBy = "operation")
     private List<Input> inputs;
 
     @Builder
-    private Operation(String name, String password, String link, LocalDate operationDate, int type) {
+    private Operation(String name, String password, String link, LocalDate operationDate) {
         this.name = name;
         this.password = password;
         this.link = link;
         this.operationDate = operationDate;
-        this.type = type;
     }
 }
