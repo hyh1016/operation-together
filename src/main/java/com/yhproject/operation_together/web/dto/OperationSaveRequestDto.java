@@ -34,7 +34,6 @@ public class OperationSaveRequestDto {
                 .password(password)
                 .link(link)
                 .operationDate(operationDate)
-                .type(type)
                 .build();
     }
 
