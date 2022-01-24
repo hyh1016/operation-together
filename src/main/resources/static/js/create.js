@@ -10,7 +10,6 @@ const createOperation = async (event) => {
     const operationSaveDto = {
         name: document.getElementById('name').value,
         password: document.getElementById('password').value,
-        type: document.getElementById('operation-type').value,
         operationDate: document.getElementById('operation-date').value,
     };
     if (!checkValidation(operationSaveDto)) return;
@@ -27,7 +26,6 @@ const checkValidation = (dto) => {
     const errorMessage = document.getElementById('error-message');
     if (!isValidName(dto.name)) errorMessage.innerHTML = '유효하지 않은 이름입니다. (이름: 1~8자)';
     else if (!isValidPassword(dto.password)) errorMessage.innerHTML = '유효하지 않은 비밀번호입니다. (비밀번호: 4~12자)';
-    else if (!isValidType(dto.type)) errorMessage.innerHTML = '작전 타입이 유효하지 않습니다.';
     else if (!isValidDate(dto.operationDate)) errorMessage.innerHTML = '작전 날짜가 유효하지 않습니다.';
     else {
         errorMessage.innerHTML = '';
@@ -46,11 +44,6 @@ const isValidPassword = (password) => {
     if (/[^\w]/.test(password)) return false;
     return true;
 };
-
-const isValidType = (type) => {
-    if (!/[\d]+/.test(type)) return false;
-    return true;
-}
 
 const isValidDate = (date) => {
     if (!date) return false;
