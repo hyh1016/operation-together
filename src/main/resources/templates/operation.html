@@ -13,16 +13,9 @@
                 <span class="text-primary" th:text="*{operationKoDate}"></span>에
             </h1>
             <h3 id="operation-format" class="text-center border border-secondary mb-3 p-2">
-                <th:block th:if="*{type % 2} == 1">
-                    <span class="text-primary">???</span> 와(과)
-                </th:block>
+                <span class="text-primary">???</span>와(과)
+                <span class="text-primary">???</span>에서
                 <span class="text-primary">???</span>
-                <th:block th:if="*{type} == 0">에 간다.</th:block>
-                <th:block th:if="*{type} == 1">에 간다.</th:block>
-                <th:block th:if="*{type} == 2">을(를) 먹는다.</th:block>
-                <th:block th:if="*{type} == 3">을(를) 먹는다.</th:block>
-                <th:block th:if="*{type} == 4">을(를) 한다.</th:block>
-                <th:block th:if="*{type} == 5">을(를) 한다.</th:block>
             </h3>
             <div class="mb-3 text-center">
                 <button id="btn-input" class="btn btn-white text-primary border border-primary">
