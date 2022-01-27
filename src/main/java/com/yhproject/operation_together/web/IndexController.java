@@ -30,7 +30,9 @@ public class IndexController {
     }
 
     @GetMapping("/operations/{link}/input")
-    public String input(@PathVariable String link) {
+    public String input(Model model, @PathVariable String link) {
+        OperationResponseDto operation = operationService.getOperation(link);
+        model.addAttribute("operation", operation);
         return "input";
     }
 
