@@ -1,9 +1,9 @@
 const addCreateEvent = () => {
     document.getElementById('operation-date').value = new Date().toISOString().slice(0, 10);
 
-    const operationFormSubmit = document.querySelector('#operation-form-submit');
+    const operationFormSubmit = document.getElementById('operation-form-submit');
     operationFormSubmit.addEventListener('click', createOperation);
-}
+};
 
 const createOperation = async (event) => {
     event.preventDefault();
@@ -20,7 +20,7 @@ const createOperation = async (event) => {
     const response = await fetchData("/api/operations", header);
     const link = response.link;
     window.location.href = "/operations/" + link;
-}
+};
 
 const checkValidation = (dto) => {
     const errorMessage = document.getElementById('error-message');
@@ -31,7 +31,7 @@ const checkValidation = (dto) => {
         errorMessage.innerHTML = '';
         return true;
     }
-}
+};
 
 const isValidName = (name) => {
     if (!name || name[0] === ' ') return false;
@@ -50,6 +50,6 @@ const isValidDate = (date) => {
     const current = new Date().toISOString().slice(0, 10);
     if (new Date(date) < new Date(current)) return false;
     return true;
-}
+};
 
 addCreateEvent();
