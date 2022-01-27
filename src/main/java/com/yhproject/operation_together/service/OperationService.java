@@ -46,7 +46,7 @@ public class OperationService {
     }
 
     public OperationResponseDto getOperation(String link) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
         return OperationResponseDto.builder()
                 .id(operation.getId())
                 .name(operation.getName())
@@ -56,7 +56,7 @@ public class OperationService {
     }
 
     public OperationResponseDto getOperation(Long id) {
-        Operation operation = operationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Operation operation = operationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
         return OperationResponseDto.builder()
                 .id(operation.getId())
                 .name(operation.getName())
@@ -66,7 +66,7 @@ public class OperationService {
     }
 
     public PasswordResponseDto checkPassword(String link, PasswordRequestDto dto) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
         String correctPassword = operation.getPassword();
         boolean isCorrect = Objects.equals(correctPassword, dto.getPassword());
         if (isCorrect) {

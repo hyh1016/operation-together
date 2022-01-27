@@ -31,9 +31,10 @@ public class Input extends BaseTimeEntity {
     private Operation operation;
 
     @Builder
-    private Input(String name, int position, String content) {
+    private Input(String name, int position, String content, Operation operation) {
         this.name = name;
         this.position = position;
         this.content = content;
+        this.operation = operation;
     }
 }
