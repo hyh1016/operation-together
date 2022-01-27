@@ -1,0 +1,14 @@
+#input-form {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#p1, #p2, #p3 {
+    margin-right: .5rem;
+    margin-bottom: 1rem;
+}
+
+#input-form-submit {
+    width: 50%;
+    margin: 0 auto;
+}
