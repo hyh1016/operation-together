@@ -1,5 +1,6 @@
 package com.yhproject.operation_together.domain.operation;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.yhproject.operation_together.domain.BaseTimeEntity;
 import com.yhproject.operation_together.domain.input.Input;
 import lombok.Builder;
@@ -31,7 +32,9 @@ public class Operation extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate operationDate;
 
+
     @OneToMany(mappedBy = "operation")
+    @JsonBackReference
     private List<Input> inputs;
 
     @Builder

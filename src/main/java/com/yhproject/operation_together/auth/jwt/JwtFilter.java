@@ -24,6 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
             Long operationId = jwtTokenProvider.getOperationId(jwt);
             request.setAttribute("operationId", operationId);
             filterChain.doFilter(request, response);
+            return;
         }
         response.sendError(401);
     }
