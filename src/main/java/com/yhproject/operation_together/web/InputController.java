@@ -17,7 +17,7 @@ public class InputController {
 
     @PostMapping("/api/inputs/{link}")
     public EmptyJSON createInputAll(@PathVariable String link, @RequestBody InputSaveRequestDto dtos) {
-        return inputService.createInputAll(link, dtos);
+        return inputService.createInput(link, dtos);
     }
 
 }

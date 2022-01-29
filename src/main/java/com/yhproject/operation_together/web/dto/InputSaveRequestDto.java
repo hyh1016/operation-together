@@ -1,16 +1,17 @@
 package com.yhproject.operation_together.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class InputSaveRequestDto {
 
-    private InputForm[] inputs;
+    private String name;
+    private List<String> contents;
 
 }
