@@ -1,5 +1,6 @@
 package com.yhproject.operation_together.domain.input;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.yhproject.operation_together.domain.BaseTimeEntity;
 import com.yhproject.operation_together.domain.operation.Operation;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,21 +22,20 @@ public class Input extends BaseTimeEntity {
     @Column(length = 20, nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private int position;
-
-    @Column(length = 50, nullable = false)
-    private String content;
+    @ElementCollection
+    @CollectionTable(name = "content_list", joinColumns = @JoinColumn(name = "id"))
+    @Column(name ="content", length = 50, nullable = false)
+    private List<String> contents;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "operation_id")
     private Operation operation;
 
     @Builder
-    private Input(String name, int position, String content, Operation operation) {
+    private Input(String name, List<String> contents, Operation operation) {
         this.name = name;
-        this.position = position;
-        this.content = content;
+        this.contents = contents;
         this.operation = operation;
     }
 }
