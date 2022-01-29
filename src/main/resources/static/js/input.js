@@ -5,20 +5,15 @@ const addInputEvent = () => {
 
 const createInputAll = async (event) => {
     event.preventDefault();
-    const name = document.getElementById("input-name").value;
-    const inputs = [1, 2, 3].map((i) => {
-        const content = document.getElementById(`p${i}`).value;
-        return {
-            name,
-            position: i,
-            content,
-        };
-    });
-    if (!checkValidInputData({name, inputs})) return;
+    const inputRequestForm = {
+        name: document.getElementById("input-name").value,
+        contents: [1, 2, 3].map(i => document.getElementById(`p${i}`).value),
+    };
+    if (!checkValidInputData(inputRequestForm)) return;
 
     const header = {
         method: 'POST',
-        body: JSON.stringify({inputs})
+        body: JSON.stringify(inputRequestForm),
     };
     const link = location.pathname.split('/')[2];
     const response = await fetchData(`/api/inputs/${link}`, header);
@@ -29,13 +24,13 @@ const createInputAll = async (event) => {
     alert('등록 중 오류가 발생하였습니다.');
 };
 
-const checkValidInputData = ({name, inputs}) => {
+const checkValidInputData = ({name, contents}) => {
     const errorMsg = document.getElementById('error-message');
     if (!checkValidInputName(name)) {
         errorMsg.innerHTML = '이름을 입력해주세요.';
         return false;
     }
-    if (!checkValidInputs(inputs)) {
+    if (!checkValidInputs(contents)) {
         errorMsg.innerHTML = '모든 작전 입력칸을 채워주세요.';
         return false;
     }
@@ -47,8 +42,8 @@ const checkValidInputName = (name) => {
     return name;
 };
 
-const checkValidInputs = (inputs) => {
-    return inputs.filter((v) => !v.content).length === 0;
+const checkValidInputs = (contents) => {
+    return contents.filter((v) => !v).length === 0;
 };
 
 addInputEvent();
