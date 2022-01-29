@@ -10,4 +10,7 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
     @Query("SELECT o FROM Operation o WHERE o.link=:link")
     public Optional<Operation> findByLink(String link);
 
+    @Query("SELECT o FROM Operation o WHERE o.id=:id AND o.link=:link")
+    public Optional<Operation> findByIdAAndLink(Long id, String link);
+
 }
