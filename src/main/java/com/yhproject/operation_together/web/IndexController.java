@@ -20,7 +20,9 @@ public class IndexController {
     }
 
     @GetMapping("/create")
-    public String create() { return "create"; }
+    public String create() {
+        return "create";
+    }
 
     @GetMapping("/operations/{link}")
     public String operation(Model model, @PathVariable String link) {
@@ -34,6 +36,13 @@ public class IndexController {
         OperationResponseDto operation = operationService.getOperation(link);
         model.addAttribute("operation", operation);
         return "input";
+    }
+
+    @GetMapping("/operations/{link}/result")
+    public String result(Model model, @PathVariable String link) {
+        OperationResponseDto operation = operationService.getOperation(link);
+        model.addAttribute("operation", operation);
+        return "result";
     }
 
 }
