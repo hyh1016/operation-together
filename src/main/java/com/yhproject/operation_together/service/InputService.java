@@ -4,14 +4,12 @@ import com.yhproject.operation_together.domain.input.Input;
 import com.yhproject.operation_together.domain.input.InputRepository;
 import com.yhproject.operation_together.domain.operation.Operation;
 import com.yhproject.operation_together.domain.operation.OperationRepository;
-import com.yhproject.operation_together.web.dto.EmptyJSON;
-import com.yhproject.operation_together.web.dto.InputResponseDto;
-import com.yhproject.operation_together.web.dto.InputResponseForm;
-import com.yhproject.operation_together.web.dto.InputSaveRequestDto;
+import com.yhproject.operation_together.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,4 +55,20 @@ public class InputService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
+    public ResultDto getResponse(Long operationId, String link) {
+        Operation operation = getAuthOperation(operationId, link);
+        List<Input> inputs = operation.getInputs();
+        int length = operation.getInputs().size();
+        List<ResultForm> results = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Input input = inputs.get((int) (Math.random() * length));
+            results.add(ResultForm.builder()
+                    .name(input.getName())
+                    .content(input.getContents().get(i))
+                    .build()
+            );
+        }
+        return new ResultDto(results);
+    }
 }
