@@ -60,15 +60,15 @@ public class InputService {
         Operation operation = getAuthOperation(operationId, link);
         List<Input> inputs = operation.getInputs();
         int length = operation.getInputs().size();
-        List<ResultForm> results = new ArrayList<>();
+        List<ResultForm> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Input input = inputs.get((int) (Math.random() * length));
-            results.add(ResultForm.builder()
+            result.add(ResultForm.builder()
                     .name(input.getName())
                     .content(input.getContents().get(i))
                     .build()
             );
         }
-        return new ResultDto(results);
+        return new ResultDto(result);
     }
 }

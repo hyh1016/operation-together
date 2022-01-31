@@ -12,6 +12,6 @@ import java.util.List;
 public class ResultDto {
 
 
-    private final List<ResultForm> results;
+    private final List<ResultForm> result;
 
 }
