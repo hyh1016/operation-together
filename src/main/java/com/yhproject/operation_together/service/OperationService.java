@@ -24,7 +24,7 @@ public class OperationService {
     public OperationSaveResponseDto createOperation(OperationSaveRequestDto dto) {
         dto.setLink(createLink());
         String newOperationLink = operationRepository.save(dto.toEntity()).getLink();
-        return OperationSaveResponseDto.builder().link(newOperationLink).build();
+        return new OperationSaveResponseDto(newOperationLink);
     }
 
     private String createLink() {
