@@ -1,17 +1,12 @@
 package com.yhproject.operation_together.web.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class OperationSaveResponseDto {
 
-    private String link;
+    private final String link;
 
-    @Builder
-    public OperationSaveResponseDto(String link) {
-        this.link = link;
-    }
 }

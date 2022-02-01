@@ -1,12 +1,12 @@
 package com.yhproject.operation_together.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
-@Setter
 @AllArgsConstructor
 public class PasswordResponseDto {
 
-    private String token;
+    private final String token;
 
 }

@@ -4,12 +4,10 @@ import com.yhproject.operation_together.domain.operation.Operation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class OperationSaveRequestDto {
 
@@ -25,6 +23,10 @@ public class OperationSaveRequestDto {
         this.password = password;
         this.operationDate = operationDate;
         this.type = type;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     // DTO -> Entity
