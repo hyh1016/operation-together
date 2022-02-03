@@ -31,8 +31,7 @@ const getResult = async () => {
     const header = {
         method: 'GET'
     };
-    const link = location.pathname.split('/')[2];
-    const response = await fetchData(`/api/auth/operations/${link}/result`, header);
+    const response = await fetchData(`/api/auth/operations/${getLink()}/result`, header);
     return response.result;
 };
 
@@ -51,8 +50,7 @@ const getInputs = async () => {
     const header = {
         method: 'GET'
     };
-    const link = location.pathname.split('/')[2];
-    const response = await fetchData(`/api/auth/operations/${link}/inputs`, header);
+    const response = await fetchData(`/api/auth/operations/${getLink()}/inputs`, header);
     return response.inputs;
 };
 

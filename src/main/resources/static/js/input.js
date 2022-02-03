@@ -15,7 +15,7 @@ const createInputAll = async (event) => {
         method: 'POST',
         body: JSON.stringify(inputRequestForm),
     };
-    const link = location.pathname.split('/')[2];
+    const link = getLink();
     const response = await fetchData(`/api/inputs/${link}`, header);
     if (JSON.stringify(response) === '{}') {
         alert('등록되었습니다.');

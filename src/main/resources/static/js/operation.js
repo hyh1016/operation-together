@@ -13,7 +13,7 @@ const addOperationEvent = () => {
 }
 
 const redirectInput = () => {
-    location.href += '/input';
+    location.href = location.origin + `/operations/${getLink()}/input`;
 }
 
 const checkPassword = async () => {
@@ -25,11 +25,12 @@ const checkPassword = async () => {
         method: 'POST',
         body: JSON.stringify(passwordDto),
     };
-    const response = await fetchData("/api" + window.location.pathname, header);
+    const link = getLink();
+    const response = await fetchData(`/api/operations/${link}`, header);
     const token = response.token;
     if (token) {
         sessionStorage.setItem("Authorization", `Bearer ${token}`);
-        location.href += '/result';
+        location.href = location.origin + `/operations/${link}/result`;
     } else {
         alert('비밀번호가 틀렸습니다.');
         location.reload();

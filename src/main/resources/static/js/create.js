@@ -19,7 +19,7 @@ const createOperation = async (event) => {
     }
     const response = await fetchData("/api/operations", header);
     const link = response.link;
-    window.location.href = "/operations/" + link;
+    location.href = location.origin + `/operations/${link}`;
 };
 
 const checkValidation = (dto) => {
