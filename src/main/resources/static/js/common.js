@@ -14,5 +14,8 @@ const fetchData = async (url, option) => {
     } catch (error) {
         console.error(error);
     }
+}
 
+const getLink = () => {
+    return location.pathname.split('/')[2];
 }
