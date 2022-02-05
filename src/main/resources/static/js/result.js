@@ -13,7 +13,7 @@ const renderResult = async () => {
     const result = await getResult();
     const resultContainer = document.getElementById('operation-result');
     resultContainer.innerHTML = `
-        <span class="text-primary">${result[0].content}</span>와(과)
+        <span class="text-primary">${result[0].content}</span>${hasLastChar(result[0].content) ? '과' : '와'}
         <span class="text-primary">${result[1].content}</span>에서
         <span class="text-primary">${result[2].content}</span>
     `;
@@ -41,7 +41,7 @@ const renderInputs = async () => {
     inputModalBody.innerHTML = inputs.map((v) => {
         return (`<p>
             <span class="badge bg-primary fw-normal">${v.name + ' '}</span>
-            ${v.contents[0]}와(과) ${v.contents[1]}에서 ${v.contents[2]}
+            ${v.contents[0]}${hasLastChar(v.contents[0]) ? '과' : '와'} ${v.contents[1]}에서 ${v.contents[2]}
         </p>`);
     }).join('');
 };
