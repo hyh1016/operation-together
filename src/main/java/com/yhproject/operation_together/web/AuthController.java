@@ -4,23 +4,21 @@ import com.yhproject.operation_together.service.InputService;
 import com.yhproject.operation_together.web.dto.InputResponseDto;
 import com.yhproject.operation_together.web.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/api/auth")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final InputService inputService;
 
-    @GetMapping("/api/auth/operations/{link}/inputs")
+    @GetMapping("/operations/{link}/inputs")
     public InputResponseDto getInputs(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
         return inputService.getInputs(operationId, link);
     }
 
-    @GetMapping("/api/auth/operations/{link}/result")
+    @GetMapping("/operations/{link}/result")
     public ResultDto getResponse(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
         return inputService.getResponse(operationId, link);
     }
