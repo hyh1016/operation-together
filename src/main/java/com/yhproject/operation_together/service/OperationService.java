@@ -3,7 +3,6 @@ package com.yhproject.operation_together.service;
 import com.yhproject.operation_together.auth.jwt.JwtTokenProvider;
 import com.yhproject.operation_together.domain.operation.Operation;
 import com.yhproject.operation_together.domain.operation.OperationRepository;
-import com.yhproject.operation_together.util.DateUtil;
 import com.yhproject.operation_together.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ public class OperationService {
 
     private final OperationRepository operationRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final DateUtil dateUtil;
 
     @Transactional
     public OperationSaveResponseDto createOperation(OperationSaveRequestDto dto) {
@@ -51,7 +49,7 @@ public class OperationService {
                 .id(operation.getId())
                 .name(operation.getName())
                 .link(operation.getLink())
-                .operationKoDate(dateUtil.getKoDate(operation.getOperationDate()))
+                .operationDate(operation.getOperationDate())
                 .build();
     }
 
@@ -61,7 +59,7 @@ public class OperationService {
                 .id(operation.getId())
                 .name(operation.getName())
                 .link(operation.getLink())
-                .operationKoDate(dateUtil.getKoDate(operation.getOperationDate()))
+                .operationDate(operation.getOperationDate())
                 .build();
     }
 
