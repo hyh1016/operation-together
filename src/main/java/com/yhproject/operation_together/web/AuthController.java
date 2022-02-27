@@ -4,6 +4,8 @@ import com.yhproject.operation_together.service.InputService;
 import com.yhproject.operation_together.web.dto.InputResponseDto;
 import com.yhproject.operation_together.web.dto.ResultDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/auth")
@@ -14,13 +16,13 @@ public class AuthController {
     private final InputService inputService;
 
     @GetMapping("/operations/{link}/inputs")
-    public InputResponseDto getInputs(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
-        return inputService.getInputs(operationId, link);
+    public ResponseEntity<InputResponseDto> getInputs(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
+        return ResponseEntity.status(HttpStatus.OK).body(inputService.getInputs(operationId, link));
     }
 
     @GetMapping("/operations/{link}/result")
-    public ResultDto getResponse(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
-        return inputService.getResponse(operationId, link);
+    public ResponseEntity<ResultDto> getResponse(@RequestAttribute("operationId") Long operationId, @PathVariable String link) {
+        return ResponseEntity.status(HttpStatus.OK).body(inputService.getResponse(operationId, link));
     }
 
 }

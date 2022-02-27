@@ -3,6 +3,8 @@ package com.yhproject.operation_together.web;
 import com.yhproject.operation_together.service.OperationService;
 import com.yhproject.operation_together.web.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/operations")
@@ -13,18 +15,18 @@ public class OperationController {
     private final OperationService operationService;
 
     @PostMapping
-    public OperationSaveResponseDto createOperation(@RequestBody OperationSaveRequestDto dto) {
-        return operationService.createOperation(dto);
+    public ResponseEntity<OperationSaveResponseDto> createOperation(@RequestBody OperationSaveRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(operationService.createOperation(dto));
     }
 
     @GetMapping("/{link}")
-    public OperationResponseDto getOperation(@PathVariable String link) {
-        return operationService.getOperation(link);
+    public ResponseEntity<OperationResponseDto> getOperation(@PathVariable String link) {
+        return ResponseEntity.status(HttpStatus.OK).body(operationService.getOperation(link));
     }
 
     @PostMapping("/{link}")
-    public PasswordResponseDto checkPassword(@PathVariable String link, @RequestBody PasswordRequestDto dto) {
-        return operationService.checkPassword(link, dto);
+    public ResponseEntity<PasswordResponseDto> checkPassword(@PathVariable String link, @RequestBody PasswordRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(operationService.checkPassword(link, dto));
     }
 
 }
