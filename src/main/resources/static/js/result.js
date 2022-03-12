@@ -6,6 +6,8 @@ const addResultEvent = () => {
     const inputsButton = document.getElementById('btn-get-inputs');
     inputsButton.addEventListener('click', renderInputs);
 
+    const goListButton = document.getElementById('btn-go-listPage');
+    goListButton.addEventListener('click', goListPage);
 };
 
 const renderResult = async () => {
@@ -34,6 +36,10 @@ const getResult = async () => {
     const response = await fetchData(`/api/auth/operations/${getLink()}/result`, header);
     return response.result;
 };
+
+const goListPage = () => {
+    location.href = location.origin + `/operations/${getLink()}`;
+}
 
 const renderInputs = async () => {
     const inputs = await getInputs();
