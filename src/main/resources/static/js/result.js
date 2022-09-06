@@ -1,23 +1,29 @@
 const addResultEvent = () => {
 
     const resultButton = document.getElementById('btn-get-result');
-    resultButton.addEventListener('click', renderResult);
+    resultButton.addEventListener('click', renderResultWithToggle);
 
     const inputsButton = document.getElementById('btn-get-inputs');
     inputsButton.addEventListener('click', renderInputs);
 
+    const retryButton = document.getElementById('btn-retry');
+    retryButton.addEventListener('click', renderResult);
+};
+
+const renderResultWithToggle = async () => {
+    await renderResult();
+    toggleButton();
 };
 
 const renderResult = async () => {
-    toggleButton();
-    const result = await getResult();
     const resultContainer = document.getElementById('operation-result');
+    const result = await getResult();
     resultContainer.innerHTML = `
         <span class="text-primary">${result[0].content}</span>${hasLastChar(result[0].content) ? '과' : '와'}
         <span class="text-primary">${result[1].content}</span>에서
         <span class="text-primary">${result[2].content}</span>
     `;
-};
+}
 
 const toggleButton = () => {
     const resultButton = document.getElementById('btn-get-result');
@@ -25,6 +31,9 @@ const toggleButton = () => {
 
     const inputsButton = document.getElementById('btn-get-inputs');
     inputsButton.classList.toggle('d-none');
+
+    const retryButton = document.getElementById('btn-retry');
+    retryButton.classList.toggle('d-none');
 };
 
 const getResult = async () => {
