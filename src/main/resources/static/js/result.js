@@ -8,11 +8,14 @@ const addResultEvent = () => {
 
     const retryButton = document.getElementById('btn-retry');
     retryButton.addEventListener('click', renderResult);
+
+    const returnButton = document.getElementById('btn-return-operation');
+    returnButton.addEventListener('click', returnToOperation);
 };
 
 const renderResultWithToggle = async () => {
     await renderResult();
-    toggleButton();
+    toggleVisibility();
 };
 
 const renderResult = async () => {
@@ -25,15 +28,13 @@ const renderResult = async () => {
     `;
 }
 
-const toggleButton = () => {
-    const resultButton = document.getElementById('btn-get-result');
-    resultButton.classList.toggle('d-none');
+const toggleVisibility = () => {
+    const ids = ['btn-get-result', 'btn-return-operation', 'btn-get-inputs', 'btn-retry'];
 
-    const inputsButton = document.getElementById('btn-get-inputs');
-    inputsButton.classList.toggle('d-none');
-
-    const retryButton = document.getElementById('btn-retry');
-    retryButton.classList.toggle('d-none');
+    ids.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) element.classList.toggle('d-none');
+    });
 };
 
 const getResult = async () => {
@@ -61,6 +62,10 @@ const getInputs = async () => {
     };
     const response = await fetchData(`/api/auth/operations/${getLink()}/inputs`, header);
     return response.inputs;
+};
+
+const returnToOperation = () => {
+    location.replace(location.href.replace('/result', ''));
 };
 
 addResultEvent();
