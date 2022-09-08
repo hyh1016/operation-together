@@ -10,9 +10,14 @@ const fetchData = async (url, option) => {
                 },
                 ...option,
             });
-        return await res.json();
+        const data = await res.json();
+        if (res.status !== 200) {
+            alert(data.message);
+        }
+        return data;
     } catch (error) {
-        console.error(error);
+        console.log(error);
+        alert('데이터를 불러오는 도중 오류가 발생하였습니다.');
     }
 }
 
