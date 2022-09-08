@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,6 +61,7 @@ public class InputService {
     public ResultDto getResponse(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
         List<Input> inputs = operation.getInputs();
+        if (inputs.isEmpty()) throw new EntityNotFoundException("입력된 작전이 없습니다.");
         int length = operation.getInputs().size();
         List<ResultForm> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {

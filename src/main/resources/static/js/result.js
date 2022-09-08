@@ -14,22 +14,24 @@ const addResultEvent = () => {
 };
 
 const renderResultWithToggle = async () => {
-    await renderResult();
-    toggleVisibility();
+    const result = await renderResult();
+    if (result) toggleVisibility();
 };
 
 const renderResult = async () => {
     const resultContainer = document.getElementById('operation-result');
     const result = await getResult();
+    if (!result) return false;
     resultContainer.innerHTML = `
         <span class="text-primary">${result[0].content}</span>${hasLastChar(result[0].content) ? '과' : '와'}
         <span class="text-primary">${result[1].content}</span>에서
         <span class="text-primary">${result[2].content}</span>
     `;
+    return true;
 }
 
 const toggleVisibility = () => {
-    const ids = ['btn-get-result', 'btn-return-operation', 'btn-get-inputs', 'btn-retry'];
+    const ids = ['btn-get-result', 'btn-get-inputs', 'btn-retry'];
 
     ids.forEach((id) => {
         const element = document.getElementById(id);
@@ -42,7 +44,7 @@ const getResult = async () => {
         method: 'GET'
     };
     const response = await fetchData(`/api/auth/operations/${getLink()}/result`, header);
-    return response.result;
+    if (response) return response.result;
 };
 
 const renderInputs = async () => {
