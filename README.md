@@ -9,9 +9,9 @@
 
 ## 🚀 사용해보기
 
-### 나만의 작전 생성하기 ➡ [GO!](https://operation-together.site/)
+### 나만의 작전 생성하기 ➡ <a href="https://operation-together.site" target="_blank">GO!</a>
 
-### 제작자의 작전에 입력 추가하기 ➡ [GO!](https://operation-together.site/operations/zaUqwGU9MhwdB9Jv)
+### 제작자의 작전에 입력 추가하기 ➡ <a href="https://operation-together.site/operations/zaUqwGU9MhwdB9Jv" target="_blank">GO!</a>
 
 <br>
 
