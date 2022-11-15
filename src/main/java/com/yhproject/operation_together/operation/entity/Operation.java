@@ -26,7 +26,7 @@ public class Operation extends BaseTimeEntity {
     @Column(length = 15, nullable = false)
     private String password;
 
-    @Column(length = 16, nullable = false)
+    @Column(length = 16, nullable = false, unique = true)
     private String link;
 
     @Column(nullable = false)
