@@ -1,7 +1,8 @@
 package com.yhproject.operation_together.operation;
 
-import com.yhproject.operation_together.operation.dto.*;
 import com.yhproject.operation_together.common.auth.jwt.JwtTokenProvider;
+import com.yhproject.operation_together.common.exception.NotFoundException;
+import com.yhproject.operation_together.operation.dto.*;
 import com.yhproject.operation_together.operation.entity.Operation;
 import com.yhproject.operation_together.operation.entity.OperationRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,17 +45,7 @@ public class OperationService {
     }
 
     public OperationResponseDto getOperation(String link) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
-        return OperationResponseDto.builder()
-                .id(operation.getId())
-                .name(operation.getName())
-                .link(operation.getLink())
-                .operationDate(operation.getOperationDate())
-                .build();
-    }
-
-    public OperationResponseDto getOperation(Long id) {
-        Operation operation = operationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
+        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
         return OperationResponseDto.builder()
                 .id(operation.getId())
                 .name(operation.getName())
@@ -64,7 +55,7 @@ public class OperationService {
     }
 
     public PasswordResponseDto checkPassword(String link, PasswordRequestDto dto) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new IllegalArgumentException("해당 작전이 없습니다."));
+        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
         String correctPassword = operation.getPassword();
         boolean isCorrect = Objects.equals(correctPassword, dto.getPassword());
         if (isCorrect) {
