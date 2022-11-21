@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -15,9 +16,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage()));
+    public ModelAndView handleNotFoundException(NotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("./error/404");
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
     }
 
     @ExceptionHandler(Exception.class)
