@@ -21,7 +21,10 @@ const renderResultWithToggle = async () => {
 const renderResult = async () => {
     const resultContainer = document.getElementById('operation-result');
     const result = await getResult();
-    if (!result) return false;
+    if (!result) {
+        alert('입력된 작전이 없습니다.');
+        return;
+    }
     resultContainer.innerHTML = `
         <span class="text-primary">${result[0].content}</span>${hasLastChar(result[0].content) ? '과' : '와'}
         <span class="text-primary">${result[1].content}</span>에서
@@ -49,6 +52,10 @@ const getResult = async () => {
 
 const renderInputs = async () => {
     const inputs = await getInputs();
+    if (!inputs || !inputs.length) {
+        alert('입력된 작전이 없습니다.');
+        return;
+    }
     const inputModalBody = document.getElementById('inputs-modal-body');
     inputModalBody.innerHTML = inputs.map((v) => {
         return (`<p>

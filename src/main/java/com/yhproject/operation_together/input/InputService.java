@@ -62,7 +62,7 @@ public class InputService {
     public ResultDto getResponse(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
         List<Input> inputs = operation.getInputs();
-        if (inputs.isEmpty()) throw new NotFoundException("입력된 작전이 없습니다.");
+        if (inputs.isEmpty()) return new ResultDto(null);
         int length = inputs.size();
         List<ResultForm> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
