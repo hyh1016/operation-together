@@ -1,7 +1,6 @@
 const REQUEST_URL = location.origin;
 
 const fetchData = async (url, option) => {
-    console.log(location.origin);
     try {
         const res = await fetch(REQUEST_URL + url,
             {
