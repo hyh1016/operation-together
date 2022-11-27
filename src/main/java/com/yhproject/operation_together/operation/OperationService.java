@@ -1,6 +1,7 @@
 package com.yhproject.operation_together.operation;
 
 import com.yhproject.operation_together.common.auth.jwt.JwtTokenProvider;
+import com.yhproject.operation_together.common.exception.InternalServerException;
 import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.operation.dto.*;
 import com.yhproject.operation_together.operation.entity.Operation;
@@ -9,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -21,27 +24,27 @@ public class OperationService {
 
     @Transactional
     public OperationSaveResponseDto createOperation(OperationSaveRequestDto dto) {
-        dto.setLink(createLink());
-        String newOperationLink = operationRepository.save(dto.toEntity()).getLink();
-        return new OperationSaveResponseDto(newOperationLink);
+        String newOperationLink = createLink();
+        dto.setLink(newOperationLink);
+        try {
+            operationRepository.save(dto.toEntity());
+            return new OperationSaveResponseDto(newOperationLink);
+        } catch (Exception e) {
+            throw new InternalServerException("작전 생성에 실패하였습니다. operation link: " + newOperationLink);
+        }
     }
 
     private String createLink() {
         // 난수 링크 생성
-        String candidate = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        String candidate = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder link = new StringBuilder();
-        while (true) {
-            for (int i = 0; i < 16; i++) {
-                int index = (int) (Math.random() * candidate.length());
-                link.append(candidate.charAt(index));
-            }
-            Optional<Operation> operation = operationRepository.findByLink(link.toString());
-            if (operation.isPresent()) {
-                link = new StringBuilder();
-                continue;
-            }
-            return link.toString();
+        link.append(new Timestamp(System.currentTimeMillis()));
+        for (int j = 0; j < 6; j++) {
+            int index = (int) (Math.random() * candidate.length());
+            link.append(candidate.charAt(index));
         }
+        byte[] encode = Base64.getEncoder().encode(link.toString().getBytes(StandardCharsets.UTF_8));
+        return new String(encode);
     }
 
     public OperationResponseDto getOperation(String link) {
