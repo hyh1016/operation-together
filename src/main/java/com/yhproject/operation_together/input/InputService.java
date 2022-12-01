@@ -1,7 +1,7 @@
 package com.yhproject.operation_together.input;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
-import com.yhproject.operation_together.common.exception.BadRequestException;
+import com.yhproject.operation_together.common.exception.ErrorCode;
 import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.input.dto.*;
 import com.yhproject.operation_together.input.entity.Input;
@@ -26,7 +26,7 @@ public class InputService {
     @Transactional
     public EmptyJSON createInput(String link, InputSaveRequestDto dto) {
         Operation operation = operationRepository.findByLink(link)
-                .orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
         inputRepository.save(Input.builder()
                 .name(dto.getName())
                 .contents(dto.getContents())
@@ -47,7 +47,7 @@ public class InputService {
 
     private Operation getAuthOperation(Long operationId, String link) {
         return operationRepository.findByIdAndLink(operationId, link)
-                .orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
     }
 
     private InputResponseForm transformEntityToDto(Input input) {

@@ -1,6 +1,7 @@
 package com.yhproject.operation_together.operation;
 
 import com.yhproject.operation_together.common.auth.jwt.JwtTokenProvider;
+import com.yhproject.operation_together.common.exception.ErrorCode;
 import com.yhproject.operation_together.common.exception.InternalServerException;
 import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.operation.dto.*;
@@ -30,7 +31,7 @@ public class OperationService {
             operationRepository.save(dto.toEntity());
             return new OperationSaveResponseDto(newOperationLink);
         } catch (Exception e) {
-            throw new InternalServerException("작전 생성에 실패하였습니다. operation link: " + newOperationLink);
+            throw new InternalServerException(ErrorCode.CREATE_LINK_ERROR.getMessage(newOperationLink));
         }
     }
 
@@ -48,7 +49,8 @@ public class OperationService {
     }
 
     public OperationResponseDto getOperation(String link) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
+        Operation operation = operationRepository.findByLink(link)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
         return OperationResponseDto.builder()
                 .id(operation.getId())
                 .name(operation.getName())
@@ -58,7 +60,8 @@ public class OperationService {
     }
 
     public PasswordResponseDto checkPassword(String link, PasswordRequestDto dto) {
-        Operation operation = operationRepository.findByLink(link).orElseThrow(() -> new NotFoundException("해당 작전이 없습니다."));
+        Operation operation = operationRepository.findByLink(link)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
         String correctPassword = operation.getPassword();
         boolean isCorrect = Objects.equals(correctPassword, dto.getPassword());
         if (isCorrect) {
