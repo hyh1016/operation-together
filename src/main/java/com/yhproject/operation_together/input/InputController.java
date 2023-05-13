@@ -15,8 +15,8 @@ public class InputController {
     private final InputService inputService;
 
     @PostMapping("/{link}")
-    public ResponseEntity<EmptyJSON> createInput(@PathVariable String link, @RequestBody InputSaveRequestDto dtos) {
-        return ResponseEntity.status(HttpStatus.OK).body(inputService.createInput(link, dtos));
+    public ResponseEntity<EmptyJSON> createInput(@PathVariable String link, @RequestBody InputSaveRequestDto dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(inputService.createInput(link, dto));
     }
 
 }
