@@ -1,13 +1,12 @@
 package com.yhproject.operation_together.input.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.yhproject.operation_together.common.entity.BaseTimeEntity;
 import com.yhproject.operation_together.operation.entity.Operation;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -28,7 +27,6 @@ public class Input extends BaseTimeEntity {
     private List<String> contents;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "operation_id")
     private Operation operation;
 
