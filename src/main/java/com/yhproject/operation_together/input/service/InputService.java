@@ -1,4 +1,4 @@
-package com.yhproject.operation_together.input;
+package com.yhproject.operation_together.input.service;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
 import com.yhproject.operation_together.common.exception.ErrorCode;

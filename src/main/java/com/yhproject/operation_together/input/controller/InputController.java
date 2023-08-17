@@ -1,7 +1,8 @@
-package com.yhproject.operation_together.input;
+package com.yhproject.operation_together.input.controller;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
 import com.yhproject.operation_together.input.dto.InputSaveRequestDto;
+import com.yhproject.operation_together.input.service.InputService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.yhproject.operation_together.operation;
+package com.yhproject.operation_together.operation.service;
 
 import com.yhproject.operation_together.common.auth.jwt.JwtTokenProvider;
 import com.yhproject.operation_together.common.exception.ErrorCode;

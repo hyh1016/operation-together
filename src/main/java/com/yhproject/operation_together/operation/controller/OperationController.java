@@ -1,6 +1,7 @@
-package com.yhproject.operation_together.operation;
+package com.yhproject.operation_together.operation.controller;
 
 import com.yhproject.operation_together.operation.dto.*;
+import com.yhproject.operation_together.operation.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

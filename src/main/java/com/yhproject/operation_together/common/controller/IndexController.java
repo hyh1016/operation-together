@@ -1,7 +1,7 @@
 package com.yhproject.operation_together.common.controller;
 
-import com.yhproject.operation_together.operation.OperationService;
 import com.yhproject.operation_together.operation.dto.OperationResponseDto;
+import com.yhproject.operation_together.operation.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
