@@ -4,6 +4,8 @@ import com.yhproject.operation_together.common.dto.EmptyJSON;
 import com.yhproject.operation_together.common.exception.ErrorCode;
 import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.input.dto.*;
+import com.yhproject.operation_together.input.entity.Content;
+import com.yhproject.operation_together.input.entity.ContentRepository;
 import com.yhproject.operation_together.input.entity.Input;
 import com.yhproject.operation_together.input.entity.InputRepository;
 import com.yhproject.operation_together.operation.entity.Operation;
@@ -22,16 +24,23 @@ public class InputService {
 
     private final OperationRepository operationRepository;
     private final InputRepository inputRepository;
+    private final ContentRepository contentRepository;
 
     @Transactional
     public EmptyJSON createInput(String link, InputSaveRequestDto dto) {
         Operation operation = operationRepository.findByLink(link)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
-        inputRepository.save(Input.builder()
+        Input input = inputRepository.save(Input.builder()
                 .name(dto.getName())
-                .contents(dto.getContents())
                 .operation(operation)
                 .build());
+        List<Content> contentList = dto.getContents().stream()
+                .map(content -> Content.builder()
+                        .content(content)
+                        .input(input)
+                        .build())
+                .collect(Collectors.toList());
+        contentRepository.saveAll(contentList);
         return new EmptyJSON();
     }
 
@@ -54,7 +63,7 @@ public class InputService {
         return InputResponseForm.builder()
                 .id(input.getId())
                 .name(input.getName())
-                .contents(input.getContents())
+                .contents(input.getContents().stream().map(Content::getContent).collect(Collectors.toList()))
                 .build();
     }
 
@@ -69,7 +78,7 @@ public class InputService {
             Input input = inputs.get((int) (Math.random() * length));
             result.add(ResultForm.builder()
                     .name(input.getName())
-                    .content(input.getContents().get(i))
+                    .content(input.getContents().get(i).getContent())
                     .build()
             );
         }
