@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(indexes = @Index(columnList = "link", unique = true))
 public class Operation extends BaseTimeEntity {
 
     @Id
