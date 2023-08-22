@@ -4,11 +4,13 @@ import com.yhproject.operation_together.operation.entity.Operation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class OperationSaveRequestDto {
 
     private String name;

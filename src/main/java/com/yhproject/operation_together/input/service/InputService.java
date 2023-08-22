@@ -1,8 +1,6 @@
 package com.yhproject.operation_together.input.service;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
-import com.yhproject.operation_together.common.exception.ErrorCode;
-import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.input.dto.*;
 import com.yhproject.operation_together.input.entity.Content;
 import com.yhproject.operation_together.input.entity.ContentRepository;
@@ -28,8 +26,7 @@ public class InputService {
 
     @Transactional
     public EmptyJSON createInput(String link, InputSaveRequestDto dto) {
-        Operation operation = operationRepository.findByLink(link)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
+        Operation operation = findOperationByLink(link);
         Input input = inputRepository.save(Input.builder()
                 .name(dto.getName())
                 .operation(operation)
@@ -54,19 +51,6 @@ public class InputService {
         return new InputResponseDto(inputs);
     }
 
-    private Operation getAuthOperation(Long operationId, String link) {
-        return operationRepository.findByIdAndLink(operationId, link)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.INVALID_LINK_ERROR.getMessage(link)));
-    }
-
-    private InputResponseForm transformEntityToDto(Input input) {
-        return InputResponseForm.builder()
-                .id(input.getId())
-                .name(input.getName())
-                .contents(input.getContents().stream().map(Content::getContent).collect(Collectors.toList()))
-                .build();
-    }
-
     @Transactional(readOnly = true)
     public ResultDto getResponse(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
@@ -83,5 +67,23 @@ public class InputService {
             );
         }
         return new ResultDto(result);
+    }
+
+    private Operation findOperationByLink(String link) {
+        return operationRepository.findByLink(link)
+                .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. link: " + link));
+    }
+
+    private Operation getAuthOperation(long id, String link) {
+        return operationRepository.findByIdAndLink(id, link)
+                .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. id: " + id + ", link: " + link));
+    }
+
+    private InputResponseForm transformEntityToDto(Input input) {
+        return InputResponseForm.builder()
+                .id(input.getId())
+                .name(input.getName())
+                .contents(input.getContents().stream().map(Content::getContent).collect(Collectors.toList()))
+                .build();
     }
 }

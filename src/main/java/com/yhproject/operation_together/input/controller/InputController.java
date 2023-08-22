@@ -4,9 +4,11 @@ import com.yhproject.operation_together.common.dto.EmptyJSON;
 import com.yhproject.operation_together.input.dto.InputSaveRequestDto;
 import com.yhproject.operation_together.input.service.InputService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequestMapping("/api/inputs")
 @RestController
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class InputController {
 
     @PostMapping("/{link}")
     public ResponseEntity<EmptyJSON> createInput(@PathVariable String link, @RequestBody InputSaveRequestDto dto) {
+        log.info("{} 작전에 새 입력 추가 {}", link, dto);
         return ResponseEntity.ok(inputService.createInput(link, dto));
     }
 
