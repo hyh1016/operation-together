@@ -19,17 +19,17 @@ public class OperationService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public OperationSaveResponseDto createOperation(OperationSaveRequestDto dto) {
+    public CreateOperationResponse createOperation(CreateOperationRequest dto) {
         String newOperationLink = UUID.randomUUID().toString();
         dto.setLink(newOperationLink);
         operationRepository.save(dto.toEntity());
-        return new OperationSaveResponseDto(newOperationLink);
+        return new CreateOperationResponse(newOperationLink);
     }
 
     @Transactional(readOnly = true)
-    public OperationResponseDto getOperation(String link) {
+    public OperationResponse getOperation(String link) {
         Operation operation = findByLink(link);
-        return OperationResponseDto.builder()
+        return OperationResponse.builder()
                 .id(operation.getId())
                 .name(operation.getName())
                 .link(operation.getLink())
@@ -38,15 +38,15 @@ public class OperationService {
     }
 
     @Transactional(readOnly = true)
-    public PasswordResponseDto checkPassword(String link, PasswordRequestDto dto) {
+    public CheckPasswordResponse checkPassword(String link, CheckPasswordRequest dto) {
         Operation operation = findByLink(link);
         String correctPassword = operation.getPassword();
         boolean isCorrect = Objects.equals(correctPassword, dto.getPassword());
         if (isCorrect) {
             String jwtToken = jwtTokenProvider.createJwtToken(operation.getId());
-            return new PasswordResponseDto(jwtToken);
+            return new CheckPasswordResponse(jwtToken);
         }
-        return new PasswordResponseDto(null);
+        return new CheckPasswordResponse(null);
     }
 
     private Operation findByLink(String link) {

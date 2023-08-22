@@ -16,20 +16,20 @@ public class OperationController {
     private final OperationService operationService;
 
     @PostMapping
-    public ResponseEntity<OperationSaveResponseDto> createOperation(@RequestBody OperationSaveRequestDto requestDto) {
+    public ResponseEntity<CreateOperationResponse> createOperation(@RequestBody CreateOperationRequest requestDto) {
         log.info("작전 생성 요청 {}", requestDto);
-        OperationSaveResponseDto responseDto = operationService.createOperation(requestDto);
+        CreateOperationResponse responseDto = operationService.createOperation(requestDto);
         log.info("작전 생성 완료 {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/{link}")
-    public ResponseEntity<OperationResponseDto> getOperation(@PathVariable String link) {
+    public ResponseEntity<OperationResponse> getOperation(@PathVariable String link) {
         return ResponseEntity.ok(operationService.getOperation(link));
     }
 
     @PostMapping("/{link}")
-    public ResponseEntity<PasswordResponseDto> checkPassword(@PathVariable String link, @RequestBody PasswordRequestDto dto) {
+    public ResponseEntity<CheckPasswordResponse> checkPassword(@PathVariable String link, @RequestBody CheckPasswordRequest dto) {
         return ResponseEntity.ok(operationService.checkPassword(link, dto));
     }
 

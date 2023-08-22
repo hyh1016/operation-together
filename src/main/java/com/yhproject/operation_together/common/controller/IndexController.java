@@ -1,6 +1,6 @@
 package com.yhproject.operation_together.common.controller;
 
-import com.yhproject.operation_together.operation.dto.OperationResponseDto;
+import com.yhproject.operation_together.operation.dto.OperationResponse;
 import com.yhproject.operation_together.operation.service.OperationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,21 +26,21 @@ public class IndexController {
 
     @GetMapping("/operations/{link}")
     public String operation(Model model, @PathVariable String link) {
-        OperationResponseDto operation = operationService.getOperation(link);
+        OperationResponse operation = operationService.getOperation(link);
         model.addAttribute("operation", operation);
         return "operation";
     }
 
     @GetMapping("/operations/{link}/input")
     public String input(Model model, @PathVariable String link) {
-        OperationResponseDto operation = operationService.getOperation(link);
+        OperationResponse operation = operationService.getOperation(link);
         model.addAttribute("operation", operation);
         return "input";
     }
 
     @GetMapping("/operations/{link}/result")
     public String result(Model model, @PathVariable String link) {
-        OperationResponseDto operation = operationService.getOperation(link);
+        OperationResponse operation = operationService.getOperation(link);
         model.addAttribute("operation", operation);
         return "result";
     }

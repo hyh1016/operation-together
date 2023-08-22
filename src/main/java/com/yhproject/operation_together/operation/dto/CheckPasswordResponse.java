@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class OperationSaveResponseDto {
+public class CheckPasswordResponse {
 
-    private final String link;
+    private String token;
 
 }

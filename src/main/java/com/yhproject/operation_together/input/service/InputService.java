@@ -1,7 +1,11 @@
 package com.yhproject.operation_together.input.service;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
-import com.yhproject.operation_together.input.dto.*;
+import com.yhproject.operation_together.input.dto.InputResponse;
+import com.yhproject.operation_together.input.dto.InputResponse.InputResponseForm;
+import com.yhproject.operation_together.input.dto.InputSaveRequest;
+import com.yhproject.operation_together.input.dto.ResultResponse;
+import com.yhproject.operation_together.input.dto.ResultResponse.ResultResponseForm;
 import com.yhproject.operation_together.input.entity.Content;
 import com.yhproject.operation_together.input.entity.ContentRepository;
 import com.yhproject.operation_together.input.entity.Input;
@@ -25,7 +29,7 @@ public class InputService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public EmptyJSON createInput(String link, InputSaveRequestDto dto) {
+    public EmptyJSON createInput(String link, InputSaveRequest dto) {
         Operation operation = findOperationByLink(link);
         Input input = inputRepository.save(Input.builder()
                 .name(dto.getName())
@@ -42,31 +46,31 @@ public class InputService {
     }
 
     @Transactional(readOnly = true)
-    public InputResponseDto getInputs(Long operationId, String link) {
+    public InputResponse getInputs(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
         List<InputResponseForm> inputs = operation.getInputs()
                 .stream()
                 .map(this::transformEntityToDto)
                 .collect(Collectors.toList());
-        return new InputResponseDto(inputs);
+        return new InputResponse(inputs);
     }
 
     @Transactional(readOnly = true)
-    public ResultDto getResponse(Long operationId, String link) {
+    public ResultResponse getResponse(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
         List<Input> inputs = operation.getInputs();
-        if (inputs.isEmpty()) return new ResultDto(null);
+        if (inputs.isEmpty()) return new ResultResponse(null);
         int length = inputs.size();
-        List<ResultForm> result = new ArrayList<>();
+        List<ResultResponseForm> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Input input = inputs.get((int) (Math.random() * length));
-            result.add(ResultForm.builder()
+            result.add(ResultResponseForm.builder()
                     .name(input.getName())
                     .content(input.getContents().get(i).getContent())
                     .build()
             );
         }
-        return new ResultDto(result);
+        return new ResultResponse(result);
     }
 
     private Operation findOperationByLink(String link) {
