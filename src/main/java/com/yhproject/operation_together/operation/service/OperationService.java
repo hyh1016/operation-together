@@ -27,14 +27,9 @@ public class OperationService {
     }
 
     @Transactional(readOnly = true)
-    public OperationResponse getOperation(String link) {
+    public OperationDto getOperation(String link) {
         Operation operation = findByLink(link);
-        return OperationResponse.builder()
-                .id(operation.getId())
-                .name(operation.getName())
-                .link(operation.getLink())
-                .operationDate(operation.getOperationDate())
-                .build();
+        return OperationDto.toDto(operation);
     }
 
     @Transactional(readOnly = true)

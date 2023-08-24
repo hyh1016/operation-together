@@ -2,6 +2,8 @@ package com.yhproject.operation_together.operation.dto;
 
 import com.yhproject.operation_together.operation.entity.Operation;
 import lombok.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 
@@ -22,14 +24,15 @@ public class CreateOperationRequest {
         this.link = link;
     }
 
-    // DTO -> Entity
     public Operation toEntity() {
-        return Operation.builder()
-                .name(name)
-                .password(password)
-                .link(link)
-                .operationDate(operationDate)
-                .build();
+        return CreateOperationRequestMapper.INSTANCE.toEntity(this);
+    }
+
+    @Mapper
+    public interface CreateOperationRequestMapper {
+        CreateOperationRequestMapper INSTANCE = Mappers.getMapper(CreateOperationRequestMapper.class);
+
+        Operation toEntity(CreateOperationRequest dto);
     }
 
 }

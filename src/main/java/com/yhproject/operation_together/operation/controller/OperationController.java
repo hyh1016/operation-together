@@ -24,7 +24,7 @@ public class OperationController {
     }
 
     @GetMapping("/{link}")
-    public ResponseEntity<OperationResponse> getOperation(@PathVariable String link) {
+    public ResponseEntity<OperationDto> getOperation(@PathVariable String link) {
         return ResponseEntity.ok(operationService.getOperation(link));
     }
 

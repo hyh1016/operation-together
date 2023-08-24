@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class InputSaveRequest {
+public class CreateInputRequest {
 
     private String name;
     private List<String> contents;

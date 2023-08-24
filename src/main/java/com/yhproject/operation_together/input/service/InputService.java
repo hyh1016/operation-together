@@ -1,11 +1,9 @@
 package com.yhproject.operation_together.input.service;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
-import com.yhproject.operation_together.input.dto.InputResponse;
-import com.yhproject.operation_together.input.dto.InputResponse.InputResponseForm;
-import com.yhproject.operation_together.input.dto.InputSaveRequest;
+import com.yhproject.operation_together.input.dto.CreateInputRequest;
+import com.yhproject.operation_together.input.dto.InputDto;
 import com.yhproject.operation_together.input.dto.ResultResponse;
-import com.yhproject.operation_together.input.dto.ResultResponse.ResultResponseForm;
 import com.yhproject.operation_together.input.entity.Content;
 import com.yhproject.operation_together.input.entity.ContentRepository;
 import com.yhproject.operation_together.input.entity.Input;
@@ -29,12 +27,13 @@ public class InputService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public EmptyJSON createInput(String link, InputSaveRequest dto) {
+    public EmptyJSON createInput(String link, CreateInputRequest dto) {
         Operation operation = findOperationByLink(link);
-        Input input = inputRepository.save(Input.builder()
+        Input input = Input.builder()
                 .name(dto.getName())
                 .operation(operation)
-                .build());
+                .build();
+        inputRepository.save(input);
         List<Content> contentList = dto.getContents().stream()
                 .map(content -> Content.builder()
                         .content(content)
@@ -46,31 +45,31 @@ public class InputService {
     }
 
     @Transactional(readOnly = true)
-    public InputResponse getInputs(Long operationId, String link) {
+    public List<InputDto> getInputList(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
-        List<InputResponseForm> inputs = operation.getInputs()
+        List<InputDto> inputDtoList = operation.getInputs()
                 .stream()
-                .map(this::transformEntityToDto)
+                .map(InputDto::toDto)
                 .collect(Collectors.toList());
-        return new InputResponse(inputs);
+        return inputDtoList;
     }
 
     @Transactional(readOnly = true)
-    public ResultResponse getResponse(Long operationId, String link) {
+    public List<ResultResponse> getResultList(Long operationId, String link) {
         Operation operation = getAuthOperation(operationId, link);
         List<Input> inputs = operation.getInputs();
-        if (inputs.isEmpty()) return new ResultResponse(null);
+        List<ResultResponse> resultList = new ArrayList<>();
+        if (inputs.isEmpty()) return resultList;
         int length = inputs.size();
-        List<ResultResponseForm> result = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Input input = inputs.get((int) (Math.random() * length));
-            result.add(ResultResponseForm.builder()
+            resultList.add(ResultResponse.builder()
                     .name(input.getName())
                     .content(input.getContents().get(i).getContent())
                     .build()
             );
         }
-        return new ResultResponse(result);
+        return resultList;
     }
 
     private Operation findOperationByLink(String link) {
@@ -83,11 +82,4 @@ public class InputService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. id: " + id + ", link: " + link));
     }
 
-    private InputResponseForm transformEntityToDto(Input input) {
-        return InputResponseForm.builder()
-                .id(input.getId())
-                .name(input.getName())
-                .contents(input.getContents().stream().map(Content::getContent).collect(Collectors.toList()))
-                .build();
-    }
 }

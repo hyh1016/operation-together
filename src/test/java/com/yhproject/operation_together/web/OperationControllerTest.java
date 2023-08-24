@@ -2,15 +2,15 @@ package com.yhproject.operation_together.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
 import com.yhproject.operation_together.operation.entity.Operation;
 import com.yhproject.operation_together.operation.entity.OperationRepository;
-import com.yhproject.operation_together.operation.dto.OperationSaveRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -46,7 +46,7 @@ public class OperationControllerTest {
 		String password = "password";
 		LocalDate operationDate = LocalDate.now();
 		int type = 0;
-		OperationSaveRequestDto dto = OperationSaveRequestDto.builder()
+		CreateOperationRequest dto = CreateOperationRequest.builder()
 				.name(name)
 				.password(password)
 				.operationDate(operationDate)
