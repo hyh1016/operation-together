@@ -45,18 +45,17 @@ public class InputService {
     }
 
     @Transactional(readOnly = true)
-    public List<InputDto> getInputList(Long operationId, String link) {
-        Operation operation = getAuthOperation(operationId, link);
-        List<InputDto> inputDtoList = operation.getInputs()
+    public List<InputDto> getInputList(String link) {
+        Operation operation = findOperationByLink(link);
+        return operation.getInputs()
                 .stream()
                 .map(InputDto::toDto)
                 .collect(Collectors.toList());
-        return inputDtoList;
     }
 
     @Transactional(readOnly = true)
-    public List<ResultResponse> getResultList(Long operationId, String link) {
-        Operation operation = getAuthOperation(operationId, link);
+    public List<ResultResponse> getResultList(String link) {
+        Operation operation = findOperationByLink(link);
         List<Input> inputs = operation.getInputs();
         List<ResultResponse> resultList = new ArrayList<>();
         if (inputs.isEmpty()) return resultList;
@@ -75,11 +74,6 @@ public class InputService {
     private Operation findOperationByLink(String link) {
         return operationRepository.findByLink(link)
                 .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. link: " + link));
-    }
-
-    private Operation getAuthOperation(long id, String link) {
-        return operationRepository.findByIdAndLink(id, link)
-                .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. id: " + id + ", link: " + link));
     }
 
 }

@@ -46,7 +46,7 @@ const getResult = async () => {
     const header = {
         method: 'GET'
     };
-    const response = await fetchData(`/api/auth/operations/${getLink()}/result`, header);
+    const response = await fetchData(`/api/operations/${getLink()}/result`, header);
     if (response) return response.result;
 };
 
@@ -69,7 +69,7 @@ const getInputs = async () => {
     const header = {
         method: 'GET'
     };
-    const response = await fetchData(`/api/auth/operations/${getLink()}/inputs`, header);
+    const response = await fetchData(`/api/operations/${getLink()}/inputs`, header);
     return response.inputs;
 };
 
