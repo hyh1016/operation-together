@@ -45,15 +45,13 @@ public class OperationControllerTest {
 		String name = "name";
 		String password = "password";
 		LocalDate operationDate = LocalDate.now();
-		int type = 0;
 		CreateOperationRequest dto = CreateOperationRequest.builder()
 				.name(name)
 				.password(password)
 				.operationDate(operationDate)
-				.type(type)
 				.build();
 
-		String url = "http://localhost:" + port + "/api/operations";
+		String url = "http://localhost:%s/api/operations".formatted(port);
 
 		// when
 		mvc.perform(post(url)
@@ -63,7 +61,7 @@ public class OperationControllerTest {
 
 		// then
 		List<Operation> all = operationRepository.findAll();
-		assertThat(all.get(0).getLink().length()).isEqualTo(16);
+		assertThat(all.get(0).getLink().length()).isEqualTo(36);
 	}
 
 }

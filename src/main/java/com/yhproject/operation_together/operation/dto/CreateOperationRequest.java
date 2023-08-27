@@ -18,7 +18,6 @@ public class CreateOperationRequest {
     private String password;
     private String link;
     private LocalDate operationDate;
-    private int type;
 
     public void setLink(String link) {
         this.link = link;
