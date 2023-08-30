@@ -5,6 +5,7 @@ import com.yhproject.operation_together.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleBadRequestException(IllegalArgumentException e) {
+    @ExceptionHandler({IllegalArgumentException.class, MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorResponse> handleBadRequestException(Exception e) {
         log.warn("400 Bad request", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage()));

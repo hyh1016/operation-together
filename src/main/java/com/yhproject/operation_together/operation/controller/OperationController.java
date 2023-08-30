@@ -10,6 +10,7 @@ import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
 import com.yhproject.operation_together.operation.dto.CreateOperationResponse;
 import com.yhproject.operation_together.operation.dto.OperationDto;
 import com.yhproject.operation_together.operation.service.OperationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class OperationController {
     private final InputService inputService;
 
     @PostMapping
-    public ResponseEntity<CreateOperationResponse> createOperation(@RequestBody CreateOperationRequest requestDto) {
+    public ResponseEntity<CreateOperationResponse> createOperation(@RequestBody @Valid CreateOperationRequest requestDto) {
         log.info("작전 생성 요청 {}", requestDto);
         CreateOperationResponse responseDto = operationService.createOperation(requestDto);
         log.info("작전 생성 완료 {}", responseDto);
