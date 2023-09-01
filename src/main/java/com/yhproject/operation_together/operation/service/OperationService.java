@@ -1,6 +1,7 @@
 package com.yhproject.operation_together.operation.service;
 
 import com.yhproject.operation_together.common.dto.EmptyJSON;
+import com.yhproject.operation_together.common.exception.NotFoundException;
 import com.yhproject.operation_together.common.service.AuthService;
 import com.yhproject.operation_together.operation.dto.CheckPasswordRequest;
 import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
@@ -53,7 +54,7 @@ public class OperationService {
 
     private Operation findByLink(String link) {
         return operationRepository.findByLink(link)
-                .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. link: " + link));
+                .orElseThrow(() -> new NotFoundException("해당 작전을 찾을 수 없습니다. link: " + link));
     }
 
 }

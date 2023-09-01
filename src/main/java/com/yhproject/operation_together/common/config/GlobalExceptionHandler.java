@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleNotFoundException(NotFoundException e) {
         log.warn("404 Not Found", e);
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
         modelAndView.setViewName("./error/404");
         return modelAndView;
     }

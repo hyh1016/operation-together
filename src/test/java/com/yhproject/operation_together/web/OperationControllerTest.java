@@ -1,12 +1,13 @@
 package com.yhproject.operation_together.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
+import com.yhproject.operation_together.operation.dto.OperationDto;
 import com.yhproject.operation_together.operation.entity.Operation;
 import com.yhproject.operation_together.operation.entity.OperationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,12 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,42 +40,122 @@ public class OperationControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
 	@AfterEach
 	public void tearDown() {
 		operationRepository.deleteAll();
 	}
 
-	@DisplayName("작전 생성 - 성공")
-	@Test
-	public void create_success() throws Exception {
-		// given
-		String name = "name";
-		String password = "password";
-		LocalDate operationDate = LocalDate.now();
-		CreateOperationRequest dto = CreateOperationRequest.builder()
-				.name(name)
-				.password(password)
-				.operationDate(operationDate)
+	@DisplayName("작전 생성 테스트")
+	@Nested
+	class CreateOperationTest {
+		private final String CREATE_OPERATION_URL = getApiUrl("/api/operations");
+
+		public ResultActions request(CreateOperationRequest dto) throws Exception {
+			return mvc.perform(post(CREATE_OPERATION_URL)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(dto)));
+		}
+
+		@DisplayName("작전 생성 성공")
+		@Test
+		public void create_success() throws Exception {
+			// given
+			CreateOperationRequest dto = createDto();
+
+			// when
+			ResultActions resultActions = request(dto);
+
+			// then
+			resultActions.andExpect(status().isOk());
+
+			List<Operation> operationList = operationRepository.findAll();
+			assertEquals(1, operationList.size());
+
+			Operation operation = operationList.get(0);
+			assertTrue(operation.getId() > 0);
+			assertEquals(36, operation.getLink().length());
+			assertEquals(dto.getName(), operation.getName());
+			assertEquals(dto.getPassword(), operation.getPassword());
+			assertEquals(dto.getOperationDate(), operation.getOperationDate());
+		}
+
+		@DisplayName("작전 생성 실패 - 요청 데이터 검증 오류")
+		@Test
+		public void create_fail_validation() throws Exception {
+			// given
+			CreateOperationRequest dto = new CreateOperationRequest();
+
+			// when
+			ResultActions resultActions = request(dto);
+
+			// then
+			resultActions.andExpect(status().isBadRequest());
+
+			List<Operation> operationList = operationRepository.findAll();
+			assertEquals(0, operationList.size());
+		}
+	}
+
+	@DisplayName("작전 조회")
+	@Nested
+	class GetOperationTest {
+		private final String GET_OPERATION_URL = getApiUrl("/api/operations");
+
+		public ResultActions request(String link) throws Exception {
+			return mvc.perform(get(GET_OPERATION_URL + "/" + link)
+					.contentType(MediaType.APPLICATION_JSON));
+		}
+
+		@DisplayName("작전 조회 성공")
+		@Test
+		public void get_success() throws Exception {
+			// given
+			String link = UUID.randomUUID().toString();
+			CreateOperationRequest dto = createDto();
+			dto.setLink(link);
+			operationRepository.save(dto.toEntity());
+
+			// when
+			ResultActions resultActions = request(link);
+
+			// then
+			resultActions.andExpect(status().isOk());
+
+			OperationDto result = objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsByteArray(), OperationDto.class);
+			assertEquals(link, result.getLink());
+		}
+
+		@DisplayName("작전 조회 실패 - 없는 작전 조회")
+		@Test
+		public void get_fail_not_found() throws Exception {
+			// given
+			String link = UUID.randomUUID().toString();
+			CreateOperationRequest dto = createDto();
+			dto.setLink(link);
+			operationRepository.save(dto.toEntity());
+
+			// when
+			String otherLink = UUID.randomUUID().toString();
+			ResultActions resultActions = request(otherLink);
+
+			// then
+			resultActions.andExpect(status().isNotFound());
+		}
+	}
+
+	private String getApiUrl(String path) {
+		return "http://localhost:" + port + path;
+	}
+
+	private CreateOperationRequest createDto() {
+        return CreateOperationRequest.builder()
+				.name("name")
+				.password("password")
+				.operationDate(LocalDate.now())
 				.build();
-
-		String url = "http://localhost:" + port + "/api/operations";
-
-		// when
-		mvc.perform(post(url)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(dto)))
-				.andExpect(status().isOk());
-
-		// then
-		List<Operation> operationList = operationRepository.findAll();
-		assertEquals(1, operationList.size());
-
-		Operation operation = operationList.get(0);
-		assertTrue(operation.getId() > 0);
-		assertEquals(36, operation.getLink().length());
-		assertEquals(dto.getName(), operation.getName());
-		assertEquals(dto.getPassword(), operation.getPassword());
-		assertEquals(dto.getOperationDate(), operation.getOperationDate());
 	}
 
 }
