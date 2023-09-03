@@ -20,7 +20,6 @@ public class OperationDto {
     private String link;
     @JsonFormat(pattern = "yyyy년 MM월 dd일")
     private LocalDate operationDate;
-    private int type;
 
     public static OperationDto toDto(Operation entity) {
         return OperationDtoMapper.INSTANCE.toDto(entity);
