@@ -1,5 +1,6 @@
 package com.yhproject.operation_together.common.config;
 
+import com.yhproject.operation_together.common.exception.AuthenticateException;
 import com.yhproject.operation_together.common.exception.ErrorResponse;
 import com.yhproject.operation_together.common.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,12 @@ public class GlobalExceptionHandler {
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         modelAndView.setViewName("./error/404");
         return modelAndView;
+    }
+
+    @ExceptionHandler(AuthenticateException.class)
+    public ResponseEntity<Void> handleAuthenticateException(AuthenticateException e) {
+        log.warn("403 Forbidden", e);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @ExceptionHandler(Exception.class)
