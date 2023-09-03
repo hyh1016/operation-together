@@ -1,6 +1,7 @@
-package com.yhproject.operation_together.web;
+package com.yhproject.operation_together;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yhproject.operation_together.operation.dto.CheckPasswordRequest;
 import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
 import com.yhproject.operation_together.operation.dto.OperationDto;
 import com.yhproject.operation_together.operation.entity.Operation;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OperationControllerTest {
+public class OperationIntegrationTests {
 
 	@LocalServerPort
 	private int port;
@@ -42,6 +43,8 @@ public class OperationControllerTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	private final int LINK_LENGTH = 36;
 
 	@AfterEach
 	public void tearDown() {
@@ -76,7 +79,7 @@ public class OperationControllerTest {
 
 			Operation operation = operationList.get(0);
 			assertTrue(operation.getId() > 0);
-			assertEquals(36, operation.getLink().length());
+			assertEquals(LINK_LENGTH, operation.getLink().length());
 			assertEquals(dto.getName(), operation.getName());
 			assertEquals(dto.getPassword(), operation.getPassword());
 			assertEquals(dto.getOperationDate(), operation.getOperationDate());
@@ -143,6 +146,51 @@ public class OperationControllerTest {
 
 			// then
 			resultActions.andExpect(status().isNotFound());
+		}
+	}
+
+	@DisplayName("작전 비밀번호 확인")
+	@Nested
+	class CheckPassword {
+		private final String CHECK_PASSWORD_URL = getApiUrl("/api/operations");
+
+		public ResultActions request(String link, String password) throws Exception {
+			CheckPasswordRequest dto = new CheckPasswordRequest(password);
+			return mvc.perform(post(CHECK_PASSWORD_URL + "/" + link)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(dto)));
+		}
+
+		@DisplayName("작전 비밀번호 확인 성공 - 올바른 비밀번호 입력")
+		@Test
+		void checkPassword_success() throws Exception {
+			// given
+			String link = UUID.randomUUID().toString();
+			CreateOperationRequest dto = createDto();
+			dto.setLink(link);
+			operationRepository.save(dto.toEntity());
+
+			// when
+			ResultActions resultActions = request(link, dto.getPassword());
+
+			// then
+			resultActions.andExpect(status().isOk());
+		}
+
+		@DisplayName("작전 비밀번호 확인 실패 - 올바르지 않은 비밀번호 입력")
+		@Test
+		void checkPassword_fail_wrongPassword() throws Exception {
+			// given
+			String link = UUID.randomUUID().toString();
+			CreateOperationRequest dto = createDto();
+			dto.setLink(link);
+			operationRepository.save(dto.toEntity());
+
+			// when
+			ResultActions resultActions = request(link, "wrong password");
+
+			// then
+			resultActions.andExpect(status().isBadRequest());
 		}
 	}
 
