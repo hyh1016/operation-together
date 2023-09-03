@@ -1,14 +1,13 @@
 package com.yhproject.operation_together.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yhproject.operation_together.common.dto.EmptyJSON;
 import com.yhproject.operation_together.common.exception.NotFoundException;
-import com.yhproject.operation_together.operation.controller.OperationController;
-import com.yhproject.operation_together.operation.dto.CheckPasswordRequest;
-import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
-import com.yhproject.operation_together.operation.dto.CreateOperationResponse;
-import com.yhproject.operation_together.operation.dto.OperationDto;
-import com.yhproject.operation_together.operation.service.OperationService;
+import com.yhproject.operation_together.dto.EmptyJSON;
+import com.yhproject.operation_together.dto.operation.CheckPasswordRequest;
+import com.yhproject.operation_together.dto.operation.CreateOperationRequest;
+import com.yhproject.operation_together.dto.operation.CreateOperationResponse;
+import com.yhproject.operation_together.dto.operation.OperationDto;
+import com.yhproject.operation_together.service.OperationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

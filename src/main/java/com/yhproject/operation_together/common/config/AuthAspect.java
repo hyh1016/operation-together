@@ -1,7 +1,7 @@
 package com.yhproject.operation_together.common.config;
 
 import com.yhproject.operation_together.common.exception.AuthenticateException;
-import com.yhproject.operation_together.common.service.AuthService;
+import com.yhproject.operation_together.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

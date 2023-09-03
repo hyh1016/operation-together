@@ -1,11 +1,11 @@
 package com.yhproject.operation_together;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yhproject.operation_together.operation.dto.CheckPasswordRequest;
-import com.yhproject.operation_together.operation.dto.CreateOperationRequest;
-import com.yhproject.operation_together.operation.dto.OperationDto;
-import com.yhproject.operation_together.operation.entity.Operation;
-import com.yhproject.operation_together.operation.entity.OperationRepository;
+import com.yhproject.operation_together.dto.operation.CheckPasswordRequest;
+import com.yhproject.operation_together.dto.operation.CreateOperationRequest;
+import com.yhproject.operation_together.dto.operation.OperationDto;
+import com.yhproject.operation_together.entity.Operation;
+import com.yhproject.operation_together.repository.OperationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
