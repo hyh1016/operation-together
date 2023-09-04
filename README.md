@@ -11,7 +11,7 @@
 
 ### 나만의 작전 생성하기 ➡ <a href="https://operation-together.site" target="_blank">GO!</a>
 
-### 제작자의 작전에 입력 추가하기 ➡ <a href="https://operation-together.site/operations/zaUqwGU9MhwdB9Jv" target="_blank">GO!</a>
+### 예시 작전 확인하기 (비밀번호: 0000) ➡ <a href="https://operation-together.site/operations/e3f08070-eec0-4d6e-a9b8-eaf2e6bcada2" target="_blank">GO!</a>
 
 <br>
 
