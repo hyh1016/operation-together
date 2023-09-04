@@ -21,7 +21,7 @@ const renderResultWithToggle = async () => {
 const renderResult = async () => {
     const resultContainer = document.getElementById('operation-result');
     const result = await getResult();
-    if (!result) {
+    if (!result || !result.length) {
         alert('입력된 작전이 없습니다.');
         return;
     }
