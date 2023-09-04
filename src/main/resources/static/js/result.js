@@ -46,8 +46,7 @@ const getResult = async () => {
     const header = {
         method: 'GET'
     };
-    const response = await fetchData(`/api/operations/${getLink()}/result`, header);
-    if (response) return response.result;
+    return await fetchData(`/api/operations/${getLink()}/inputs/result`, header);
 };
 
 const renderInputs = async () => {
@@ -60,7 +59,7 @@ const renderInputs = async () => {
     inputModalBody.innerHTML = inputs.map((v) => {
         return (`<p>
             <span class="badge bg-primary fw-normal">${v.name + ' '}</span>
-            ${v.contents[0]}${hasLastChar(v.contents[0]) ? '과' : '와'} ${v.contents[1]}에서 ${v.contents[2]}
+            ${v.contents[0].content}${hasLastChar(v.contents[0].content) ? '과' : '와'} ${v.contents[1].content}에서 ${v.contents[2].content}
         </p>`);
     }).join('');
 };
@@ -69,8 +68,7 @@ const getInputs = async () => {
     const header = {
         method: 'GET'
     };
-    const response = await fetchData(`/api/operations/${getLink()}/inputs`, header);
-    return response.inputs;
+    return await fetchData(`/api/operations/${getLink()}/inputs`, header);
 };
 
 const returnToOperation = () => {
