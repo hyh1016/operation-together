@@ -1,9 +1,9 @@
 const addInputEvent = () => {
     const InputFormSubmit = document.getElementById('input-form-submit');
-    InputFormSubmit.addEventListener('click', createInputAll);
+    InputFormSubmit.addEventListener('click', createInput);
 };
 
-const createInputAll = async (event) => {
+const createInput = async (event) => {
     event.preventDefault();
     const inputRequestForm = {
         name: document.getElementById("input-name").value,

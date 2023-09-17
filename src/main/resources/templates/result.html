@@ -2,6 +2,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="fragments/header.html :: header-fragment"></th:block>
+    <link rel="stylesheet" href="/css/result.css">
+    <script src="https://kit.fontawesome.com/e925894fee.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container h-100">
@@ -35,16 +37,22 @@
                     메인으로 돌아가기
                 </button>
             </div>
-                <div class="modal fade" id="inputs-modal" tabindex="-1" aria-labelledby="inputs-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="inputs-modal-label">작전 후보</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal fade" id="inputs-modal" tabindex="-1" aria-labelledby="inputs-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inputs-modal-label">작전 후보</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div id="inputs-modal-body" class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <div class="page-group">
+                                <div id="btn-prev-page"><i class="fa-solid fa-caret-left fa-xl" style="color: #0d6efd;"></i></div>
+                                <div id="current-page">0</div> / <div id="total-pages">0</div>
+                                <div id="btn-next-page"><i class="fa-solid fa-caret-right fa-xl" style="color: #0d6efd;"></i></div>
                             </div>
-                            <div id="inputs-modal-body" class="modal-body">
-                            </div>
-                            <div class="modal-footer">
+                            <div>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                             </div>
                         </div>
@@ -53,6 +61,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <th:block th:replace="fragments/footer.html :: footer-fragment"></th:block>
 <script src="/js/result.js"></script>

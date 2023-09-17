@@ -4,13 +4,19 @@ const addResultEvent = () => {
     resultButton.addEventListener('click', renderResultWithToggle);
 
     const inputsButton = document.getElementById('btn-get-inputs');
-    inputsButton.addEventListener('click', renderInputs);
+    inputsButton.addEventListener('click', () => renderInputs(0));
 
     const retryButton = document.getElementById('btn-retry');
     retryButton.addEventListener('click', renderResult);
 
     const returnButton = document.getElementById('btn-return-operation');
     returnButton.addEventListener('click', returnToOperation);
+
+    const prevButton = document.getElementById('btn-prev-page');
+    prevButton.addEventListener('click', movePrevPage);
+
+    const nextButton = document.getElementById('btn-next-page');
+    nextButton.addEventListener('click', moveNextPage);
 };
 
 const renderResultWithToggle = async () => {
@@ -49,26 +55,54 @@ const getResult = async () => {
     return await fetchData(`/api/operations/${getLink()}/inputs/result`, header);
 };
 
-const renderInputs = async () => {
-    const inputs = await getInputs();
-    if (!inputs || !inputs.length) {
+const movePrevPage = async () => {
+    const currentPage = parseInt(document.getElementById('current-page').innerText) - 1;
+    if (currentPage <= 0) {
+        alert('첫 페이지입니다.');
+        return;
+    }
+    const prevPage = currentPage - 1;
+    await renderInputs(prevPage);
+}
+
+const moveNextPage = async () => {
+    const currentPage = parseInt(document.getElementById('current-page').innerText) - 1;
+    const totalPages = parseInt(document.getElementById('total-pages').innerText) - 1;
+    if (currentPage === totalPages) {
+        alert('마지막 페이지입니다.');
+        return;
+    }
+    const nextPage = currentPage + 1;
+    await renderInputs(nextPage);
+}
+
+const renderInputs = async (page) => {
+    const data = await getInputs(page);
+    const inputList = data.inputList;
+    if (inputList === 0) {
         alert('입력된 작전이 없습니다.');
         return;
     }
     const inputModalBody = document.getElementById('inputs-modal-body');
-    inputModalBody.innerHTML = inputs.map((v) => {
+    inputModalBody.innerHTML = inputList.map((v) => {
         return (`<p>
             <span class="badge bg-primary fw-normal">${v.name + ' '}</span>
             ${v.contents[0].content}${hasLastChar(v.contents[0].content) ? '과' : '와'} ${v.contents[1].content}에서 ${v.contents[2].content}
         </p>`);
     }).join('');
+    document.getElementById('current-page').innerText = data.currentPage + 1;
+    document.getElementById('total-pages').innerText = data.totalPages;
 };
 
-const getInputs = async () => {
+const getInputs = async (page) => {
     const header = {
-        method: 'GET'
+        method: 'GET',
+        // params: {
+        //     page,
+        //     size: 10
+        // }
     };
-    return await fetchData(`/api/operations/${getLink()}/inputs`, header);
+    return await fetchData(`/api/operations/${getLink()}/inputs?page=${page}&size=10`, header);
 };
 
 const returnToOperation = () => {
