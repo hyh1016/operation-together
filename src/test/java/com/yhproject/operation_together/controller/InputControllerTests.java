@@ -3,6 +3,7 @@ package com.yhproject.operation_together.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yhproject.operation_together.common.config.AuthAspect;
 import com.yhproject.operation_together.dto.EmptyJSON;
+import com.yhproject.operation_together.dto.InputListResponse;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
 import com.yhproject.operation_together.dto.input.InputDto;
 import com.yhproject.operation_together.dto.input.ResultResponse;
@@ -25,8 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -111,16 +111,16 @@ public class InputControllerTests {
                     getInputDto(1L),
                     getInputDto(2L)
             );
-            given(inputService.getInputList(anyString()))
-                    .willReturn(inputDtoList);
+            given(inputService.getInputList(anyString(), anyInt(), anyInt()))
+                    .willReturn(new InputListResponse(1, 0, inputDtoList));
 
             // when
             ResultActions resultActions = request();
 
             // then
             resultActions.andExpect(status().isOk())
-                    .andExpect(jsonPath("$").isArray())
-                    .andExpect(jsonPath("$", hasSize(2)));
+                    .andExpect(jsonPath("$.inputList").isArray())
+                    .andExpect(jsonPath("$.inputList", hasSize(2)));
         }
 
         @DisplayName("작전 입력 리스트 조회 실패 - 권한 없음")

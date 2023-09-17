@@ -1,8 +1,8 @@
 package com.yhproject.operation_together.service;
 
 import com.yhproject.operation_together.dto.EmptyJSON;
+import com.yhproject.operation_together.dto.InputListResponse;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
-import com.yhproject.operation_together.dto.input.InputDto;
 import com.yhproject.operation_together.dto.input.ResultResponse;
 import com.yhproject.operation_together.entity.Content;
 import com.yhproject.operation_together.entity.Input;
@@ -11,6 +11,8 @@ import com.yhproject.operation_together.repository.ContentRepository;
 import com.yhproject.operation_together.repository.InputRepository;
 import com.yhproject.operation_together.repository.OperationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,12 +47,10 @@ public class InputService {
     }
 
     @Transactional(readOnly = true)
-    public List<InputDto> getInputList(String link) {
+    public InputListResponse getInputList(String link, int page, int pageSize) {
         Operation operation = findOperationByLink(link);
-        return operation.getInputs()
-                .stream()
-                .map(InputDto::toDto)
-                .collect(Collectors.toList());
+        Page<Input> inputPage = inputRepository.findAllByOperationId(operation.getId(), PageRequest.of(page, pageSize));
+        return InputListResponse.getInstance(inputPage);
     }
 
     @Transactional(readOnly = true)

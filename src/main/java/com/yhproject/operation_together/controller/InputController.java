@@ -2,11 +2,12 @@ package com.yhproject.operation_together.controller;
 
 import com.yhproject.operation_together.common.config.CheckAuth;
 import com.yhproject.operation_together.dto.EmptyJSON;
+import com.yhproject.operation_together.dto.InputListResponse;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
-import com.yhproject.operation_together.dto.input.InputDto;
 import com.yhproject.operation_together.dto.input.ResultResponse;
 import com.yhproject.operation_together.service.InputService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -31,8 +32,10 @@ public class InputController {
 
     @CheckAuth
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<InputDto>> getInputs(@PathVariable String link) {
-        return ResponseEntity.ok(inputService.getInputList(link));
+    public ResponseEntity<InputListResponse> getInputs(@PathVariable String link,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") @Max(100) int size) {
+        return ResponseEntity.ok(inputService.getInputList(link, page, size));
     }
 
     @CheckAuth
