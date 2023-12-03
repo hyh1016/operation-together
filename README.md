@@ -1,6 +1,6 @@
 # 🕵️ 작전명 투게더!
 
-<img src="./oto-logo.png" width="512" height="512" alt="logo" />
+<img src="./favicon.png" width="350px" height="350px" alt="logo" />
 
 ```
 ❕  작전명 투게더는 입력된 단어 묶음으로부터 하나의 랜덤한 문장이 생성되는 ✨랜덤 플래닝 서비스✨입니다. 
