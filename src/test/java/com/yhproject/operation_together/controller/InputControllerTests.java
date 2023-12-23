@@ -2,7 +2,6 @@ package com.yhproject.operation_together.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yhproject.operation_together.common.config.AuthAspect;
-import com.yhproject.operation_together.dto.EmptyJSON;
 import com.yhproject.operation_together.dto.InputListResponse;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
 import com.yhproject.operation_together.dto.input.InputDto;
@@ -67,7 +66,7 @@ public class InputControllerTests {
             // given
             CreateInputRequest dto = getInputRequest();
             given(inputService.createInput(anyString(), any(CreateInputRequest.class)))
-                    .willReturn(new EmptyJSON());
+                    .willReturn(new InputDto());
 
             // when
             ResultActions resultActions = request(dto);
