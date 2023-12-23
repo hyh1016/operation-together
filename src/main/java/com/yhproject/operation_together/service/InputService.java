@@ -1,15 +1,15 @@
 package com.yhproject.operation_together.service;
 
-import com.yhproject.operation_together.dto.EmptyJSON;
 import com.yhproject.operation_together.dto.InputListResponse;
+import com.yhproject.operation_together.dto.input.ContentDto;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
+import com.yhproject.operation_together.dto.input.InputDto;
 import com.yhproject.operation_together.dto.input.ResultResponse;
+import com.yhproject.operation_together.dto.operation.OperationDto;
 import com.yhproject.operation_together.entity.Content;
 import com.yhproject.operation_together.entity.Input;
-import com.yhproject.operation_together.entity.Operation;
 import com.yhproject.operation_together.repository.ContentRepository;
 import com.yhproject.operation_together.repository.InputRepository;
-import com.yhproject.operation_together.repository.OperationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,57 +23,61 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class InputService {
-
-    private final OperationRepository operationRepository;
+    private final OperationService operationService;
     private final InputRepository inputRepository;
     private final ContentRepository contentRepository;
 
     @Transactional
-    public EmptyJSON createInput(String link, CreateInputRequest dto) {
-        Operation operation = findOperationByLink(link);
-        Input input = Input.builder()
+    public InputDto createInput(String link, CreateInputRequest dto) {
+        OperationDto operation = operationService.getOperation(link);
+        Input input = inputRepository.save(Input.builder()
                 .name(dto.getName())
-                .operation(operation)
-                .build();
-        inputRepository.save(input);
-        List<Content> contentList = dto.getContents().stream()
+                .operation(operation.toEntity())
+                .build());
+        List<Content> contentList = contentRepository.saveAll(dto.getContents().stream()
                 .map(content -> Content.builder()
                         .content(content)
                         .input(input)
                         .build())
-                .collect(Collectors.toList());
-        contentRepository.saveAll(contentList);
-        return new EmptyJSON();
+                .collect(Collectors.toList()));
+        InputDto inputDto = InputDto.toDto(input);
+        List<ContentDto> contentDtoList = contentList.stream().map(ContentDto::toDto).toList();
+        inputDto.setContents(contentDtoList);
+        return inputDto;
     }
 
     @Transactional(readOnly = true)
     public InputListResponse getInputList(String link, int page, int pageSize) {
-        Operation operation = findOperationByLink(link);
+        OperationDto operation = operationService.getOperation(link);
         Page<Input> inputPage = inputRepository.findAllByOperationId(operation.getId(), PageRequest.of(page, pageSize));
         return InputListResponse.getInstance(inputPage);
     }
 
     @Transactional(readOnly = true)
     public List<ResultResponse> getResultList(String link) {
-        Operation operation = findOperationByLink(link);
-        List<Input> inputs = operation.getInputs();
-        List<ResultResponse> resultList = new ArrayList<>();
-        if (inputs.isEmpty()) return resultList;
-        int length = inputs.size();
+        OperationDto operation = operationService.getOperation(link);
+        // 전체 조회 시 메모리에 부하가 일어날 수 있으므로 id만 조회해 랜덤 선정하고 해당 id의 엔티티를 조회
+        List<Long> inputIdList = inputRepository.findAllIdByOperationId(operation.getId());
+        if (inputIdList.isEmpty()) throw new IllegalStateException(link + " 작전에 등록된 input이 없습니다.");
+        List<Long> selectedIdList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            Input input = inputs.get((int) (Math.random() * length));
-            resultList.add(ResultResponse.builder()
+            selectedIdList.add(inputIdList.get((int) (Math.random() * inputIdList.size())));
+        }
+        List<Input> inputList = inputRepository.findAllByIdIn(selectedIdList);
+        List<ResultResponse> resultResponseList = new ArrayList<>();
+        for (int i = 0; i < inputList.size(); i++) {
+            Input input = inputList.get(i);
+            resultResponseList.add(ResultResponse.builder()
                     .name(input.getName())
                     .content(input.getContents().get(i).getContent())
-                    .build()
-            );
+                    .build());
         }
-        return resultList;
+        return resultResponseList;
     }
 
-    private Operation findOperationByLink(String link) {
-        return operationRepository.findByLink(link)
-                .orElseThrow(() -> new IllegalArgumentException("해당 작전을 찾을 수 없습니다. link: " + link));
+    private Input findById(Long id) {
+        return inputRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 Input을 찾을 수 없습니다. id: " + id));
     }
 
 }

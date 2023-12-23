@@ -12,7 +12,7 @@ const fetchData = async (url, option) => {
             });
         const data = await res.json();
         if (res.status !== 200) {
-            alert(data.message);
+            console.error(data.message);
         }
         return data;
     } catch (error) {

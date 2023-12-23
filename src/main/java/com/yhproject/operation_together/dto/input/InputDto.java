@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

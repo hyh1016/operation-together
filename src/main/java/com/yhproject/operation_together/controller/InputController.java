@@ -1,9 +1,9 @@
 package com.yhproject.operation_together.controller;
 
 import com.yhproject.operation_together.common.config.CheckAuth;
-import com.yhproject.operation_together.dto.EmptyJSON;
 import com.yhproject.operation_together.dto.InputListResponse;
 import com.yhproject.operation_together.dto.input.CreateInputRequest;
+import com.yhproject.operation_together.dto.input.InputDto;
 import com.yhproject.operation_together.dto.input.ResultResponse;
 import com.yhproject.operation_together.service.InputService;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class InputController {
     private final InputService inputService;
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmptyJSON> createInput(@PathVariable String link, @RequestBody @Valid CreateInputRequest dto) {
+    public ResponseEntity<InputDto> createInput(@PathVariable String link, @RequestBody @Valid CreateInputRequest dto) {
         log.info("{} 작전에 새 입력 추가 {}", link, dto);
         return ResponseEntity.ok(inputService.createInput(link, dto));
     }
