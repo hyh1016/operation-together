@@ -9,5 +9,4 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     Optional<Operation> findByLink(String link);
 
-    Optional<Operation> findByIdAndLink(Long operationId, String link);
 }
