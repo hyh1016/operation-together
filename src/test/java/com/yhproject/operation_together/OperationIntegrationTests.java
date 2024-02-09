@@ -51,7 +51,7 @@ public class OperationIntegrationTests {
 		operationRepository.deleteAll();
 	}
 
-	@DisplayName("작전 생성 테스트")
+	@DisplayName("작전 생성")
 	@Nested
 	class CreateOperationTest {
 		private final String CREATE_OPERATION_URL = getApiUrl("/api/operations");

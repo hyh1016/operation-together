@@ -32,7 +32,7 @@ public class InputController {
 
     @CheckAuth
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InputListResponse> getInputs(@PathVariable String link,
+    public ResponseEntity<InputListResponse> getInputList(@PathVariable String link,
                                                        @RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") @Max(100) int size) {
         return ResponseEntity.ok(inputService.getInputList(link, page, size));
