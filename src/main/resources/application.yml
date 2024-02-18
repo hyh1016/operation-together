@@ -1,0 +1,18 @@
+spring:
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${DATABASE_URL:jdbc:mariadb://localhost:3306/operation-together?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:1234}
+  profiles:
+    include: secret
+
+auth:
+  secret-key: ${SESSION_SECRET_KEY:write-your-secret-key-here}

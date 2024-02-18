@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/header.html :: header-fragment"></th:block>
+</head>
+<body>
+<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="jumbotron align-self-center align-items-center" th:object="${operation}">
+            <h1 class="text-center mb-3">
+                <span class="text-primary" th:text="*{name}"></span>님은<br>
+                <span class="text-primary" th:text="*{operationDate}"></span>에
+            </h1>
+            <h3 class="operation-format text-center border border-secondary mb-3 p-2">
+                <span class="text-primary">???</span>와(과)
+                <span class="text-primary">???</span>에서
+                <span class="text-primary">???</span>
+            </h3>
+            <div class="mb-3 text-center">
+                <button id="btn-input" class="btn btn-white text-primary border border-primary">
+                    입력 추가하기
+                </button>
+            </div>
+            <div id="btn-result" class="mb-3 text-center">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#result-modal">
+                    최종 작전 확인하기
+                </button>
+                <div class="modal fade" id="result-modal" tabindex="-1" aria-labelledby="result-modal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="operation-modal-label">비밀번호 입력</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="password" id="operation-password" name="password" class="form-control" />
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btn-password" class="btn btn-primary">확인</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments/footer.html :: footer-fragment"></th:block>
+<script src="/js/operation.js"></script>
+</body>
+</html>

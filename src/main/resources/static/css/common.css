@@ -1,0 +1,21 @@
+* {
+    font-family: 'GongGothicMedium';
+}
+
+html, body {
+    height: 100%;
+}
+
+.operation-format {
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 16px;
+    background-color: aliceblue;
+}
+
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -1,0 +1,75 @@
+name: 작전명 투게더 배포
+run-name: deploy operation together 🚀
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  BUILD_OUTPUT_FILENAME: operation_together.jar
+  BUILD_OUTPUT_PATH: build/libs
+
+jobs:
+  Build-And-Upload:
+    name: 빌드 & 업로드
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+
+      - name: gradlew 실행 권한 부여
+        run: |
+          chmod +x gradlew
+
+      - name: 테스트 수행
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test
+
+      - name: 테스트 실패 시 테스트 리포트 업로드
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: build/reports/tests/test/index.html
+
+      - name: 시크릿 환경변수 파일 생성
+        working-directory: src/main/resources
+        run: |
+          cat << EOF > application-secret.yml
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          SESSION_SECRET_KEY: ${{ secrets.SESSION_SECRET_KEY }}
+          EOF
+      
+          chmod 644 application-secret.yml
+
+      - name: 빌드
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: bootJar
+
+      - name: 애플리케이션 서버에 jar 파일 전송
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: ${{ env.BUILD_OUTPUT_PATH }}
+          target: ${{ secrets.REMOTE_SERVER_JAR_PATH }}
+
+      - name: 애플리케이션 실행
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.REMOTE_SERVER_JAR_PATH }}/${{ env.BUILD_OUTPUT_PATH }}
+            ./deploy.sh

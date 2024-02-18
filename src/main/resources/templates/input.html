@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/header.html :: header-fragment"></th:block>
+    <link rel="stylesheet" href="/css/input.css">
+</head>
+<body>
+<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="jumbotron align-self-center" th:object="${operation}">
+            <form id="input-form" class="align-self-center align-items-center">
+                <h2 class="mb-3">
+                    <span class="text-primary" th:text="*{name}"></span>님은<br>
+                    무엇을 하나요?
+                </h2>
+                <div class="d-flex flex-row flex-wrap align-items-center">
+                    <label for="p1"></label>
+                    <input type="text" class="form-control w-75" name="1" id="p1" />와(과)
+                    <input type="text" class="form-control w-75" name="2" id="p2" /> 에서
+                    <input type="text" class="form-control w-100" name="3" id="p3" />
+                </div>
+
+                <h4 class="mb-3 d-flex flex-row align-items-center">
+                    <label for="input-name" class="m-1">From.</label>
+                    <input type="text" class="form-control w-50 m-1" name="input-name" id="input-name" />
+                </h4>
+
+                <button type="submit" id="input-form-submit" class="btn btn-primary text-center w-100">추가하기</button>
+                <p id="error-message" class="text-danger"></p>
+            </form>
+        </div>
+    </div>
+</div>
+ <th:block th:replace="fragments/footer.html :: footer-fragment"></th:block>
+<script src="/js/input.js"></script>
+</body>
+</html>

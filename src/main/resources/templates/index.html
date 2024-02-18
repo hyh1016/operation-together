@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/header.html :: header-fragment"></th:block>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div class="container h-100">
+    <div class="row align-items-center h-100">
+        <div class="jumbotron align-self-center">
+            <div class="text-center m-5"><img src="/images/favicon.png" alt="logo" width="250px"></div>
+            <h1 class="text-center"><b>작전명 <span class="highlight">투게더!</span></b></h1>
+            <p class="text-center">친구들과 함께 당신의 작전을 만들어보세요.</p>
+            <p class="text-center"><a href="/create" class="btn btn-primary btn-lg">작전 상자 만들기</a></p>
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments/footer.html :: footer-fragment"></th:block>
+</body>
+</html>

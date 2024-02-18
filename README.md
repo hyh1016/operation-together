@@ -1,21 +1,31 @@
-# **operation-together**
+# 🕵️ 작전명 투게더!
 
-<div align="center">
+<img src="./favicon.png" width="350px" height="350px" alt="logo" />
 
-## **작전명 투게더! 🕵️‍♀️**
-작전명 투게더는 진행 상황을 공유하는 단체 플래너 웹 서비스입니다.
+```
+작전명 투게더는 입력된 단어 묶음으로부터 하나의 랜덤한 문장이 생성되는 ✨랜덤 플래닝 서비스✨입니다. 
+당신의 작전을 생성하고, 링크를 공유해 주변인으로부터 당신이 수행할 작전을 전달받아보세요!
+```
 
-<img src="https://user-images.githubusercontent.com/59721541/103433308-35d29100-4c32-11eb-903e-8626675e0f36.png" width="250" height="250">
+<br>
 
-[![Typescript](https://img.shields.io/badge/typescript-v4.1.3-white?logo=typescript)](https://www.typescriptlang.org/)
-[![react](https://img.shields.io/badge/react-v17.0.1-9cf?logo=react)](https://reactjs.org/)
-[![GitHub Open Issues](https://img.shields.io/github/issues-raw/hyh1016/operation-together?color=green)](https://github.com/hyh1016/operation-together/issues)
-[![GitHub Closed Issues](https://img.shields.io/github/issues-closed-raw/hyh1016/operation-together?color=red)](https://github.com/hyh1016/operation-together/issues?q=is%3Aissue+is%3Aclosed)
+## 🚀 사용해보기
 
-</div>
+### 나만의 작전 생성하기 ➡ <a href="https://operation-together.site" target="_blank">GO!</a>
 
----
+### 예시 작전 확인하기 (비밀번호: 0000) ➡ <a href="https://operation-together.site/operations/e3f08070-eec0-4d6e-a9b8-eaf2e6bcada2" target="_blank">GO!</a>
 
-## **Author**
+<br>
 
-> Yihyun Ha ([@hyh1016](https://github.com/hyh1016))
+## 🧱 아키텍처
+
+<img src="./system-architecture.png" style="width: 800px; border-radius: 8px;" />
+
+<br>
+
+## 📝 제작
+
+| 하이현 [(hyh1016)](https://github.com/hyh1016) |
+| :---: |
+| <img src ="https://avatars.githubusercontent.com/u/59721541?v=4" width = "250px" height="250px" /> |
+| 기획, 디자인, FE/BE |
