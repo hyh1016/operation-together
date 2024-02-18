@@ -60,7 +60,9 @@ public class InputService {
         OperationDto operation = operationService.getOperation(link);
         // 전체 조회 시 메모리에 부하가 일어날 수 있으므로 id만 조회해 랜덤 선정하고 해당 id의 엔티티를 조회
         List<Long> inputIdList = inputRepository.findAllIdByOperationId(operation.getId());
-        if (inputIdList.isEmpty()) throw new IllegalStateException(link + " 작전에 등록된 input이 없습니다.");
+        if (inputIdList.isEmpty()) {
+            return new ArrayList<>();
+        }
         List<Long> selectedIdList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             selectedIdList.add(inputIdList.get((int) (Math.random() * inputIdList.size())));

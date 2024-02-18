@@ -41,7 +41,11 @@ public class InputController {
     @CheckAuth
     @GetMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ResultResponse>> getResult(@PathVariable String link) {
-        return ResponseEntity.ok(inputService.getResultList(link));
+        List<ResultResponse> resultList = inputService.getResultList(link);
+        if (resultList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resultList);
     }
 
 }

@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -166,6 +167,23 @@ public class InputControllerTests {
 
             // then
             resultActions.andExpect(status().isOk());
+        }
+
+        @DisplayName("작전 결과 조회 성공 - 입력된 작전이 없음")
+        @Test
+        void getResult_empty_success() throws Exception {
+            // given
+            given(authService.isAuthenticated(anyString()))
+                    .willReturn(true);
+            List<ResultResponse> resultResponseList = new ArrayList<>();
+            given(inputService.getResultList(anyString()))
+                    .willReturn(resultResponseList);
+
+            // when
+            ResultActions resultActions = request();
+
+            // then
+            resultActions.andExpect(status().isNoContent());
         }
 
         @DisplayName("작전 결과 조회 실패 - 권한 없음")

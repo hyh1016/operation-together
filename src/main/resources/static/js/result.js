@@ -28,10 +28,6 @@ const renderResult = async () => {
     const resultContainer = document.getElementById('operation-result');
     const result = await getResult();
     if (!result) return;
-    if (result.length === 0) {
-        alert('입력된 작전이 없습니다.');
-        return;
-    }
     resultContainer.innerHTML = `
         <span class="text-primary">${result[0].content}</span>${hasLastChar(result[0].content) ? '과' : '와'}
         <span class="text-primary">${result[1].content}</span>에서
@@ -54,6 +50,11 @@ const getResult = async () => {
         method: 'GET'
     };
     const response = await fetchData(`/api/operations/${getLink()}/inputs/result`, header);
+    if (response.status === 204) {
+        alert('아직 입력된 작전이 없습니다. 당신의 작전을 공유해보세요!');
+        return null;
+    }
+
     const data = await response.json();
     if (response.status !== 200) {
         alert('결과 생성 중 문제가 발생하였습니다.');

@@ -183,7 +183,7 @@ public class InputServiceTests {
         }
     }
 
-    @DisplayName("작전 결과 조회 - 실패 (작전에 등록된 입력이 하나도 없음)")
+    @DisplayName("작전 결과 조회 (작전에 등록된 입력이 하나도 없음) - 성공")
     @Test
     void getResultList_fail_emptyInputList() {
         // given
@@ -197,8 +197,11 @@ public class InputServiceTests {
         given(inputRepository.findAllIdByOperationId(anyLong()))
                 .willReturn(List.of());
 
-        // when, then
-        assertThrows(IllegalStateException.class, () -> inputService.getResultList(UUID.randomUUID().toString()));
+        // when
+        List<ResultResponse> resultList = inputService.getResultList(UUID.randomUUID().toString());
+
+        // then
+        assertTrue(resultList.isEmpty());
     }
 
 }
