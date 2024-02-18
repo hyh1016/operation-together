@@ -40,7 +40,12 @@ public class AuthService {
     }
 
     private Set<String> getAuthenticatedLinkSet() {
-        return (Set<String>) getSession().getAttribute(SESSION_KEY);
+        Object attribute = getSession().getAttribute(SESSION_KEY);
+        if (attribute instanceof Set<?>) {
+            return (Set<String>) attribute;
+        } else {
+            return new HashSet<>();
+        }
     }
 
     private HttpSession getSession() {
