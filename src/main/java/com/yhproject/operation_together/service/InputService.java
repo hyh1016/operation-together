@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,10 +65,11 @@ public class InputService {
         for (int i = 0; i < 3; i++) {
             selectedIdList.add(inputIdList.get((int) (Math.random() * inputIdList.size())));
         }
-        List<Input> inputList = inputRepository.findAllByIdIn(selectedIdList);
+        List<Input> inputList = inputRepository.findAllByIdIn(new HashSet<>(selectedIdList));
+        Map<Long, Input> inputMap = inputList.stream().collect(Collectors.toMap(Input::getId, input -> input));
         List<ResultResponse> resultResponseList = new ArrayList<>();
-        for (int i = 0; i < inputList.size(); i++) {
-            Input input = inputList.get(i);
+        for (int i = 0; i < selectedIdList.size(); i++) {
+            Input input = inputMap.get(selectedIdList.get(i));
             resultResponseList.add(ResultResponse.builder()
                     .name(input.getName())
                     .content(input.getContents().get(i).getContent())

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -104,7 +105,7 @@ public class InputRepositoryTests {
         }
 
         // when
-        List<Input> inputList = inputRepository.findAllByIdIn(idList);
+        List<Input> inputList = inputRepository.findAllByIdIn(new HashSet<>(idList));
 
         // then
         assertEquals(idList.size(), inputList.size());

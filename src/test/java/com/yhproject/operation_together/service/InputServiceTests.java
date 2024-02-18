@@ -12,6 +12,8 @@ import com.yhproject.operation_together.repository.InputRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.LongStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -137,9 +141,10 @@ public class InputServiceTests {
         }
     }
 
-    @DisplayName("작전 결과 조회 - 성공")
-    @Test
-    void getResultList_success() {
+    @DisplayName("작전 결과 조회 (id 개수가 1, 2, 5개일 때) - 성공")
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 5})
+    void getResultList_success(int idCount) {
         // given
         given(operationService.getOperation(anyString()))
                 .willAnswer(invocation -> OperationDto.builder()
@@ -148,14 +153,15 @@ public class InputServiceTests {
                         .link(invocation.getArgument(0))
                         .operationDate(LocalDate.now())
                         .build());
-        List<Long> idList = Arrays.asList(1L, 3L, 7L, 9L);
+        List<Long> idList = LongStream.range(1, idCount + 1).boxed().toList();
         List<String> nameList = idList.stream().map(id -> "name" + id).toList();
         given(inputRepository.findAllIdByOperationId(anyLong()))
                 .willReturn(idList);
-        given(inputRepository.findAllByIdIn(anyList()))
+        given(inputRepository.findAllByIdIn(anySet()))
                 .willAnswer(invocation -> {
-                    List<Long> list = (List<Long>) invocation.getArgument(0);
+                    Set<Long> list = invocation.getArgument(0);
                     return list.stream().map(id -> Input.builder()
+                                    .id(id)
                                     .name("name" + id)
                                     .contents(Arrays.asList(
                                             Content.builder().content("A").build(),
@@ -171,6 +177,7 @@ public class InputServiceTests {
 
         // then
         // 모든 엔티티가 idList 내에서 선정되었음
+        assertEquals(3, resultList.size());
         for (ResultResponse response : resultList) {
             assertTrue(nameList.contains(response.getName()));
         }

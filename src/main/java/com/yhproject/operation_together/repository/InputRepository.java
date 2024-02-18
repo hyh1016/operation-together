@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface InputRepository extends JpaRepository<Input, Long> {
 
@@ -15,6 +16,6 @@ public interface InputRepository extends JpaRepository<Input, Long> {
     @Query("select id from Input where operation.id = :operationId")
     List<Long> findAllIdByOperationId(Long operationId);
 
-    List<Input> findAllByIdIn(List<Long> idList);
+    List<Input> findAllByIdIn(Set<Long> idList);
 
 }
