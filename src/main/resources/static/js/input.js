@@ -17,11 +17,14 @@ const createInput = async (event) => {
     };
     const link = getLink();
     const response = await fetchData(`/api/operations/${link}/inputs`, header);
-    if (JSON.stringify(response) === '{}') {
-        alert('등록되었습니다.');
-        return location.href = location.origin + `/operations/${link}`;
+    const data = await response.json();
+    if (response.status !== 200) {
+        alert('입력 생성 중 오류가 발생하였습니다.');
+        console.error(data.message);
+        return;
     }
-    alert('등록 중 오류가 발생하였습니다.');
+    alert('입력이 등록되었습니다.');
+    return location.href = location.origin + `/operations/${link}`;
 };
 
 const checkValidInputData = ({name, contents}) => {

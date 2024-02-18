@@ -18,7 +18,13 @@ const createOperation = async (event) => {
         body: JSON.stringify(operationSaveDto)
     }
     const response = await fetchData("/api/operations", header);
-    const link = response.link;
+    const data = await response.json();
+    if (response.status !== 200) {
+        alert('작전 생성 중 오류가 발생하였습니다.');
+        console.error(data.message);
+        return;
+    }
+    const link = data.link;
     location.href = location.origin + `/operations/${link}`;
 };
 

@@ -2,7 +2,7 @@ const REQUEST_URL = location.origin;
 
 const fetchData = async (url, option) => {
     try {
-        const res = await fetch(REQUEST_URL + url,
+        return await fetch(REQUEST_URL + url,
             {
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
@@ -10,11 +10,6 @@ const fetchData = async (url, option) => {
                 },
                 ...option,
             });
-        const data = await res.json();
-        if (res.status !== 200) {
-            console.error(data.message);
-        }
-        return data;
     } catch (error) {
         console.log(error);
         alert('데이터를 불러오는 도중 오류가 발생하였습니다.');

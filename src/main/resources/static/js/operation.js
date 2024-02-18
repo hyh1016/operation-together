@@ -26,7 +26,13 @@ const checkPassword = async () => {
         body: JSON.stringify(passwordDto),
     };
     const link = getLink();
-    await fetchData(`/api/operations/${link}`, header);
+    const response = await fetchData(`/api/operations/${link}`, header);
+    const data = await response.json();
+    if (response.status !== 200) {
+        alert('비밀번호가 틀렸습니다.');
+        console.error(data.message);
+        return;
+    }
     location.href = location.origin + `/operations/${link}/result`;
 }
 

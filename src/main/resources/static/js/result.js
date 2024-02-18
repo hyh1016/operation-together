@@ -27,7 +27,8 @@ const renderResultWithToggle = async () => {
 const renderResult = async () => {
     const resultContainer = document.getElementById('operation-result');
     const result = await getResult();
-    if (!result || !result.length) {
+    if (!result) return;
+    if (result.length === 0) {
         alert('입력된 작전이 없습니다.');
         return;
     }
@@ -52,7 +53,14 @@ const getResult = async () => {
     const header = {
         method: 'GET'
     };
-    return await fetchData(`/api/operations/${getLink()}/inputs/result`, header);
+    const response = await fetchData(`/api/operations/${getLink()}/inputs/result`, header);
+    const data = await response.json();
+    if (response.status !== 200) {
+        alert('결과 생성 중 문제가 발생하였습니다.');
+        console.error(data.message);
+        return null;
+    }
+    return data;
 };
 
 const movePrevPage = async () => {
@@ -102,7 +110,13 @@ const getInputs = async (page) => {
         //     size: 10
         // }
     };
-    return await fetchData(`/api/operations/${getLink()}/inputs?page=${page}&size=10`, header);
+    const response = await fetchData(`/api/operations/${getLink()}/inputs?page=${page}&size=10`, header);
+    const data = await response.json();
+    if (response.status !== 200) {
+        alert('입력 조회 중 오류가 발생하였습니다.');
+        console.error(data.message);
+    }
+    return data;
 };
 
 const returnToOperation = () => {
