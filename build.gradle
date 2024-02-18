@@ -5,10 +5,18 @@ plugins {
 }
 
 group = 'com.yhproject'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 
 java {
 	sourceCompatibility = '17'
+}
+
+jar {
+	enabled = false
+}
+
+bootJar {
+	archiveFileName = "${rootProject.name}.jar"
 }
 
 configurations {

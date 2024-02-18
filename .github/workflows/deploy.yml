@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  BUILD_OUTPUT_FILENAME: operation_together-0.0.1-SNAPSHOT.jar
+  BUILD_OUTPUT_FILENAME: operation_together.jar
   BUILD_OUTPUT_PATH: build/libs
 
 jobs:
