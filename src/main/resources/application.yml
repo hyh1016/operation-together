@@ -13,6 +13,11 @@ spring:
     password: ${DATABASE_PASSWORD:1234}
   profiles:
     include: secret
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
 
 auth:
   secret-key: ${SESSION_SECRET_KEY:write-your-secret-key-here}
