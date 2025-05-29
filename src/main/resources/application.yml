@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: operation-together
+
   jpa:
 #    show-sql: true
     hibernate:
@@ -13,6 +16,15 @@ spring:
     password: ${DATABASE_PASSWORD:1234}
   profiles:
     include: secret
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, prometheus
+  metrics:
+    tags:
+      application: operation-together
 
 auth:
   secret-key: ${SESSION_SECRET_KEY:write-your-secret-key-here}
